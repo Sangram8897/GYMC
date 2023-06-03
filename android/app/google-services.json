@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "427412974042",
+    "project_id": "gymcsys",
+    "storage_bucket": "gymcsys.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:427412974042:android:057480660f1baba317b8e3",
+        "android_client_info": {
+          "package_name": "com.rn_learner"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoMYBwQMfLr_WY5HBBymp_InLeaXZYOJs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
