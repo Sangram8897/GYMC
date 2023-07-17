@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, FlatList } from 'react-native'
 import { useDispatch } from 'react-redux';
 import ACTIONS from '../../../../../../store/actions';
 import { ColorThemeContext } from '../../../../../../context/theme_context';
@@ -12,18 +12,38 @@ let b = `Sometimes it's useful to know whether or not the device has a screen re
 const Item = ({ item, navigation }) => {
     const dispatch = useDispatch();
     const Theme = useContext(ColorThemeContext).Colors;
+    console.log('Sometimes', item);
 
-    return (<TouchableOpacity
+    const renderText = ({ item }) => {
+        return (
+            <View>
+                <Text style={item.style}>{item.text}</Text>
+            </View >
+        )
+    }
 
-        onPress={async () => {
-            await dispatch(ACTIONS.set_module_id(item.id))
-            navigation.navigate('SubModulesList', { module_ID: item.id })
-        }}
-        style={[styles.item, { backgroundColor: Theme.COLOR_TYPE_2 }]}>
-        <Text style={[styles.title, { color: Theme.COLOR_TYPE_5 }]} numberOfLines={1}>{item.title}</Text>
-        <Text style={[styles.desc, { color: Theme.COLOR_TYPE_8 }]} numberOfLines={5}>{b}</Text>
+    return (
+        <View
+            style={[styles.item,]}
+        >
+            <TouchableOpacity
+                style={{ flex: 1 }}
+                onPress={async () => {
+                    await dispatch(ACTIONS.set_module_id(item.id))
+                    navigation.navigate('SubModulesList', { module_ID: item.id })
+                }}
+            >
+                {
+                    item?.module_text && <FlatList
+                        data={item.module_text}
+                        renderItem={renderText}
+                        keyExtractor={(item, index) => index.toString()}
+                    />
+                }
 
-    </TouchableOpacity>)
+            </TouchableOpacity>
+        </View>
+    )
 }
 
 export default Item
@@ -31,33 +51,31 @@ export default Item
 const styles = StyleSheet.create({
     item: {
         flex: 1,
-        backgroundColor:'white',
+        backgroundColor: 'white',
 
-        padding: 16,
+        padding: 10,
         justifyContent: 'center',
-        // alignItems: 'center',
+        alignItems: 'center',
         margin: 5,
         elevation: 2,
         borderRadius: 8,
-        // borderWidth: 2,
-        // borderColor: Colors.COLOR_GRAY
     },
     title: {
         fontFamily: 'Montserrat-Bold',
         color: 'black',
         fontSize: 18,
-        flexShrink: 1,
+        // flexShrink: 1,
     },
     def: {
         fontFamily: 'Montserrat-SemiBold',
         color: '#FF0B46',
         fontSize: 14,
         color: 'black',
-        flexShrink: 1,
+
     },
     desc: {
-        fontFamily: 'Montserrat-Regular',
-        fontSize: 15,
+        fontFamily: 'Poppins-Regular',
+        fontSize: 17,
         color: 'gray',
         marginTop: 4,
     },

@@ -31,8 +31,8 @@ export default function Module_List({ DATA, navigation }) {
             <Animated.View
                 style={[styles.header, { transform: [{ translateY: headerHeight }], }]}>
                 <Header
-                    activeColor={Colors.COLOR_TYPE_9}
-                    inActiveColor={Colors.COLOR_TYPE_10}
+                    activeColor={Colors.COLOR_TEXT_TITLE}
+                    inActiveColor={Colors.COLOR_TEXT_TITLE}
                     showBackButton={true}
                     onBackButtonPress={() => navigation.goBack()}
                     showPlusButton={true}
@@ -58,7 +58,7 @@ export default function Module_List({ DATA, navigation }) {
                 }
             />
             <FloatingActionButton
-                buttonClor={'pink'}
+                buttonColor={'red'}
                 onPress={() => navigation.navigate('AddModuleInfo')} />
         </Container>
     );

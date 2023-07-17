@@ -1,4 +1,4 @@
-import React, { useEffect,useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import firestore from '@react-native-firebase/firestore';
 import { View, FlatList, StyleSheet, Text, Animated, Platform, StatusBar } from 'react-native';
 import { Header, Container } from 'components';
@@ -6,6 +6,7 @@ import DATA from './DATA';
 import Item from './comp/Item';
 import TimeInput from './TimeInput';
 import { ColorThemeContext } from '../../../context/theme_context';
+import { FloatingActionButton } from '../../../components';
 //const DATA = []
 
 export const HEADER_HEIGHT = Platform.OS == 'ios' ? 60 : 30 + StatusBar.currentHeight;
@@ -23,17 +24,17 @@ export default function Subjects_List({ DATA, navigation }) {
 
     return (
         <Container>
-            <Animated.View
+            {/* <Animated.View
                 style={[styles.header, { transform: [{ translateY: headerHeight }], }]}>
                 <Header
-                activeColor={Colors.COLOR_TEXT_TITLE}
-                inActiveColor={Colors.COLOR_TEXT_TITLE}
+                    activeColor={Colors.COLOR_TEXT_TITLE}
+                    inActiveColor={Colors.COLOR_TEXT_TITLE}
                     hasBackButton={true}
                     onBackbuttonPress={() => { }}
                     showPlusButton={true}
                     onPlusButtonPress={() => ToggleTheme()}
                 />
-            </Animated.View>
+            </Animated.View> */}
 
             <FlatList
                 showsVerticalScrollIndicator={false}
@@ -53,7 +54,9 @@ export default function Subjects_List({ DATA, navigation }) {
                 ListFooterComponent={<View style={{ height: 90 }}></View>
                 }
             />
-
+            <FloatingActionButton
+                buttonColor={Colors.COLOR_ACTIVE_RED}
+                onPress={() => navigation.navigate('AddSubjectInfo')} />
 
         </Container>
     );

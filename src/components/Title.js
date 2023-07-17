@@ -6,8 +6,8 @@ const Title = ({ activeColor, inActiveColor }) => {
     const Theme = useContext(ColorThemeContext).Colors;
     return (
         <View style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}>
-            <Text style={[styles.textstyl1, { color: inActiveColor }]}>GY</Text>
-            <Text style={[styles.textstyl1, { color: activeColor }]}>MC</Text>
+            <Text style={[styles.textstyl1, { color: inActiveColor }]}>Test</Text>
+            <Text style={[styles.textstyl1, { color: activeColor }]}>App</Text>
             <Text style={styles.textstyl3}></Text>
         </View>
     )
@@ -33,10 +33,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat-BoldItalic',
         fontSize: 24,
         // fontStyle: 'italic',
-
         color: '#61dafb'//Colors.COLOR_PRIMARY
-
-
     },
 })
 //{'#FF0B46'}        {'#3360A0'}

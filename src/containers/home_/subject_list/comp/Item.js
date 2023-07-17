@@ -4,6 +4,8 @@ import { useDispatch } from 'react-redux';
 
 import randomColors from '../../../../style/randomColors';
 import ACTIONS from '../../../../store/actions';
+import LinearGradient from 'react-native-linear-gradient';
+import Gradientview from '../../../../components/GradientView';
 
 let a = `<View style={styles.item}>
 <Text style={styles.title}>{title}</Text>
@@ -12,14 +14,22 @@ let a = `<View style={styles.item}>
 
 const Item = ({ item, index, navigation }) => {
     const dispatch = useDispatch();
-    return (<TouchableOpacity
-        onPress={async () => {
-            await dispatch(ACTIONS.set_subject_id(item.id))
-            navigation.navigate('ModulesList', { subject_ID: item.id })
-        }}
-        style={[styles.item, { backgroundColor: randomColors[index % randomColors.length] }]}>
-        <Text style={styles.title} numberOfLines={1}>{item.title}</Text>
-    </TouchableOpacity>)
+    return (
+        //     <LinearGradient colors={['#4AC29A', '#BDFFF3']} style={styles.linearGradient}>
+        //     <Text style={styles.buttonText}>
+        //       Sign in with Facebook
+        //     </Text>
+        //   </LinearGradient>
+       
+            <TouchableOpacity
+                onPress={async () => {
+                    await dispatch(ACTIONS.set_subject_id(item.id))
+                    navigation.navigate('ModulesList', { subject_ID: item.id })
+                }}//
+                style={[styles.item, { backgroundColor: randomColors[index % randomColors.length] }]}>
+                <Text style={styles.title} numberOfLines={1}>{item.title}</Text>
+            </TouchableOpacity>
+    )
 };
 
 export default Item
@@ -28,15 +38,13 @@ const styles = StyleSheet.create({
     item: {
         flex: 1,
         backgroundColor: 'white',
-        height: 80,
+     //   height: 80,
         paddingHorizontal: 10,
         justifyContent: 'center',
         alignItems: 'center',
         margin: 5,
         elevation: 2,
         borderRadius: 8,
-        borderWidth: 2,
-        borderColor: 'gray'
     },
     title: {
         fontFamily: 'Montserrat-Bold',
@@ -75,5 +83,21 @@ const styles = StyleSheet.create({
         margin: 24,
         fontSize: 18,
         textAlign: 'center',
+    },
+
+    linearGradient: {
+        flex: 1,
+        paddingLeft: 15,
+        paddingRight: 15,
+        borderRadius: 5,
+        margin: 8
+    },
+    buttonText: {
+        fontSize: 18,
+        fontFamily: 'Gill Sans',
+        textAlign: 'center',
+        margin: 10,
+        color: '#ffffff',
+        backgroundColor: 'transparent',
     },
 });

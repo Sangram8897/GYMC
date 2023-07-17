@@ -3,14 +3,14 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import RemixIcon from 'react-native-remix-icon'
 import { ColorThemeContext } from '../context/theme_context';
 
-const FloatingActionButton = ({ buttonClor, onPress = () => { } }) => {
+const FloatingActionButton = ({ buttonColor, onPress = () => { } }) => {
     const Theme = useContext(ColorThemeContext).Colors;
     return <RemixIcon
         style={styles.button}
         onPress={onPress}
         name={'ri-add-circle-fill'}
         size={55}
-        color={buttonClor} />
+        color={buttonColor} />
 
 }
 

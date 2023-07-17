@@ -33,6 +33,8 @@ export default function SubjectList({ navigation }) {
         // signIn();
     }, []);
 
+
+
     return (
 
         <Container>
@@ -66,9 +68,9 @@ export default function SubjectList({ navigation }) {
                 ListFooterComponent={<View style={{ height: 90 }}></View>
                 }
             />
-            <FloatingActionButton
+            {/* <FloatingActionButton
                 buttonClor={AppColors.COLOR_SKYBLUE}
-                onPress={() => navigation.navigate('AddSubjectInfo')} />
+                onPress={() => navigation.navigate('AddSubjectInfo')} /> */}
 
         </Container>
     );

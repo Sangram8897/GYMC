@@ -34,7 +34,7 @@ const Header = ({
                         onPress={onBackButtonPress}
                         name={'ri-arrow-left-s-line'}
                         size={30}
-                        color={Theme.COLOR_INACTIVE} />
+                        color={activeColor} />
                 }
 
             </View>
