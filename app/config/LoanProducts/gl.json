@@ -1,0 +1,699 @@
+{
+  "mobileVerification": [
+    {
+      "title": "",
+      "fields": [
+        {
+          "type": "DROPDOWN",
+          "label": "costitution",
+          "name": "costitution",
+          "value": "",
+          "customDropDown": true,
+          "isMasterData": true,
+          "commonPropertyName": "BORROWER_PROFILE_VARIABLE5",
+          "filterName": "name",
+          "className": "col-lg-4 col-md-4",
+          "validation": [
+            "required"
+          ],
+          "disabled": false,
+          "isActive": true,
+          "required": true,
+          "onChange": "",
+          "options": []
+        },
+        {
+          "type": "DROPDOWN",
+          "label": "products",
+          "name": "products",
+          "value": "",
+          "customDropDown": true,
+          "isMasterData": true,
+          "commonPropertyName": "STAR_GOLD",
+          "filterName": "name",
+          "className": "col-lg-4 col-md-4",
+          "validation": [
+            "required"
+          ],
+          "disabled": false,
+          "isActive": true,
+          "required": true,
+          "onChange": "",
+          "options": [],
+          "floatingInfo": "productsInfo"
+        }
+      ]
+    },
+    {
+      "title": "",
+      "fields": [
+        {
+          "type": "MOBILEINPUT",
+          "isActive": true,
+          "isAddon": false,
+          "inputType": "text",
+          "inputmode": "numeric",
+          "placeholder": "Enter 10 digit Mobile Number",
+          "label": "enterMobilNumber",
+          "name": "mobileNumber",
+          "otpLabel": "enterMobileOTP",
+          "maxLength": 10,
+          "value": "",
+          "className": "col-lg-6 col-md-6",
+          "validation": [
+            "required",
+            "patternMobile"
+          ],
+          "patternMsg": "enter10DigitMobile",
+          "disabled": false,
+          "required": true,
+          "isOTP": true,
+          "totalAttempts": 3,
+          "expiredTimeInSec": 60,
+          "ccDefafult": "+91"
+        },
+        {
+          "type": "CHECKBOX",
+          "isActive": true,
+          "label": "",
+          "name": "mobileTermsCondition",
+          "value": "",
+          "className": "col-lg-10 col-md-10",
+          "isCustomLayout": true,
+          "validation": [
+            "requiredTrue"
+          ],
+          "disabled": false,
+          "required": true,
+          "isDynamic": true,
+          "consentCode": "DND_Consent_AGRI",
+          "options": [
+            {
+              "key": "DND_Consent_AGRI",
+              "label": "iAuthorize",
+              "value": false,
+              "isHyperLink": true,
+              "hyperLinkList": [
+                {
+                  "name": "privacyPolicy",
+                  "link": ""
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "kyc": [
+    {
+      "title": "",
+      "fields": [
+        {
+          "type": "AADHAARINPUT",
+          "isActive": true,
+          "inputType": "number",
+          "label": "enterAadharNumber",
+          "name": "aadharNumber",
+          "value": [],
+          "className": "col-lg-6 col-md-6",
+          "validation": [
+            "required"
+          ],
+          "disabled": false,
+          "required": true,
+          "otpLabel": "enterAadhaarOTP",
+          "isOTP": true,
+          "totalAttempts": 3,
+          "expiredTimeInSec": 120
+        },
+        {
+          "type": "CHECKBOX",
+          "isActive": true,
+          "label": "",
+          "name": "aadharAuthorize",
+          "value": [],
+          "className": "col-lg-8 col-md-8",
+          "isDynamic": true,
+          "consentCode": "AADHAAR_CONSENT_AGRI",
+          "validation": [
+            "requiredTrue"
+          ],
+          "disabled": false,
+          "required": true,
+          "options": [
+            {
+              "key": "AADHAAR_CONSENT_AGRI",
+              "label": "iHereBy",
+              "isMultiLabel": true,
+              "completed": false,
+              "value": false,
+              "description": ""
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "panVerificaiton": [
+    {
+      "title": "",
+      "fields": [
+        {
+          "type": "PANINPUT",
+          "isActive": true,
+          "inputType": "text",
+          "label": "PANNumber",
+          "name": "PANNumber",
+          "value": "",
+          "className": "col-lg-12 col-md-12",
+          "validation": [
+            "required"
+          ],
+          "disabled": false,
+          "required": true,
+          "alphaNumberOnly": true
+        }
+      ]
+    }
+  ],
+  "udyamVerification": [
+    {
+      "title": "",
+      "fields": [
+        {
+          "type": "UDYAM",
+          "isActive": true,
+          "isAddon": false,
+          "inputType": "text",
+          "placeholder": "UDYAM-XX-XX-XXXXXXX",
+          "label": "udyamRegistrationNumber",
+          "name": "textVariable3",
+          "maxLength": 19,
+          "value": "",
+          "className": "col-lg-8 col-md-8",
+          "validation": [],
+          "patternMsg": "enter10DigitMobile",
+          "disabled": false
+        }
+      ]
+    }
+  ],
+  "aboutYou": [
+    {
+      "title": "accountInfo",
+      "fields": [
+        {
+          "type": "TEXTBOXVALIDATION",
+          "category": "ACCOUNTNUMBER",
+          "isAddon": false,
+          "placeholder": "enterYourAccountNumber",
+          "isValidatedNumber": false,
+          "inputType": "text",
+          "patternMsg": "AcMinLength",
+          "onChange": "",
+          "label": "accountNumber",
+          "name": "accountNumber",
+          "value  ": "",
+          "className": "col-lg-4 col-md-4",
+          "validation": [
+            "required",
+            "AcMinLength"
+          ],
+          "disabled": false,
+          "isActive": true,
+          "required": true,
+          "onlyNumber": true,
+          "maxLength": 15,
+          "minLength": 15,
+          "floatingInfo": "accountNumberInfo"
+        }
+      ]
+    },
+    {
+      "title": "personalInfo",
+      "fields": [
+        {
+          "type": "TEXTBOX",
+          "isActive": true,
+          "isAddon": true,
+          "isAddonDropDown": true,
+          "addOnName": "title",
+          "filterName": "name",
+          "commonPropertyName": "TITLE",
+          "addonValue": "",
+          "addOnDisabled": false,
+          "inputType": "text",
+          "label": "firstName",
+          "name": "firstName",
+          "value": "",
+          "className": "col-lg-4 col-md-4",
+          "validation": [
+            "required"
+          ],
+          "disabled": false,
+          "required": true,
+          "alphaOnly": true,
+          "options": [],
+          "floatingInfo": "firstNameInfo"
+        },
+        {
+          "type": "TEXTBOX",
+          "isAddon": false,
+          "inputType": "text",
+          "label": "middleName",
+          "name": "middleName",
+          "value": "",
+          "className": "col-lg-4 col-md-4",
+          "validation": [],
+          "disabled": false,
+          "isActive": true,
+          "alphaOnly": true,
+          "required": false,
+          "floatingInfo": "middleNameInfo"
+        },
+        {
+          "type": "TEXTBOX",
+          "isAddon": false,
+          "inputType": "text",
+          "label": "lastName",
+          "name": "lastName",
+          "value": "",
+          "className": "col-lg-4 col-md-4",
+          "validation": [
+            "required"
+          ],
+          "disabled": false,
+          "isActive": true,
+          "alphaOnly": true,
+          "required": true,
+          "floatingInfo": "firstNameInfo"
+        },
+        {
+          "type": "TEXTBOX",
+          "isAddon": false,
+          "inputType": "text",
+          "label": "businessName",
+          "name": "textVariable7",
+          "value  ": "",
+          "className": "col-lg-4 col-md-4",
+          "validation": [
+            "required"
+          ],
+          "disabled": false,
+          "isActive": true,
+          "required": true,
+          "alphaOnly": true,
+          "maxLength": 50,
+          "isUpperCase": true
+        },
+        {
+          "type": "TEXTBOX",
+          "isAddon": false,
+          "inputType": "text",
+          "label": "mobileNumber",
+          "name": "mobileNumber",
+          "value": "",
+          "className": "col-lg-4 col-md-4",
+          "validation": [],
+          "disabled": true,
+          "isActive": true,
+          "required": false
+        },
+        {
+          "type": "TEXTBOX",
+          "isAddon": false,
+          "inputType": "text",
+          "label": "emailId",
+          "category": "EMAILVERIFICATION",
+          "name": "alternativeUsername",
+          "value": "",
+          "onChange": "",
+          "className": "col-lg-4 col-md-4",
+          "validation": [
+            "patternEmail"
+          ],
+          "patternMsg": "validEmail",
+          "preventSpecialChar": true,
+          "disabled": false,
+          "isActive": true,
+          "required": false,
+          "floatingInfo": "emailDetails",
+          "isOTP": true,
+          "otpLabel": "enterEmailOTP",
+          "totalAttempts": 3,
+          "expiredTimeInSec": 120,
+          "isEdit": false,
+          "isVerify": false
+        },
+        {
+          "type": "OTP",
+          "isActive": false,
+          "isAddon": false,
+          "inputType": "text",
+          "label": "",
+          "name": "",
+          "value": "",
+          "className": "",
+          "validation": [],
+          "disabled": false,
+          "required": false,
+          "isOTP": true,
+          "otpLabel": "enterEmailOTP",
+          "totalAttempts": 3,
+          "expiredTimeInSec": 120
+        },
+        {
+          "type": "TEXTBOXVALIDATION",
+          "category": "PAN",
+          "label": "panNumber",
+          "name": "identityNumberTwo",
+          "value": "",
+          "className": "col-lg-4 col-md-4",
+          "validation": [
+            "required",
+            "patternPAN"
+          ],
+          "disabled": true,
+          "patternMsg": "validatePAN",
+          "isValidatedNumber": false,
+          "isActive": false,
+          "required": true,
+          "isUpperCase": true,
+          "maxLength": 10,
+          "alphaNumberOnly": true,
+          "floatingInfo": "panNumberInfo"
+        },
+        {
+          "type": "TEXTBOX",
+          "isAddon": false,
+          "inputType": "text",
+          "label": "aadhaarNumber",
+          "name": "identityNumberOne",
+          "value  ": "",
+          "className": "col-lg-4 col-md-4",
+          "validation": [
+            "AadharminLength"
+          ],
+          "patternMsg": "validAadhaar",
+          "maxLength": 12,
+          "disabled": true,
+          "isActive": true,
+          "required": false,
+          "onlyNumber": true,
+          "floatingInfo": "aadhaarInfo"
+        },
+        {
+          "type": "DROPDOWN",
+          "isActive": true,
+          "customDropDown": true,
+          "label": "vernacularLanguage",
+          "name": "borrowerDetailTextVariable44",
+          "isMasterData": true,
+          "commonPropertyName": "BORROWER_DETAIL_VARIABLE44",
+          "value": "",
+          "onChange": "",
+          "filterName": "name",
+          "floatingInfo": "",
+          "className": "col-lg-4 col-md-4",
+          "validation": [
+            "required"
+          ],
+          "disabled": false,
+          "required": true,
+          "options": []
+        }
+      ]
+    },
+    {
+      "title": "loanInformation",
+      "fields": [
+        {
+          "type": "TEXTBOX",
+          "isAddon": false,
+          "inputType": "text",
+          "patternMsg": "minLoanAmount",
+          "label": "requestedLoanAmount",
+          "name": "textVariable8",
+          "value  ": "",
+          "className": "col-lg-4 col-md-4",
+          "validation": [
+            "required",
+            "minLoanAmount"
+          ],
+          "disabled": false,
+          "isActive": true,
+          "required": true,
+          "onlyNumber": true,
+          "maxLength": 7,
+          "floatingInfo": "requestedLoanAmountInfo"
+        },
+        {
+          "type": "TEXTBOX",
+          "isAddon": false,
+          "inputType": "text",
+          "label": "loanPeriod",
+          "name": "activeLoanTenureInMonths",
+          "value": "",
+          "className": "col-lg-4 col-md-4",
+          "validation": [
+            "required",
+            "minLoanPeriod",
+            "maxLoanPeriod"
+          ],
+          "disabled": false,
+          "isActive": true,
+          "onlyNumber": true,
+          "maxLength": 2,
+          "required": true,
+          "onBlur": "",
+          "floatingInfo": "loanPeriodInfo"
+        },
+        {
+          "type": "DROPDOWN",
+          "isActive": true,
+          "customDropDown": true,
+          "label": "loanPurpose2",
+          "name": "purposeOfAdvance",
+          "value": "",
+          "onChange": "",
+          "filterName": "",
+          "floatingInfo": "purposeOfAdvanceInfo",
+          "className": "col-lg-4 col-md-4",
+          "validation": [
+            "required"
+          ],
+          "disabled": false,
+          "required": true,
+          "options": []
+        }
+      ]
+    },
+    {
+      "title": "chooseYourBranch",
+      "fields": [
+        {
+          "type": "AUTOCOMPLETE",
+          "isActive": true,
+          "inputType": "text",
+          "label": "homeBranchState",
+          "name": "borrowerDetailTextVariable17",
+          "filterName": "state",
+          "value": {},
+          "onChange": "",
+          "className": "col-lg-4 col-md-4",
+          "validation": [
+            "required"
+          ],
+          "disabled": false,
+          "required": true,
+          "floatingInfo": "branchStateInfo",
+          "options": []
+        },
+        {
+          "type": "AUTOCOMPLETE",
+          "isActive": true,
+          "inputType": "text",
+          "label": "homeBranchDistrict",
+          "name": "borrowerDetailTextVariable18",
+          "filterName": "district",
+          "value": {},
+          "onChange": "",
+          "className": "col-lg-4 col-md-4",
+          "validation": [
+            "required"
+          ],
+          "floatingInfo": "branchDistrictInfo",
+          "disabled": false,
+          "required": true,
+          "options": []
+        },
+        {
+          "type": "AUTOCOMPLETE",
+          "isActive": true,
+          "inputType": "text",
+          "label": "homeBranchCity",
+          "name": "borrowerDetailTextVariable16",
+          "filterName": "city",
+          "value": {},
+          "onChange": "",
+          "className": "col-lg-4 col-md-4",
+          "validation": [],
+          "disabled": false,
+          "required": true,
+          "options": [],
+          "floatingInfo": "branchCityInfo"
+        },
+        {
+          "type": "DROPDOWN",
+          "isActive": true,
+          "customDropDown": true,
+          "label": "homebranch",
+          "name": "borrowerDetailTextVariable19",
+          "value": "",
+          "onChange": "",
+          "filterName": "branchName",
+          "floatingInfo": "branchInfo",
+          "className": "col-lg-4 col-md-4",
+          "validation": [
+            "required"
+          ],
+          "disabled": false,
+          "required": true,
+          "options": []
+        },
+        {
+          "type": "TEXTAREA",
+          "isActive": true,
+          "label": "branchAddress",
+          "name": "borrowerDetailTextVariable20",
+          "value": "",
+          "className": "col-lg-4 col-md-4",
+          "row": 3,
+          "column": 10,
+          "validation": [],
+          "disabled": true,
+          "required": false
+        }
+      ]
+    },
+    {
+      "title": "",
+      "fields": [
+        {
+          "type": "CHECKBOX",
+          "isActive": true,
+          "label": "",
+          "name": "iAgreeFATCA",
+          "value": "",
+          "className": "col-lg-12 col-md-12",
+          "validation": [
+            "requiredTrue"
+          ],
+          "disabled": false,
+          "required": false,
+          "isCustomLayout": true,
+          "options": [
+            {
+              "key": "iAgree",
+              "label": "iAgree",
+              "isHyperLink": true,
+              "hyperLinkList": [
+                {
+                  "name": "termsAndConditionGold",
+                  "link": ""
+                },
+                {
+                  "name": "privacyPolicy",
+                  "link": ""
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "eligibility": [
+    {
+      "title": "",
+      "fields": [
+        {
+          "type": "DROPDOWN",
+          "isActive": true,
+          "customDropDown": true,
+          "label": "purposeOfLoan",
+          "name": "borrowerDetailTextVariable21",
+          "value": "",
+          "onChange": "",
+          "filterName": "branchName",
+          "floatingInfo": "purposeofLoanInfo",
+          "className": "col-lg-4 col-md-4",
+          "validation": [
+            "required"
+          ],
+          "disabled": false,
+          "required": true,
+          "options": []
+        },
+        {
+          "type": "DROPDOWN",
+          "isActive": true,
+          "customDropDown": true,
+          "label": "requestedTenure",
+          "name": "borrowerDetailTextVariable22",
+          "value": "",
+          "onChange": "",
+          "filterName": "branchName",
+          "floatingInfo": "requestedTenureInfo",
+          "className": "col-lg-4 col-md-4",
+          "validation": [
+            "required"
+          ],
+          "disabled": false,
+          "required": true,
+          "options": []
+        },
+        {
+          "type": "TEXTBOX",
+          "isActive": true,
+          "isAddon": false,
+          "label": "noOfOrnaments",
+          "name": "borrowerDetailTextVariable23",
+          "value": "",
+          "onChange": "",
+          "floatingInfo": "noOfOrnamentsInfo",
+          "className": "col-lg-4 col-md-4",
+          "validation": [],
+          "disabled": true,
+          "onBlur": true,
+          "required": false,
+          "options": []
+        },
+        {
+          "type": "TEXTBOX",
+          "isAddon": false,
+          "label": "eligibility",
+          "name": "eligibilityLoanAmount",
+          "value": "",
+          "className": "col-lg-4 col-md-4",
+          "validation": [
+            "required"
+          ],
+          "disabled": false,
+          "isActive": false,
+          "required": true,
+          "onBlur": "",
+          "floatingInfo": "requestedLoanAmountInfo"
+        }
+      ]
+    }
+  ],
+  "savedDetails": [
+    {
+      "name": "mobileNumber",
+      "value": "",
+      "url": "/gold-loan/mobile-verification-pl"
+    }
+  ]
+}

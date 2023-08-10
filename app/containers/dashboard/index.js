@@ -5,8 +5,10 @@ import {
   FlatList,
   StyleSheet,
   Text,
+  TouchableOpacity
 } from 'react-native';
 import LineOfBusiness from './../../config/json/LineOfBusiness.json'
+import LoanProducts from '../../config/LoanProducts';
 
 const DATA = [
   {
@@ -23,22 +25,68 @@ const DATA = [
   },
 ];
 
-const Item = ({ title }) => (
-  <View style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
-  </View>
-);
+const Dashboard = ({ navigation }) => {
+  const LoanProduct = ({ item, index }) => {
+    return (
+      <TouchableOpacity onPress={() => productSelectAction(item)} style={{ padding: 20, margin: 8, borderWidth: 0.5 }}>
+        <Text >{item.name}</Text>
+      </TouchableOpacity>
+    )
+  }
 
-const LoanProductCategory = ({ item, index }) => {
-  return (
-    <View>
-      <Text >{item.lineOfBusinessName}</Text>
+  const productSelectAction = (item) => {
+    // return dev_flow(item, 'BranchDetails')// Enable to resume, pass journeyScreen
+    //todo : write resume journey code here ends
+    // let data = {
 
-    </View>
-  )
-}
+    //   loanPurposeUuid: item?.loanPurposeUuid,
+    //   product: item,
+    //   selectedLoanProduct: item?.productType,
+    //   "afterCompleteFlow": {
+    //     "urlToRedirect": ""
+    //   },
+    //   constitution: 'Individual',
+    //   tabsData: LoanProducts[item?.productConfiguration]?.tabsData,
+    //   journeyPages: LoanProducts[item?.productConfiguration]?.['pageSequenceData']?.journeyPages,
+    //   otherPages: LoanProducts[item?.productConfiguration]?.['pageSequenceData']?.otherPages,
+    //   metaData: {
+    //     "stepperData": LoanProducts[item?.productConfiguration]?.stepperData['individual'],
+    //     "substepperData": CommonVariableService?.verifiedFieldsData[item.productCode]['individual'],
+    //     "capturedData": {},
+    //     "formSubmitEvents": [],
+    //     "externalData": {},
+    //     "globalScopeData": {},
+    //     "masterData": {},
+    //     "commonProperty": {}
+    //   },
+    //   localisation: LoanProducts[item?.productConfiguration]?.localisation ? LoanProducts[item?.productConfiguration]?.localisation : '',
+    //   productUserType: 'individual',
+    //   productCode: item?.productCode,
+    //   productConfiguration: LoanProducts[item?.productConfiguration]
+    // }
 
-const Dashboard = () => {
+    // console.log("item selected", item)
+    //todo : write resume journey code here
+
+    console.warn('item', item);
+
+    navigation.navigate('LoanJourney', { loan_product: item })
+  }
+
+  const LoanProductCategory = ({ item, index }) => {
+    return (
+      <View>
+        <Text >{item.lineOfBusinessName}</Text>
+        <FlatList
+          horizontal={true}
+          data={item?.products}
+          renderItem={({ item, index }) => <LoanProduct item={item} index={index} />}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      </View>
+    )
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList

@@ -15,27 +15,27 @@ const MyData = [
             {
                 "id": "001",
                 "pageCode": "MORE_INFO",
-                "isActive": false,
+                "isActive": true,
                 "name": "More Information",
-                "isCompleted": true
+                "isCompleted": false
             },
             {
                 "id": "002",
                 "pageCode": "PERSONAL_DETAILS",
                 "isActive": false,
                 "name": "Personal Information",
-                "isCompleted": true
+                "isCompleted": false
             },
             {
                 "id": "003",
                 "pageCode": "EMPLOYMENT_DETAILS",
-                "isActive": true,
+                "isActive": false,
                 "name": "Account Number",
                 "isCompleted": false
             },
             {
                 "id": "004",
-                "pageCode": "DOCUMENT_UPLOAD_PTLEX",
+                "pageCode": "DOCUMENT_UPLOAD_V2",
                 "isActive": false,
                 "name": "Account Number",
                 "isCompleted": false

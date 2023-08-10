@@ -5,7 +5,7 @@ import Indicator from './indicator'
 import { useSelector } from 'react-redux';
 import MyData from './testdata';
 
-const StepIndicator = ({ showPersentage = false }) => {
+const StepIndicator = ({data, showPersentage = false }) => {
 	
 	const [param_2, set_param_2] = useState(null)
 
@@ -16,7 +16,7 @@ const StepIndicator = ({ showPersentage = false }) => {
 	const [sub_steps, set_sub_steps] = useState([])
 	const [active_sub_step, set_active_sub_step] = useState(null)
 
-	const journeyData = MyData
+	const journeyData = data
 
 	useEffect(() => {
 		setStepperData()

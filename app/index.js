@@ -5,24 +5,31 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Dashboard from './containers/dashboard';
 import Account from './containers/account';
+import MobileVerify from './containers/loan_journey/pages/mobile_verify';
+import PersonalDetails from './containers/loan_journey/pages/personal_details';
+import LoanJourneyDataProvider from './containers/loan_journey/context';
+import LoanJourney from './containers/loan_journey';
 
 const App = () => {
 
   const Stack = createNativeStackNavigator();
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Dashboard" component={Dashboard} options={{ headerShown: false }} />
-        <Stack.Screen name="Account" component={Account} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <LoanJourneyDataProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Dashboard" component={Dashboard} options={{ headerShown: false }} />
+          <Stack.Screen name="Account" component={Account} />
+          <Stack.Screen name="LoanJourney" component={LoanJourney} options={{ headerShown: false }} />
+          <Stack.Screen name="MobileVerify" component={MobileVerify} options={{ headerShown: false }} />
+          <Stack.Screen name="PersonalDetails" component={PersonalDetails} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </LoanJourneyDataProvider>
   )
 }
 
 export default App
-
-const styles = StyleSheet.create({})
 
 
 // import { StyleSheet, Text, View, Button } from 'react-native'
