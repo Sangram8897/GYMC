@@ -1,92 +1,135 @@
-import React, { createContext, useState, useMemo } from "react";
+import React, { createContext, useState, useMemo, useReducer } from "react";
 
 export const LoanJourneyDataContext = createContext();
 
-function LoanJourneyDataProvider({ children }) {
-    const [data, setData] = useState({}); //setting light theme as default
+function setActiveStepInData(data_, code) {
+    let pagecode_matched = false;
+    let pagecode_matched_in_child_steps = false
 
-    const value = useMemo(
-        () => ({
-            data,
-            setData,
-            setActiveStepInStepper
-        }),
-        [data, setData, setActiveStepInStepper]
-    );
-
-    function setActiveStepInDataOLD(data, code, sub_step) {
+    function findActiveStepInData(data, code, step) {
         for (let i = 0; i < data.length; i++) {
-            if (data[i].pageCode == code) {
+            // below if statement is unreal condition, but for default behavior its applied (Optional)
+            if (data[i].pageCode == code && data[i]?.subStep?.length > 0) {
                 data[i].isActive = true;
+                data[i].isCompleted = false;
+                for (let j = 0; j < data[i]?.subStep?.length; j++) {
+                    if (j == 0) {
+                        data[i].subStep[j].isActive = true
+                        data[i].subStep[j].isCompleted = false
+                    } else {
+                        data[i].subStep[j].isActive = false
+                        data[i].subStep[j].isCompleted = false
+                    }
+                }
+                return data
             } else {
-                data[i].isActive = false;
-            }
-            if (data[i]?.subStep && data[i]?.subStep?.length > 0) {
-                data[i].subStep = setActiveStepInData(data[i].subStep, code, i)
+                if (data[i].pageCode == code) {
+                    pagecode_matched = true;
+                    pagecode_matched_in_child_steps = true;
+                }
+                data[i].isActive = data[i].pageCode == code ? true : false
+                if (data[i]?.subStep && data[i]?.subStep?.length > 0) {
+                    data[i].subStep = findActiveStepInData(data[i].subStep, code, i)
+                    data[i].isActive = pagecode_matched_in_child_steps
+                    pagecode_matched_in_child_steps = false
+                }
+                data[i].isCompleted = !pagecode_matched
             }
         }
         return data
     }
+    findActiveStepInData(data_, code)
+    return data_
+}
+const inintialState = {
+    product: {},
+    loan_product_config: {},
+    current_active_page: null,
+    stepper_data: [],
+}
 
-    function setActiveStepInData(data_, code) {
-        let pagecode_matched = false;
-        let pagecode_matched_in_child_steps = false
+const contextReducer = (state, action) => {
+    switch (action.type) {
+        case 'SET_LOAN_JOURNEY_INITIAL_STATE':
+            return action.data
+        case 'CLEAR_CONTEXT':
+            return inintialState
+        case 'UPDATE_STEPPER_DATA':
+            return {
+                ...state,
+                stepper_data: action.data,
+                current_active_page: action.page_data
+            }
+        default:
+            return state;
+    }
+}
 
-        function findActiveStepInData(data, code, step) {
-            for (let i = 0; i < data.length; i++) {
-                // below if statement is unreal condition, but for default behavior its applied (Optional)
-                if (data[i].pageCode == code && data[i]?.subStep?.length > 0) {
-                    data[i].isActive = true;
-                    data[i].isCompleted = false;
-                    for (let j = 0; j < data[i]?.subStep?.length; j++) {
-                        if (j == 0) {
-                            data[i].subStep[j].isActive = true
-                            data[i].subStep[j].isCompleted = false
-                        } else {
-                            data[i].subStep[j].isActive = false
-                            data[i].subStep[j].isCompleted = false
-                        }
-                    }
-                    return data
+function LoanJourneyDataProvider({ children }) {
+    const [data, setData] = useState({});
+    const [state, dispatchContextState] = useReducer(contextReducer, inintialState);
+
+    const value = useMemo(
+        () => ({
+            data,
+            state,
+            setData,
+            loanJourneyNavigation,
+            dispatchContextState,
+            updateActiveStepInStepper,
+
+        }),
+        [
+            data,
+            state,
+            setData,
+            loanJourneyNavigation,
+            dispatchContextState,
+            updateActiveStepInStepper,
+
+        ]
+    );
+
+    function updateActiveStepInStepper(pagedata) {
+        const updated_stepper_data = setActiveStepInData(state.stepper_data, pagedata.pageCode)
+        dispatchContextState({ type: 'UPDATE_STEPPER_DATA', data: updated_stepper_data, page_data: pagedata })
+    }
+
+    function loanJourneyNavigation(current_page, action) {
+        if (state?.loan_product_config) {
+            const { journeyPages, otherPages } = state?.loan_product_config?.pageSequenceData
+
+            const pageSequence = journeyPages['individual']
+            console.log('loanJourneyNavigation', pageSequence);
+            const current_page_index = pageSequence.findIndex((item) => item?.pageCode == current_page)
+            if (current_page_index == -1) {
+                console.error('given Pagecode not found in the page sequence');
+                return
+            }
+            let next_step_data = '';
+
+            if (action == 'NEXT') {
+                if (current_page_index < pageSequence.length) {
+                    next_step_data = pageSequence[current_page_index + 1]
+                    return next_step_data
                 } else {
-                    if (data[i].pageCode == code) {
-                        pagecode_matched = true;
-                        pagecode_matched_in_child_steps = true;
-                    }
-                    data[i].isActive = data[i].pageCode == code ? true : false
-                    if (data[i]?.subStep && data[i]?.subStep?.length > 0) {
-                        data[i].subStep = findActiveStepInData(data[i].subStep, code, i)
-                        data[i].isActive = pagecode_matched_in_child_steps
-                        pagecode_matched_in_child_steps = false
-                    }
-                    data[i].isCompleted = !pagecode_matched
+                    console.log('pagesequence limit reached');
+                    return
+                }
+            } else if (action == 'BACK') {
+                if (current_page_index > 0) {
+                    next_step_data = pageSequence[current_page_index - 1]
+                    return next_step_data
+                } else {
+                    console.log('pagesequence limit reached');
+                    return
                 }
             }
-            return data
+        } else {
+            console.error('Unable to attach/find selected loan configuration');
         }
-        findActiveStepInData(data_, code)
-        return data_
+        // productConfig.pageSequenceData['journeyPages'][journey.productUserType]
     }
-
-    function setActiveStepInStepper(code) {
-        const stepperData = data?.loan_product_config?.stepperData?.individual;
-        let updated_stepper_data= setActiveStepInData(stepperData, code)
-        let newData = {
-            ...data,
-            loan_product_config: {
-                ...data.loan_product_config,
-                stepperData: {
-                    individual: updated_stepper_data
-                }
-
-            }
-        }
-       
-          setData(newData)
-        console.log('updated_stepper_data',code, updated_stepper_data);
-    }
-
-
 
     return (
         <LoanJourneyDataContext.Provider value={value}>

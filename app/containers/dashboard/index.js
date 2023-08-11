@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   SafeAreaView,
   View,
@@ -8,24 +8,13 @@ import {
   TouchableOpacity
 } from 'react-native';
 import LineOfBusiness from './../../config/json/LineOfBusiness.json'
-import LoanProducts from '../../config/LoanProducts';
-
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Item',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Item',
-  },
-];
+import { LoanJourneyDataContext } from '../loan_journey/context';
 
 const Dashboard = ({ navigation }) => {
+  const { state, dispatchContextState } = useContext(LoanJourneyDataContext);
+
+  console.log('lelavda', state);
+
   const LoanProduct = ({ item, index }) => {
     return (
       <TouchableOpacity onPress={() => productSelectAction(item)} style={{ padding: 20, margin: 8, borderWidth: 0.5 }}>
@@ -34,42 +23,8 @@ const Dashboard = ({ navigation }) => {
     )
   }
 
-  const productSelectAction = (item) => {
-    // return dev_flow(item, 'BranchDetails')// Enable to resume, pass journeyScreen
-    //todo : write resume journey code here ends
-    // let data = {
-
-    //   loanPurposeUuid: item?.loanPurposeUuid,
-    //   product: item,
-    //   selectedLoanProduct: item?.productType,
-    //   "afterCompleteFlow": {
-    //     "urlToRedirect": ""
-    //   },
-    //   constitution: 'Individual',
-    //   tabsData: LoanProducts[item?.productConfiguration]?.tabsData,
-    //   journeyPages: LoanProducts[item?.productConfiguration]?.['pageSequenceData']?.journeyPages,
-    //   otherPages: LoanProducts[item?.productConfiguration]?.['pageSequenceData']?.otherPages,
-    //   metaData: {
-    //     "stepperData": LoanProducts[item?.productConfiguration]?.stepperData['individual'],
-    //     "substepperData": CommonVariableService?.verifiedFieldsData[item.productCode]['individual'],
-    //     "capturedData": {},
-    //     "formSubmitEvents": [],
-    //     "externalData": {},
-    //     "globalScopeData": {},
-    //     "masterData": {},
-    //     "commonProperty": {}
-    //   },
-    //   localisation: LoanProducts[item?.productConfiguration]?.localisation ? LoanProducts[item?.productConfiguration]?.localisation : '',
-    //   productUserType: 'individual',
-    //   productCode: item?.productCode,
-    //   productConfiguration: LoanProducts[item?.productConfiguration]
-    // }
-
-    // console.log("item selected", item)
-    //todo : write resume journey code here
-
-    console.warn('item', item);
-
+  const productSelectAction = async (item) => {
+    //await dispatchContextState({ type: 'CLEAR_CONTEXT' })
     navigation.navigate('LoanJourney', { loan_product: item })
   }
 

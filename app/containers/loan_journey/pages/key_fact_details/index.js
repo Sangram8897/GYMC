@@ -3,8 +3,8 @@ import React, { useState, useEffect, useContext } from 'react'
 import { LoanJourneyDataContext } from '../../context'
 import PatternI from '../../page_patterns/patternI'
 
-const PersonalDetails = ({ route, navigation }) => {
-    const page_code = 'PERSONAL_DETAILS'
+const KeyFactDetails = ({ route, navigation }) => {
+    const page_code = 'KEY_FACT_DETAILS'
     const { data } = useContext(LoanJourneyDataContext);
 
     return (
@@ -14,4 +14,4 @@ const PersonalDetails = ({ route, navigation }) => {
     )
 }
 
-export default PersonalDetails
+export default KeyFactDetails

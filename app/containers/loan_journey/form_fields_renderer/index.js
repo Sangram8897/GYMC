@@ -1,56 +1,38 @@
 import { StyleSheet, Text, View, FlatList } from 'react-native'
-import React, { useState, useEffect, useCallback, useReducer } from 'react'
-import Input from '../components/input'
-import FIELDS_LIST from './configs/test_data';
-import formReducer from './reducer/form_reducer';
-import { FORM_ARRAY_FIELDS_UPDATE } from './constants';
-import renderFields from './render_fields';
-import MY_DATA from './configs/loan_config_dt_test';
+import React, { useState, useEffect, useCallback, useReducer, useContext, useMemo } from 'react'
 import AddSubModuleInfo from './AddSubModuleInfo';
-import StepIndicator from '../components/step_indicator';
+import { LoanJourneyDataContext } from '../context';
 
 const FormFieldsRendererView = () => {
-  // const [formState, dispatchFormState] = useReducer(formReducer, {
-  //   data: MY_DATA,
-  //   index_array: null,
-  //   form_rendered: false
-  // });
-
-  // const [start_editing, set_start_editing] = useState(false)
-
-  // const inputChangeHandler = ()=>{
-  //   console.log('jjojojo');
-  // }
-
-  // useCallback(
-  //   (id, inputValue, index_array) => {
-  //       console.log('formState 45',formState.form_rendered);
-
-  //       dispatchFormState({
-  //         type: FORM_ARRAY_FIELDS_UPDATE,
-  //         value: inputValue,
-  //         index_array: index_array,
-  //       })
-  //   }, [dispatchFormState]);
+  const { state } = useContext(LoanJourneyDataContext);
+  console.log('state', state?.loan_product_config?.pageSectionConfig?.individual);
+  console.log('pagecode', state?.current_active_page?.pageCode);
 
   // useEffect(() => {
-  //   dispatchFormState({ type: 'SET_FORM_RENDERED' })
-  // }, [])
 
-  //console.log('formState', formState);
+  // }, [state?.current_active_page?.pageCode])
+
+  const getPageConfig = () => {
+    if (state?.current_active_page?.pageCode) {
+      const current_page_config = state?.loan_product_config?.pageSectionConfig?.individual[state?.current_active_page?.pageCode]
+      console.log('current_page_config', current_page_config);
+      return current_page_config
+    }
+    return []
+  }
+
+  const calculation = useMemo(() => getPageConfig(), [state?.current_active_page?.pageCode]);
+  console.log('calculation', calculation);
 
   return (
     <View style={{ flex: 1 }}>
-      {/* <FlatList
-        data={formState?.data}
-        renderItem={({ item, index }) => renderFields(item, index, [item.id], [index], inputChangeHandler)}
-        keyExtractor={(item, index) => index.toString()}
-      /> */}
-      {/* <StepIndicator/> */}
-      <AddSubModuleInfo />
+
+      <AddSubModuleInfo data={calculation} />
     </View>
   )
 }
+
+
 
 export default FormFieldsRendererView
 
@@ -60,20 +42,20 @@ function modifyDataByIndex(array, text, index_history) {
   let data = [...array]
   const currentIndex = index_history.shift();
   if (data[currentIndex]) {
-      const newData = data[currentIndex]
-      if (index_history?.length == 0) {
-         // newData.value = text
-      }
-      const { fields, id, sectionContent } = data[currentIndex];
-      if (fields && index_history) {
-          newData.fields = modifyDataByIndex(fields, text, index_history);
-      }
-      else if (sectionContent?.fields && index_history) {
-          newData.sectionContent.fields = modifyDataByIndex(sectionContent.fields, text, index_history);
-      }
-      else if (sectionContent?.config?.options && index_history) {
-          newData.sectionContent.config.options = modifyDataByIndex(sectionContent.config.options, text, index_history);
-      }
+    const newData = data[currentIndex]
+    if (index_history?.length == 0) {
+      // newData.value = text
+    }
+    const { fields, id, sectionContent } = data[currentIndex];
+    if (fields && index_history) {
+      newData.fields = modifyDataByIndex(fields, text, index_history);
+    }
+    else if (sectionContent?.fields && index_history) {
+      newData.sectionContent.fields = modifyDataByIndex(sectionContent.fields, text, index_history);
+    }
+    else if (sectionContent?.config?.options && index_history) {
+      newData.sectionContent.config.options = modifyDataByIndex(sectionContent.config.options, text, index_history);
+    }
   }
   return data
 }

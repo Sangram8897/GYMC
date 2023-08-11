@@ -3,9 +3,9 @@ import React, { useState, useEffect, useContext } from 'react'
 import { LoanJourneyDataContext } from '../../context'
 import PatternI from '../../page_patterns/patternI'
 
-const PersonalDetails = ({ route, navigation }) => {
-    const page_code = 'PERSONAL_DETAILS'
-    const { data } = useContext(LoanJourneyDataContext);
+const DocumentUpload = ({ route, navigation }) => {
+    const page_code = 'DOCUMENT_UPLOAD_V2'
+    const { data, setData, loanJourneyNavigation } = useContext(LoanJourneyDataContext);
 
     return (
         <PatternI navigation={navigation} page_code={page_code}>
@@ -14,4 +14,4 @@ const PersonalDetails = ({ route, navigation }) => {
     )
 }
 
-export default PersonalDetails
+export default DocumentUpload

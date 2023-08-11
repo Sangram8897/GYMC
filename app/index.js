@@ -9,20 +9,36 @@ import MobileVerify from './containers/loan_journey/pages/mobile_verify';
 import PersonalDetails from './containers/loan_journey/pages/personal_details';
 import LoanJourneyDataProvider from './containers/loan_journey/context';
 import LoanJourney from './containers/loan_journey';
+import MoreInfo from './containers/loan_journey/pages/more_info';
+import StatusCheck from './containers/loan_journey/pages/status_check';
+import EmploymentDetails from './containers/loan_journey/pages/employment_details';
+import DocumentUpload from './containers/loan_journey/pages/document_upload';
+import SanctionDetails from './containers/loan_journey/pages/sanction_details';
+import KeyFactDetails from './containers/loan_journey/pages/key_fact_details';
+import LoanSummary from './containers/loan_journey/pages/loan_summery';
+import ESign from './containers/loan_journey/pages/esign';
+import EKycVerify from './containers/loan_journey/pages/ekyc_verify';
 
 const App = () => {
-
   const Stack = createNativeStackNavigator();
-
   return (
     <LoanJourneyDataProvider>
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="Dashboard" component={Dashboard} options={{ headerShown: false }} />
+          <Stack.Screen name="Dashboard" component={Dashboard} options={{ headerShown: true }} />
           <Stack.Screen name="Account" component={Account} />
           <Stack.Screen name="LoanJourney" component={LoanJourney} options={{ headerShown: false }} />
           <Stack.Screen name="MobileVerify" component={MobileVerify} options={{ headerShown: false }} />
-          <Stack.Screen name="PersonalDetails" component={PersonalDetails} />
+          <Stack.Screen name="PersonalDetails" component={PersonalDetails} options={{ headerShown: false }} />
+          <Stack.Screen name="MoreInfo" component={MoreInfo} options={{ headerShown: false }} />
+          <Stack.Screen name="StatusCheck" component={StatusCheck} options={{ headerShown: false }} />
+          <Stack.Screen name="EmploymentDetails" component={EmploymentDetails} options={{ headerShown: false }} />
+          <Stack.Screen name="DocumentUpload" component={DocumentUpload} options={{ headerShown: false }} />
+          <Stack.Screen name="SanctionDetails" component={SanctionDetails} options={{ headerShown: false }} />
+          <Stack.Screen name="KeyFactDetails" component={KeyFactDetails} options={{ headerShown: false }} />
+          <Stack.Screen name="LoanSummary" component={LoanSummary} options={{ headerShown: false }} />
+          <Stack.Screen name="ESign" component={ESign} options={{ headerShown: false }} />
+          <Stack.Screen name="EKycVerify" component={EKycVerify} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </LoanJourneyDataProvider>
@@ -31,6 +47,27 @@ const App = () => {
 
 export default App
 
+const LoanJourneyStack = () => {
+
+  const Stack = createNativeStackNavigator();
+
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="LoanJourney" component={LoanJourney} options={{ headerShown: false }} />
+      <Stack.Screen name="MobileVerify" component={MobileVerify} options={{ headerShown: false }} />
+      <Stack.Screen name="PersonalDetails" component={PersonalDetails} options={{ headerShown: false }} />
+      <Stack.Screen name="MoreInfo" component={MoreInfo} options={{ headerShown: false }} />
+      <Stack.Screen name="StatusCheck" component={StatusCheck} options={{ headerShown: false }} />
+      <Stack.Screen name="EmploymentDetails" component={EmploymentDetails} options={{ headerShown: false }} />
+      <Stack.Screen name="DocumentUpload" component={DocumentUpload} options={{ headerShown: false }} />
+      <Stack.Screen name="SanctionDetails" component={SanctionDetails} options={{ headerShown: false }} />
+      <Stack.Screen name="KeyFactDetails" component={KeyFactDetails} options={{ headerShown: false }} />
+      <Stack.Screen name="LoanSummary" component={LoanSummary} options={{ headerShown: false }} />
+      <Stack.Screen name="ESign" component={ESign} options={{ headerShown: false }} />
+      <Stack.Screen name="EKycVerify" component={EKycVerify} options={{ headerShown: false }} />
+    </Stack.Navigator>
+  )
+}
 
 // import { StyleSheet, Text, View, Button } from 'react-native'
 // import React, { useEffect, useState } from 'react'

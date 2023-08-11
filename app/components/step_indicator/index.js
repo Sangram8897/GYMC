@@ -4,11 +4,9 @@ import _ from 'lodash';
 import Indicator from './indicator'
 import { useSelector } from 'react-redux';
 import MyData from './testdata';
+import { Colors } from '../../style/colors';
 
 const StepIndicator = ({data, showPersentage = false }) => {
-	
-	const [param_2, set_param_2] = useState(null)
-
 	const [active_step, set_active_step] = useState(null)
 	const [pagedata, set_pagedata] = useState([])
 	const [my_progress, set_my_progress] = useState(0)
@@ -16,15 +14,13 @@ const StepIndicator = ({data, showPersentage = false }) => {
 	const [sub_steps, set_sub_steps] = useState([])
 	const [active_sub_step, set_active_sub_step] = useState(null)
 
-	const journeyData = data
-
 	useEffect(() => {
 		setStepperData()
-	}, [journeyData]);
+	}, [data]);
 
 	const setStepperData = async () => {
-		if (journeyData) {
-			let data_update_with_id = journeyData.map((item, index) => {
+		if (data) {
+			let data_update_with_id = data.map((item, index) => {
 				let new_item = { ...item, step_id: index + 1 }
 				return new_item
 			})
@@ -53,67 +49,6 @@ const StepIndicator = ({data, showPersentage = false }) => {
 		}
 	}
 
-	useEffect(() => {
-		manageActiveAndCompletedSteps(active_step, pagedata, set_pagedata, 'MAIN_STEP')
-	}, [active_step]);
-
-	useEffect(() => {
-		if (sub_steps && active_sub_step < sub_steps.length) {
-			manageActiveAndCompletedSteps(active_sub_step, sub_steps, set_sub_steps, 'SUB_STEP')
-		}
-	}, [active_sub_step]);
-
-	useEffect(() => {
-		if (pagedata && pagedata.length > 0)
-			calculatePersentage(pagedata.length, active_step, sub_steps.length, active_sub_step)
-	}, [active_step, active_sub_step]);
-
-	const manageActiveAndCompletedSteps = async (_active_step, data, setData, key) => {
-		let copy_array = [...data]
-		let updated_data = await copy_array.map((element, placeindex) => {
-			let new_item = { ...element };
-			if (placeindex == _active_step) {
-				new_item.isActive = true
-				if (key == 'MAIN_STEP') {
-					if (element?.subStep && element?.subStep.length > 0) {
-						set_sub_steps(element?.subStep);
-						if (param_2) {
-							set_active_sub_step(param_2)
-							set_param_2(null)
-						} else {
-							set_active_sub_step(0)
-						}
-					} else {
-						set_sub_steps([])
-						set_active_sub_step(null)
-						set_param_2(null)
-					}
-				}
-			} else {
-				if (placeindex < _active_step) {
-					new_item.isCompleted = true
-				}
-				new_item.isActive = false
-			}
-			return new_item;
-		})
-
-		return setData(updated_data);
-	}
-	const calculatePersentage = (total_steps_count, active_step_, sub_steps_count, active_sub_step_) => {
-		try {
-			const persent = parseFloat(100 / total_steps_count);
-
-			const sub_persent = sub_steps_count ? parseFloat(persent / sub_steps_count) : 0;
-
-			const my_progress_ = parseFloat(persent * active_step_) + parseFloat(sub_persent * active_sub_step_)
-			set_my_progress(parseInt(my_progress_));
-
-		} catch (error) {
-			console.log(' error', error);
-		}
-	}
-
 	const moveToNextStep = () => {
 		if (active_step < pagedata.length) {
 			if (sub_steps && sub_steps.length > 0) {
@@ -130,16 +65,15 @@ const StepIndicator = ({data, showPersentage = false }) => {
 		}
 	}
 	return (
-		<View style={{ width: '100%', backgroundColor: 'skyblue' }}>
+		<View style={{ width: '100%', backgroundColor: Colors.primary,paddingBottom:8 }}>
 			<View style={[{ width: '95%', alignSelf: 'center', justifyContent: 'center' }]}>
 				<Indicator
 					data={pagedata}
 					active_step={active_step}
 					sub_steps={sub_steps}
 				/>
-
 			</View>
-			{showPersentage && <Text style={[ { color: 'skyblue',alignSelf:'flex-end',marginRight:8 }]} onPress={moveToNextStep}>{`${my_progress} % Completed`}</Text>}
+			{showPersentage && <Text style={[ { color: 'skyblue',alignSelf:'flex-end',marginRight:8 }]}>{`${my_progress} % Completed`}</Text>}
 		</View>
 	)
 }

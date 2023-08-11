@@ -5,28 +5,29 @@ import Feather from 'react-native-vector-icons/Feather'
 import FontAwesome from 'react-native-vector-icons/FontAwesome5'
 
 import _ from 'lodash'
+import { Colors } from '../style/colors'
 
 
-const NextPreviosButton = ({ isDemo, onSkip, onNext }) => {
+const NextPreviosButton = ({ isDemo, onSkip, onNext=()=>{} }) => {
 
 
     return (
         <View style={{ height: 60, width: '100%' }}>
-            <View style={{ flex: 1, backgroundColor: 'green' }}></View>
+            <View style={{ flex: 1, backgroundColor: Colors.primary }}></View>
             <View style={{ flex: 1.2 }}></View>
 
             <View style={{ flexDirection: 'row', position: 'absolute', right: 12, top: 0 }}>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                     onPress={onSkip}
                     style={[styles.roundbutton, { marginRight: 12 }]}>
                     <View style={[styles.innerView, { backgroundColor: 'white' }]}>
-                        <Feather name="skip-forward" color={'green'} size={24} />
+                        <Feather name="skip-forward" color={Colors.primary} size={24} />
                     </View>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <TouchableOpacity
                     onPress={onNext}
                     style={[styles.roundbutton]}>
-                    <View style={[styles.innerView, { backgroundColor: 'green' }]}>
+                    <View style={[styles.innerView, { backgroundColor: Colors.primary }]}>
                         <FontAwesome name="arrow-right" color={'white'} size={20} />
                     </View>
                 </TouchableOpacity>
