@@ -1,23 +1,11 @@
 import { StyleSheet, Text, View, FlatList } from 'react-native'
 import React, { useState, useEffect, useContext, useReducer } from 'react'
-import Input from "../components/input";
-import Dropdown from '../components/dropdown';
-import Title from '../components/title';
-import Paragraph from '../components/paragraph';
-import CusDatePicker from '../components/date_picker';
-import RadioButtonRN from '../components/RadioButtonRN';
-import OTPComp from '../components/otp/otp';
-import MultiInputField from '../components/MultiInputField';
-import FieldStateNotifier from '../components/field_state_notifier';
-import { StateContext } from './AddSubModuleInfo';
-import Consent from '../components/consent';
-import OrderedList from '../components/ordered_lIst';
-import Popup from '../components/popup';
-import StaticConsent from '../components/consent/static';
-import ApiFetchConsent from '../components/consent/apifetch/consent';
-import OtpPopup from '../components/otp/otp_popup';
-import Cus_Switch from '../components/switch';
-import RadioButton from '../components/radio_button';
+import {
+    Input, Dropdown, Title, Paragraph, CusDatePicker, RadioButtonRN,
+    OTPComp, MultiInputField, FieldStateNotifier, Consent, OrderedList,
+    Popup, StaticConsent, ApiFetchConsent, OtpPopup, Cus_Switch, RadioButton
+} from '../../../components/index';
+
 
 const renderFields = (field_item, field_index, hierarchy, index_history, inputChangeHandler) => {
 
@@ -275,7 +263,7 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
                             /> : <></>
                     }
                 </View>)
-        case 'FORM'||'ADDRESS':
+        case 'FORM' || 'ADDRESS':
             return (
                 <View>
                     {
@@ -291,23 +279,23 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
                             /> : <></>
                     }
                 </View>)
-    
-    case 'ADDRESS':
-        return (
-            <View>
-                {
-                    field_item?.addressFields ? <FlatList
-                        data={field_item?.addressFields}
-                        renderItem={({ item, index }) => renderFields(item, index, [...hierarchy, item.id], [...index_history, index], inputChangeHandler)}
-                        keyExtractor={(item, index) => index.toString()}
-                    /> :
-                        field_item?.sectionContent?.addressFields ? <FlatList
-                            data={field_item?.sectionContent?.addressFields}
+
+        case 'ADDRESS':
+            return (
+                <View>
+                    {
+                        field_item?.addressFields ? <FlatList
+                            data={field_item?.addressFields}
                             renderItem={({ item, index }) => renderFields(item, index, [...hierarchy, item.id], [...index_history, index], inputChangeHandler)}
                             keyExtractor={(item, index) => index.toString()}
-                        /> : <></>
-                }
-            </View>)
+                        /> :
+                            field_item?.sectionContent?.addressFields ? <FlatList
+                                data={field_item?.sectionContent?.addressFields}
+                                renderItem={({ item, index }) => renderFields(item, index, [...hierarchy, item.id], [...index_history, index], inputChangeHandler)}
+                                keyExtractor={(item, index) => index.toString()}
+                            /> : <></>
+                    }
+                </View>)
 
         default:
             return <><Text>Default</Text></>

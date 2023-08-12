@@ -1,7 +1,8 @@
 import React, { useEffect, useReducer, useCallback, useState, useContext } from 'react'
 import { StyleSheet, FlatList, Text, View, Keyboard } from 'react-native'
-import MY_DATA from './configs/loan_config_dt_page_test';
+
 import renderFields from './render_fields';
+import MY_DATA from './configs/loan_config_dt_page_test';
 
 export const StateContext = React.createContext();
 
@@ -52,9 +53,9 @@ const formReducer = (state, action) => {
     }
 }
 
-const AddSubModuleInfo = ({ navigation }) => {
+const AddSubModuleInfo = ({ data }) => {
     const [formState, dispatchFormState] = useReducer(formReducer, {
-        data: MY_DATA,
+        data: data,
         index_array: null,
         form_rendered: false
     });

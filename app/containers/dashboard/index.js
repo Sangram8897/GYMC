@@ -13,8 +13,6 @@ import { LoanJourneyDataContext } from '../loan_journey/context';
 const Dashboard = ({ navigation }) => {
   const { state, dispatchContextState } = useContext(LoanJourneyDataContext);
 
-  console.log('lelavda', state);
-
   const LoanProduct = ({ item, index }) => {
     return (
       <TouchableOpacity onPress={() => productSelectAction(item)} style={{ padding: 20, margin: 8, borderWidth: 0.5 }}>
@@ -24,7 +22,7 @@ const Dashboard = ({ navigation }) => {
   }
 
   const productSelectAction = async (item) => {
-    //await dispatchContextState({ type: 'CLEAR_CONTEXT' })
+    await dispatchContextState({ type: 'CLEAR_CONTEXT' })
     navigation.navigate('LoanJourney', { loan_product: item })
   }
 
