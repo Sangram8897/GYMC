@@ -38,29 +38,43 @@ const Input = (props) => {
     useEffect(() => {
         //console.log('formState calling from here touched', inputState.touched, 'start_editing',start_editing,'value', inputState?.value,'initialValue', props.initialValue);
         //if (inputState.touched)
-            onInputChange(id, inputState.value, props.index_history, inputState.isValid);
+        onInputChange(id, inputState.value, props.index_history, inputState.isValid);
 
     }, [inputState, onInputChange])
 
 
     const textChangeHandler = text => {
         const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        let isValid = true;
-        if (props.required && text.trim().length === 0) {
-            isValid = false;
+        let isValid;
+        //regex
+        console.log('props.regex', props?.regex);
+        if (props?.regex) {
+            try {
+                new RegExp(props?.regex);
+                if ( regex.test(text.toLowerCase())) {
+                    isValid = true;
+                }
+            } catch (e) {
+                isValid = false;
+            }
+
         }
-        if (props.email && emailRegex.test(test.toLowerCase())) {
-            isValid = false;
-        }
-        if (props.min != null && +text < props.min) {
-            isValid = false;
-        }
-        if (props.max != null && +text > props.max) {
-            isValid = false;
-        }
-        if (props.minLength != null && text.length < props.minLength) {
-            isValid = false;
-        }
+        console.log('props.regex isValid', isValid);
+        // if (props.required && text.trim().length === 0) {
+        //     isValid = false;
+        // }
+        // if (props.email && emailRegex.test(test.toLowerCase())) {
+        //     isValid = false;
+        // }
+        // if (props.min != null && +text < props.min) {
+        //     isValid = false;
+        // }
+        // if (props.max != null && +text > props.max) {
+        //     isValid = false;
+        // }
+        // if (props.minLength != null && text.length < props.minLength) {
+        //     isValid = false;
+        // }
         dispatch({ type: INPUT_CHANGE, value: text, isValid: isValid })
     }
 

@@ -23,7 +23,7 @@ const Dashboard = ({ navigation }) => {
 
   const productSelectAction = async (item) => {
     await dispatchContextState({ type: 'CLEAR_CONTEXT' })
-    navigation.navigate('LoanJourney', { loan_product: item })
+    navigation.navigate('MobileVerify', { loan_product: item })
   }
 
   const LoanProductCategory = ({ item, index }) => {

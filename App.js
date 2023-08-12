@@ -4,8 +4,15 @@ import React, { useEffect } from 'react'
 const App = () => {
 
   useEffect(() => {
-    let tyuData = setDataBasedOnKeyValues(mydata, 'componentType', 'PARAGRAPH', 'my_name','sangram')
-    console.log('tyuData', tyuData);
+    // let updated_data = setDataBasedOnKeyValues(mydata, 'componentType', 'PARAGRAPH', 'my_name', 'sangram')
+
+    //  let updated_data = setDataBasedOnKeyValues(mydata, 'componentType', 'PARAGRAPH', 'my_name', 'sangram', newUpdateForInput)
+    //  console.log('updated_data', updated_data);
+
+    const trysa = newUpdateForInput.reduce((curr, item) => {
+      return setDataBasedOnKeyValues(mydata, item.key, item.value, item.addOnKey, item.addOnValue)
+    }, mydata)
+    console.log('updated_data trysa', trysa);
   }, [])
 
   return (
@@ -18,19 +25,30 @@ const App = () => {
 export default App
 
 const styles = StyleSheet.create({})
-function checkData(data) {
-  try {
-    if (data && data.isArray()) {
-      return true
-    }
-    return false
-  } catch (err) {
-    return false
-  }
-
-}
 
 function setDataBasedOnKeyValues(data, key, value, addOnKey, addOnValue) {
+  for (let i = 0; i < data.length; i++) {
+    if (data[i][key] && data[i][key] == value) {
+      console.log('matched here');
+      data[i][addOnKey] = addOnValue
+    }
+
+    if (data[i]?.fields && data[i]?.fields?.length > 0) {
+      data[i].fields = setDataBasedOnKeyValues(data[i].fields, key, value, addOnKey, addOnValue)
+    }
+
+    if (data[i]?.sectionContent?.fields && data[i]?.sectionContent?.fields.length > 0) {
+      if (Object.prototype.toString.call(data[i]?.sectionContent?.fields) === '[object Array]') {
+        data[i].sectionContent.fields = setDataBasedOnKeyValues(data[i]?.sectionContent?.fields, key, value, addOnKey, addOnValue)
+      } else if (data[i]?.sectionContent?.fields[key] && data[i]?.sectionContent?.fields[key] == value) {
+        data[i].sectionContent.fields[addOnKey] = addOnValue
+      }
+    }
+  }
+  return data
+}
+
+function setDataBasedOnKeyValues2(data, key, value, addOnKey, addOnValue) {
 
   for (let i = 0; i < data.length; i++) {
     //console.log('data[i]', key, data[i])
@@ -55,6 +73,51 @@ function setDataBasedOnKeyValues(data, key, value, addOnKey, addOnValue) {
   }
   return data
 }
+
+function setDataBasedOnKeyValuesNavneet(data, key, value, addOnKey, addOnValue, newUpdateForInput) {
+  let magicLength = newUpdateForInput.length;
+  let magicLengthAdjust = magicLength - 1;
+  for (let i = 0; i < data.length; i++) {
+    console.log("hello magic lenght is ", magicLengthAdjust);
+    console.log("hello i of magic lenght  ", i);
+    if (magicLengthAdjust < i) {
+      console.log("breaking the loop because my newUpdateForInput over.")
+      break;
+    }
+    key = newUpdateForInput[i].key;
+    value = newUpdateForInput[i].value;
+    addOnKey = newUpdateForInput[i].addOnKey;
+    addOnValue = newUpdateForInput[i].addOnValue;
+    if (data[i][key] && data[i][key] == value) {
+      console.log('matched here');
+      data[i][addOnKey] = addOnValue
+    }
+    if (data[i]?.fields && data[i]?.fields?.length > 0) {
+      data[i].fields = setDataBasedOnKeyValues(data[i].fields, key, value, addOnKey, addOnValue)
+    }
+    if (data[i]?.sectionContent?.fields && data[i]?.sectionContent?.fields.length > 0) {
+      if (Object.prototype.toString.call(data[i]?.sectionContent?.fields) === '[object Array]') {
+        data[i].sectionContent.fields = setDataBasedOnKeyValues(data[i]?.sectionContent?.fields, key, value, addOnKey, addOnValue)
+      }
+    }
+  }
+  return data
+}
+
+const newUpdateForInput = [
+  {
+    key: 'fieldName',
+    value: 'accountNo',
+    addOnKey: 'showField',
+    addOnValue: false
+  },
+  {
+    key: 'fieldName',
+    value: 'mobileNumber',
+    addOnKey: 'verificationFieldName',
+    addOnValue: 'accountNo'
+  }
+]
 
 /**
  * const { fields, id, sectionContent } = data[currentIndex];

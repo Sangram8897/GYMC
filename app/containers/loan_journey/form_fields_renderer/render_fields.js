@@ -24,12 +24,13 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
                     data={field_item}
                     labal={field_item?.fieldLabel}
                     index_history={index_history}
+                    regex={field_item?.regex}
                     errorText='Wrong Password'
                     placeHolder={field_item?.placeHolder}
                     initialValue={field_item?.value ? field_item.value : ''}
                     initialValid={true}
                     onInputChange={inputChangeHandler}
-                    required
+                    //required
                 />
             </>
         case 'MOBILE_NO':
