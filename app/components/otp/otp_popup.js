@@ -1,17 +1,20 @@
 import { StyleSheet, TouchableOpacity, Text, View, Modal } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 
 import Icon from 'react-native-vector-icons/AntDesign'
 import MultiInputField from '../MultiInputField'
 
 
-const OtpPopup = ({ popup_state, data, label = 'PopupOTP', title = 'My dropdown', index_history }) => {
+const OtpPopup = ({ popup_state, data, label = 'PopupOTP', title = 'My dropdown', index_history,onCancel }) => {
+   // const { state } = useContext(LoanJourneyDataContext);
     const [show_dropdown_modal, set_show_dropdown_modal] = useState(false)
 
     useEffect(() => {
+      
         set_show_dropdown_modal(popup_state)
     }, [popup_state])
 
+   
     return (
         <View>
             <Text style={[{ color: 'blue' }]} onPress={() => set_show_dropdown_modal(true)}>{label}</Text>
@@ -22,10 +25,11 @@ const OtpPopup = ({ popup_state, data, label = 'PopupOTP', title = 'My dropdown'
                 visible={show_dropdown_modal}
                 onRequestClose={() => {
                     // Alert.alert('Modal has been closed.');
+                    onCancel()
                     set_show_dropdown_modal(!show_dropdown_modal);
                 }}>
                 <View style={{ flex: 1, width: '100%', justifyContent: 'center', backgroundColor: 'rgba(52, 52, 52, 0.8)' }}>
-                    <View style={{ height: 300,width:"95%", alignSelf: 'center', backgroundColor: '#FFF', borderRadius: 8, justifyContent: 'center', alignItems: 'center', padding: 12 }}>
+                    <View style={{ height: 300, width: "95%", alignSelf: 'center', backgroundColor: '#FFF', borderRadius: 8, justifyContent: 'center', alignItems: 'center', padding: 12 }}>
 
                         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                             <View style={{ height: 20, width: 20 }} />
@@ -33,10 +37,12 @@ const OtpPopup = ({ popup_state, data, label = 'PopupOTP', title = 'My dropdown'
                                 <Text style={{ fontSize: 18, fontWeight: 'bold', padding: 12 }}> {label}</Text>
                             </View>
                             <Icon
-                                onPress={() => set_show_dropdown_modal(false)}
+                                onPress={() =>{
+                                    onCancel()
+                                    set_show_dropdown_modal(false)}}
                                 name='closecircleo' size={20} color={'red'} />
                         </View>
-                        <View style={{ flex: 1,width:'100%',backgroundColor:'#F1F1F1' }}>
+                        <View style={{ flex: 1, width: '100%', backgroundColor: '#F1F1F1' }}>
                             <MultiInputField
                                 index_history={index_history}
                                 onInputChange={() => {

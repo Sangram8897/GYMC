@@ -66,7 +66,7 @@ const checkRegexForDocument = (document, fieldDataType) => {
     }
 }
 
-const MultiInputField = ({ value, label, isMasking, onInputChange = () => { }, index_history, onPress, isOnboardingVerificationType, disabled, fieldDataType }) => {
+const MultiInputField = ({ value, label, isMasking, onInputChange = () => { }, index_history, onPress, onVerify, disabled, fieldDataType }) => {
     const inputRefs = useRef([])
 
     const [masking, set_masking] = useState(isMasking)
@@ -174,11 +174,11 @@ const MultiInputField = ({ value, label, isMasking, onInputChange = () => { }, i
                     }
                 </View>
                 <TouchableOpacity
-                    disabled={!inputState?.isValid}
-                    onPress={() => onPress(inputState?.inputs_string)}
+                  //  disabled={!inputState?.isValid}
+                    onPress={onVerify}
                     style={{ marginHorizontal: 4 }}
                 >
-                    {isOnboardingVerificationType ? <View style={[{ backgroundColor: !inputState?.isValid ? 'grey' : 'skyblue', borderRadius: 4 }]}>
+                    { 1==1? <View style={[{ backgroundColor: !inputState?.isValid ? 'grey' : 'blue', borderRadius: 4,padding :5 }]}>
                         <Text style={[{ color: inputState?.isValid ? 'white' : 'gray' }]}>{'Verify'}</Text>
                     </View> :
                         <FontAwesome

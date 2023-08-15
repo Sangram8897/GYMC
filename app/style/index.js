@@ -13,6 +13,15 @@ const AppStyles = StyleSheet.create({
     },
     componentInnerContainer: {
 
+        // minHeight: Common.componentHeight,
+        borderWidth: Common.borderwidth,
+        borderRadius: Common.borderRedius,
+        borderColor: Common.borderColor,
+        justifyContent: 'center',
+        padding: 10
+    },
+    componentInnerContainerTemp: {
+
         minHeight: Common.componentHeight,
         borderWidth: Common.borderwidth,
         borderRadius: Common.borderRedius,
@@ -29,23 +38,24 @@ const AppStyles = StyleSheet.create({
         fontSize: 14,
     },
     textInput: {
-        minHeight: Common.componentHeight,
-        borderWidth: Common.borderwidth,
-        borderRadius: Common.borderRedius,
-        borderColor: Common.borderColor,
+        // minHeight: Common.componentHeight,
+        // height: 40,
+        // borderWidth: Common.borderwidth,
+        // borderRadius: Common.borderRedius,
+        // borderColor: Common.borderColor,
         justifyContent: 'center',
-        padding: 10,
+        marginHorizontal: 10,
 
-        textAlignVertical: 'top',
+       //textAlignVertical: 'top',
 
         fontFamily: 'Montserrat-Medium',
-        fontSize: 16,
+        fontSize: 14,
     },
     fieldLabelText: {
-        fontSize: 14,
-        margin: 5,
-       // marginBottom: 5,
-        fontFamily: 'Montserrat-SemiBold'
+        fontSize: 12,
+        // margin: 5,
+        // marginBottom: 5,
+       // fontFamily: 'Montserrat-SemiBold'
     },
     fieldValueText: {
         fontSize: 16,

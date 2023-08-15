@@ -3,11 +3,12 @@ import React, { useState, useEffect, useContext, useReducer } from 'react'
 import {
     Input, Dropdown, Title, Paragraph, CusDatePicker, RadioButtonRN,
     OTPComp, MultiInputField, FieldStateNotifier, Consent, OrderedList,
-    Popup, StaticConsent, ApiFetchConsent, OtpPopup, Cus_Switch, RadioButton
+    Popup, StaticConsent, ApiFetchConsent, OtpPopup, Cus_Switch, RadioButton,
+    VerifyInput
 } from '../../../components/index';
 
 
-const renderFields = (field_item, field_index, hierarchy, index_history, inputChangeHandler) => {
+const renderFields = (field_item, field_index, hierarchy, index_history, inputChangeHandler, onVerifyHandler) => {
 
     switch (field_item?.fieldDataType || field_item?.componentType || field_item?.linkType || field_item?.consentType) {
         case 'TITLE':
@@ -22,20 +23,21 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
                 <Input
                     id='short_desc'
                     data={field_item}
-                    labal={field_item?.fieldLabel}
+                    label={field_item?.fieldLabel}
                     index_history={index_history}
-                    regex={field_item?.regex}
+                    //  regex={field_item?.regex}
                     errorText='Wrong Password'
-                    placeHolder={field_item?.placeHolder}
+                    placeHolder={field_item?.placeholderText || field_item?.labelInfo
+                    }
                     initialValue={field_item?.value ? field_item.value : ''}
                     initialValid={true}
                     onInputChange={inputChangeHandler}
-                    //required
+                //required
                 />
             </>
         case 'MOBILE_NO':
             return <>
-                <Input
+                <VerifyInput
                     id='short_desc'
                     data={field_item}
                     labal={field_item?.fieldLabel}
@@ -47,6 +49,7 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
                     initialValue={field_item?.value ? field_item.value : ''}
                     initialValid={true}
                     onInputChange={inputChangeHandler}
+                    onVerify={() => onVerifyHandler(field_item.verificationFieldName, 'fieldName')}
                     required
                 />
             </>
@@ -66,6 +69,7 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
                     isOnboardingVerificationType={false}
                     disabled={false}
                     disabled_state={false}
+                    onVerify={() => { }}
                 />
 
             </>
@@ -85,6 +89,10 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
                     isOnboardingVerificationType={false}
                     disabled={false}
                     disabled_state={false}
+                    onVerify={() => {
+                        console.log('calling', field_item.verificationFieldName)
+                        onVerifyHandler(field_item.verificationFieldName, 'fieldName', true)
+                    }}
                 />
             </>
 
@@ -177,11 +185,17 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
                 />
             </>
         case 'OTP':
+            //console.log('popup_state field_item?.showField', field_item);
+            // if()
+            field_item = field_item?.sectionContent?.fields ? field_item?.sectionContent?.fields : field_item
             return <>
                 <OtpPopup
-                    popup_state={false}
+                    popup_state={field_item?.showField ? field_item?.showField : false}
                     index_history={index_history}
-                    data={field_item} />
+                    data={field_item}
+                    onCancel={() => onVerifyHandler(field_item.fieldName, 'fieldName', false)}
+                // onValidate={}
+                />
             </>
 
         case 'BOOLEAN':
@@ -270,12 +284,12 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
                     {
                         field_item?.fields ? <FlatList
                             data={field_item?.fields}
-                            renderItem={({ item, index }) => renderFields(item, index, [...hierarchy, item.id], [...index_history, index], inputChangeHandler)}
+                            renderItem={({ item, index }) => renderFields(item, index, [...hierarchy, item.id], [...index_history, index], inputChangeHandler, onVerifyHandler)}
                             keyExtractor={(item, index) => index.toString()}
                         /> :
                             field_item?.sectionContent?.fields ? <FlatList
                                 data={field_item?.sectionContent?.fields}
-                                renderItem={({ item, index }) => renderFields(item, index, [...hierarchy, item.id], [...index_history, index], inputChangeHandler)}
+                                renderItem={({ item, index }) => renderFields(item, index, [...hierarchy, item.id], [...index_history, index], inputChangeHandler, onVerifyHandler)}
                                 keyExtractor={(item, index) => index.toString()}
                             /> : <></>
                     }

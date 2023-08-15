@@ -1,6 +1,6 @@
 export { default as Button } from './button/button'
-
-export { default as Input } from './input'
+export { default as VerifyInput } from './input/verify_input'
+//export { default as Input } from './input/input'
 export { default as Dropdown } from './dropdown'
 export { default as Title } from './title'
 export { default as Paragraph } from './paragraph'
@@ -17,7 +17,8 @@ export { default as ApiFetchConsent } from './consent/apifetch/consent'
 export { default as OtpPopup } from './otp/otp_popup'
 export { default as Cus_Switch } from './switch'
 export { default as RadioButton } from './radio_button'
-
+export { default as Input } from './input/app_input'
+//
 // export { default as Button } from './'
 // export { default as Button } from './'
 // export { default as Button } from './'
