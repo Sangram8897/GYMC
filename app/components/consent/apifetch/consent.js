@@ -18,10 +18,11 @@ const ApiFetchConsent = ({ data }) => {
     function renderNode(node, index, siblings, parent, defaultRenderer) {
         if (node.name == 'a') {
             const a = node.attribs;
-            const label = node.children[0].data
+            const label = node?.children[0]?.data
             console.log('node.attribs', node);
-            const iframeHtml = `<iframe src="${a.src}"></iframe>`;
+            //const iframeHtml = `<iframe src="${a.src}"></iframe>`;
             return (
+               
                 <ConsentPopup key={index} label={label} />
             );
         }
@@ -58,7 +59,7 @@ const consent_response = {
             {
                 "name": "DND Consent",
                 "type": "DND_CONSENT",
-                "description": "<p>I hereby authorize Bank of India and its representatives to Call, SMS or communicate via WhatsApp or e-mail with me with regard to my application. This consent shall override my any registration for DNC / NDNC. I confirm that I can read, write and understand English and I am an Indian Resident or an NRI and have read and understood Bank's <a class=\"PRIVACY_POLICY_PL\">Privacy Policy</a> <a class=\"ACCOUNT_SETTING\">Accounts Setting</a> and agree for the same unconditionally.</p>\r\n<p>&nbsp;</p>",
+                "description": "<p>I hereby authorize Bank of India and its representatives to Call, SMS or communicate via WhatsApp or e-mail with me with regard to my application. This consent shall override my any registration for DNC / NDNC. I confirm that I can read, write and understand English and I am an Indian Resident or an NRI and have read and understood Bank's <a class=\"PRIVACY_POLICY_PL\">Privacy Policy</a> and agree for the same unconditionally.</p>\r\n<p>&nbsp;</p>",
                 "code": "DND_CONSENT_PL",
                 "consentVersion": 7
             }

@@ -7,6 +7,7 @@ import { Colors } from '../style/colors';
 import AppButton from './button';
 import FontAwesome from 'react-native-vector-icons/FontAwesome5'
 import FieldStateNotifier from './field_state_notifier';
+import useFieldState from '../containers/loan_journey/ hook/useFieldState';
 
 const inputStateColors = {
     DEFAULT: { primary: Colors.GRAY_G2, textTitle: Colors.BLUE_B2, textValue: Colors.BLUE_B5 },
@@ -56,36 +57,36 @@ const Item = ({ item, onPress, backgroundColor, textColor }) => (
 );
 
 const Dropdown = ({ data, title = 'My dropdown', closeOnItemSelection = false, submitButtonText = 'Submit', cancelButtonText = 'Cancel', onChange, selectionProperty = 'name' }) => {
-    const [dropdownState, dispatch] = useReducer(dropdownReducer, {
-        value: '',
-        isValid: true,
-        touched: false,
-        visible: false,
-        status: 'DEFAULT'
-    });
-    const [input_color_theme, set_input_color_theme] = useState(inputStateColors[dropdownState.status])
+   
     const [background_color, set_background_color] = useState('transparent');
     const [errorText, set_errorText] = useState('Checking Inavalid Email Entered')
 
+    const [fieldState, onFieldValueChange, setFieldValidity, onFieldStatusChange, setFieldVisibility, setFieldTouched] = useFieldState('', true, 'DEFAULT');
+    const [input_color_theme, set_input_color_theme] = useState(inputStateColors[fieldState.status])
+
+    console.log('fieldState ====================================');
+    console.log('fieldState',fieldState);
+    console.log('fieldState ====================================');
     useEffect(() => {
-        if (dropdownState?.visible == true)
+        if (fieldState?.visible == true)
             set_background_color('rgba(52, 52, 52, 0.8)')
         return () => set_background_color('transparent')
-    }, [dropdownState?.visible])
+    }, [fieldState?.visible])
 
     useEffect(() => {
-        set_input_color_theme(inputStateColors[dropdownState?.status])
-    }, [dropdownState?.status])
+        set_input_color_theme(inputStateColors[fieldState?.status])
+    }, [fieldState?.status])
 
     useEffect(() => {
-        if (dropdownState?.visible == true) {
-            if (dropdownState.status != 'ERROR') {
-                dispatch({ type: 'DROPDOWN_STATUS_CHANGE', status: 'FOCUSED' })
+        if (fieldState?.visible == true) {
+            if (fieldState.status != 'ERROR') {
+                onFieldStatusChange('FOCUSED')
             }
-        } else if (dropdownState?.touched) {
-            dispatch({ type: 'DROPDOWN_STATUS_CHANGE', status: dropdownState?.value ? 'FILLED' : 'ERROR', isValid: dropdownState?.value ? true : false })
+        } else if (fieldState?.touched) {
+            setFieldValidity(fieldState?.value ? true : false)
+            onFieldStatusChange(fieldState?.value ? 'FILLED' : 'ERROR')
         }
-    }, [dropdownState?.visible])
+    }, [fieldState?.visible])
 
     const renderItem = (item, index) => {
         const backgroundColor = '#F1F1F1';
@@ -103,11 +104,12 @@ const Dropdown = ({ data, title = 'My dropdown', closeOnItemSelection = false, s
     };
 
     const onDropdownOptionSelection = (value, validity = true) => {
-        dispatch({ type: 'DROPDOWN_CHANGE', value: value, isValid: true, visible: false })
+        onFieldValueChange(value)
+        setFieldVisibility(false)
     }
 
     const onDropdownModalState = (state) => {
-        dispatch({ type: 'DROPDOWN_VISIBLE', visible: state })
+        setFieldVisibility(state)
     }
 
     return (
@@ -115,7 +117,10 @@ const Dropdown = ({ data, title = 'My dropdown', closeOnItemSelection = false, s
 
 
             <TouchableOpacity
-                onPress={() => onDropdownModalState(true)}
+                onPress={() =>{ 
+                    onDropdownModalState(true)
+                    setFieldTouched(true)
+                }}
             >
                 <View style={[AppStyles.componentContainer, {
                     borderColor: input_color_theme.primary,
@@ -129,11 +134,11 @@ const Dropdown = ({ data, title = 'My dropdown', closeOnItemSelection = false, s
                     <View style={{ flex: 1 }}>
                         <Text style={AppStyles.fieldLabelText} >{title}</Text>
                         <View style={{ height: 40, flex: 1, justifyContent: 'center' }}>
-                            <Text style={AppStyles.fieldValueText} >{dropdownState?.value ? dropdownState?.value : data?.placeholderText ? data?.placeholderText : 'select option from dropdown'}</Text>
+                            <Text style={AppStyles.fieldValueText} >{fieldState?.value ? fieldState?.value : data?.placeholderText ? data?.placeholderText : 'select option from dropdown'}</Text>
                             <Modal
                                 animationType="slide"
                                 transparent={true}
-                                visible={dropdownState?.visible}
+                                visible={fieldState?.visible}
                                 onRequestClose={() => onDropdownModalState(false)}>
                                 <View style={{ flex: 1, width: '100%', justifyContent: 'flex-end', alignItems: 'center', backgroundColor: background_color }}>
                                     <View style={{ flexWrap: 'wrap', width: '100%', alignSelf: 'center', backgroundColor: '#FFF', borderTopLeftRadius: 16, borderTopRightRadius: 16, alignItems: 'center', padding: 12 }}>
@@ -169,7 +174,7 @@ const Dropdown = ({ data, title = 'My dropdown', closeOnItemSelection = false, s
                 </View>
             </TouchableOpacity>
             {
-                !dropdownState.isValid && dropdownState.touched && errorText &&
+                !fieldState.isValid && fieldState.touched && errorText &&
                 <FieldStateNotifier text={errorText} color={input_color_theme.primary}></FieldStateNotifier>
             }
         </View>

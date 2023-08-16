@@ -1,22 +1,31 @@
-import { StyleSheet, TouchableOpacity, Text, View, Modal } from 'react-native'
+import { StyleSheet, TouchableOpacity, Text, View, Modal,ScrollView } from 'react-native'
 import React, { useState, useEffect } from 'react'
 
 import Icon from 'react-native-vector-icons/AntDesign'
 import HTMLView from 'react-native-htmlview';
 import AppStyles from '../../../style';
-import { ScrollView } from 'react-native-gesture-handler';
 
 const ConsentPopup = ({ label = '', title = 'My dropdown' }) => {
     const [show_dropdown_modal, set_show_dropdown_modal] = useState(false)
     let [consent_data, set_consent_data] = useState({})
 
+    // useEffect(() => {
+    //     set_show_dropdown_modal(true)
+    // }, [])
+
     useEffect(() => {
-        setTimeout(() => { set_consent_data(api_responce.loanPurposeTemplateList[0].description) }, 500)
+        setTimeout(() => { 
+            set_consent_data(api_responce.loanPurposeTemplateList[0].description)
+         }, 500)
     }, [])
 
     return (
         <View>
-            <Text style={[ { color: 'blue' }]} onPress={() => set_show_dropdown_modal(true)}>{label}</Text>
+            <Text style={[{ color: 'blue' }]} onPress={() => {
+                console.log('welcome to consent popup');
+                set_show_dropdown_modal(true)
+            }}>
+                {label}</Text>
 
             <Modal
                 animationType="slide"
@@ -26,7 +35,7 @@ const ConsentPopup = ({ label = '', title = 'My dropdown' }) => {
                     // Alert.alert('Modal has been closed.');
                     set_show_dropdown_modal(!show_dropdown_modal);
                 }}>
-                <View style={{ flex: 1, width: '100%', justifyContent: 'center', backgroundColor: 'rgba(52, 52, 52, 0.8)' }}>
+                <View style={{ flex: 1,minHeight:400, width: '100%', justifyContent: 'center', backgroundColor: 'rgba(52, 52, 52, 0.8)' }}>
                     <View style={{ margin:16,flex:1, alignSelf: 'center', backgroundColor: '#FFF', borderRadius: 8, justifyContent: 'center', alignItems: 'center', padding: 12 }}>
                        
                             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>

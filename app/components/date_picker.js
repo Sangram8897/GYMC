@@ -7,6 +7,7 @@ import AppStyles from '../style';
 import { Colors } from '../style/colors';
 import FontAwesome from 'react-native-vector-icons/FontAwesome5'
 import FieldStateNotifier from './field_state_notifier';
+import useFieldState from '../containers/loan_journey/ hook/useFieldState';
 
 const inputStateColors = {
     DEFAULT: { primary: Colors.GRAY_G2, textTitle: Colors.BLUE_B2, textValue: Colors.BLUE_B5 },
@@ -49,40 +50,33 @@ const dropdownReducer = (state, action) => {
     }
 }
 
-const CusDatePicker = ({data, label = 'select Date', onDateChange = () => { } }) => {
-    const [date, set_date] = useState(new Date())
-    const [open, setOpen] = useState(false)
+const CusDatePicker = ({ data, label = 'select Date', onDateChange = () => { } }) => {
 
-    const [dropdownState, dispatch] = useReducer(dropdownReducer, {
-        value: new Date(),
-        isValid: true,
-        touched: false,
-        visible: false,
-        status: 'DEFAULT'
-    });
-    const [input_color_theme, set_input_color_theme] = useState(inputStateColors[dropdownState.status])
+    const [fieldState, onFieldValueChange, setFieldValidity, onFieldStatusChange, setFieldVisibility, setFieldTouched] = useFieldState(new Date(), true, 'DEFAULT');
+    
+    const [input_color_theme, set_input_color_theme] = useState(inputStateColors[fieldState.status])
     const [errorText, set_errorText] = useState('Checking Inavalid Email Entered')
     useEffect(() => {
-        set_input_color_theme(inputStateColors[dropdownState?.status])
-    }, [dropdownState?.status])
+        set_input_color_theme(inputStateColors[fieldState?.status])
+    }, [fieldState?.status])
 
     useEffect(() => {
-        if (dropdownState?.visible == true) {
-            if (dropdownState.status != 'ERROR') {
-                dispatch({ type: 'DROPDOWN_STATUS_CHANGE', status: 'FOCUSED' })
+        if (fieldState?.visible == true) {
+            if (fieldState.status != 'ERROR') {
+                onFieldStatusChange('FOCUSED')
             }
-        } else if (dropdownState?.touched) {
-            dispatch({ type: 'DROPDOWN_STATUS_CHANGE', status: dropdownState?.value ? 'FILLED' : 'ERROR', isValid: dropdownState?.value ? true : false })
+        } else if (fieldState?.touched) {
+            setFieldValidity(fieldState?.value ? true : false)
+            onFieldStatusChange(fieldState?.value ? 'FILLED' : 'ERROR')
         }
-    }, [dropdownState?.visible])
+    }, [fieldState?.visible])
 
     const onDropdownOptionSelection = (value, validity = true) => {
-        onDateChange(value)
-        dispatch({ type: 'DROPDOWN_CHANGE', value: value, isValid: true, visible: false })
+        onFieldValueChange(value)
     }
 
     const onDropdownModalState = (state) => {
-        dispatch({ type: 'DROPDOWN_VISIBLE', visible: state })
+        setFieldVisibility(state)
     }
 
     return (
@@ -90,7 +84,10 @@ const CusDatePicker = ({data, label = 'select Date', onDateChange = () => { } })
 
 
             <TouchableOpacity
-                onPress={() => onDropdownModalState(true)}
+                onPress={() => {
+                    onDropdownModalState(true)
+                    setFieldTouched(true)
+                }}
             >
                 <View style={[AppStyles.componentContainer, {
                     borderColor: input_color_theme.primary,
@@ -104,12 +101,12 @@ const CusDatePicker = ({data, label = 'select Date', onDateChange = () => { } })
                     <View style={{ flex: 1 }}>
                         <Text style={AppStyles.fieldLabelText} >{label}</Text>
                         <View style={{ height: 40, flex: 1, justifyContent: 'center' }}>
-                            <Text style={AppStyles.fieldValueText} >{dropdownState?.value ?moment(dropdownState?.value).format('LLLL')  : data?.placeholderText ? data?.placeholderText : 'select option from dropdown'}</Text>
+                            <Text style={AppStyles.fieldValueText} >{fieldState?.value ? moment(fieldState?.value).format('LLLL') : data?.placeholderText ? data?.placeholderText : 'select option from dropdown'}</Text>
                             <DatePicker
                                 modal
                                 mode={'date'}
-                                open={dropdownState.visible}
-                                date={dropdownState?.value}
+                                open={fieldState.visible}
+                                date={fieldState?.value}
                                 onConfirm={(date) => {
                                     onDropdownOptionSelection(date)
                                     onDropdownModalState(false)
@@ -126,7 +123,7 @@ const CusDatePicker = ({data, label = 'select Date', onDateChange = () => { } })
                 </View>
             </TouchableOpacity>
             {
-                !dropdownState.isValid && dropdownState.touched && errorText &&
+                !fieldState.isValid && fieldState.touched && errorText &&
                 <FieldStateNotifier text={errorText} color={input_color_theme.primary}></FieldStateNotifier>
             }
         </View>

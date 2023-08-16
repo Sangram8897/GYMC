@@ -48,6 +48,12 @@ const inputReducer = (state, action) => {
                 inputs: initial_updated_state_inputs,
                 isValid: checkRegexForDocument(initial_inputs_string, state.fieldDataType),
             }
+        case 'ON_FOCUS_CHANGE':
+            return {
+                ...state,
+                focused: action.focused,
+                focusedIndex: action.focusedIndex,
+            }
 
         default:
             return state;
@@ -66,7 +72,11 @@ const checkRegexForDocument = (document, fieldDataType) => {
     }
 }
 
-const MultiInputField = ({ value, label, isMasking, onInputChange = () => { }, index_history, onPress, onVerify, disabled, fieldDataType }) => {
+const MultiInputField = ({
+    value,
+    isMasking,
+    disabled,
+    fieldDataType }) => {
     const inputRefs = useRef([])
 
     const [masking, set_masking] = useState(isMasking)
@@ -75,6 +85,8 @@ const MultiInputField = ({ value, label, isMasking, onInputChange = () => { }, i
         ...verificationCompConfig[fieldDataType],
         isValid: false,
         touched: false,
+        focused: false,
+        focusedIndex: null,
         inputs_string: '',
     });
 
@@ -82,17 +94,17 @@ const MultiInputField = ({ value, label, isMasking, onInputChange = () => { }, i
         setInitialData(value, inputState)
     }, [])
 
-    useEffect(() => {
-        onInputChange('123', inputState?.inputs_string, index_history)
-    }, [inputState?.inputs_string])
+    // useEffect(() => {
+    //     onInputChange('123', inputState?.inputs_string, index_history)
+    // }, [inputState?.inputs_string])
 
     const setInitialData = async (document, data) => {
-        if (data?.fieldLength) {
-            if (data?.fieldLength != document.length) {
-                console.log('MultiInputField', document, 'provided value length not matching with format')
-                return
-            }
-        }
+        // if (data?.fieldLength) {
+        //     if (data?.fieldLength != document.length) {
+        //         console.log('MultiInputField', document, 'provided value length not matching with format')
+        //         return
+        //     }
+        // }
         if (document && checkRegexForDocument(document, fieldDataType)) {
             dispatch({ type: STATE_UPDATE_ON_INITIALIZATION, document: document })
         }
@@ -126,69 +138,52 @@ const MultiInputField = ({ value, label, isMasking, onInputChange = () => { }, i
     }
 
     return (
-        <View style={{ marginHorizontal: 10 }}>
-            <Text style={[{ color: 'skyblue', marginBottom: 6, fontSize: 12 }]}>
-                { label ? label : 'My Label' }
-            </Text>
-            <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center' }}>
-                <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between', alignItems: 'center' }}>
-                    {
-                        inputState?.inputs.length > 0 &&
-                        inputState?.inputs.map((item, index) => {
-                            return <TextInput
-                                autoCapitalize={'characters'}
-                                ref={ref => {
-                                    if (ref && !inputRefs?.current?.includes(ref)) {
-                                        inputRefs.current = [...inputRefs.current, ref]
-                                    }
-                                }}
-                                letterSpacing={5}
-                                key={index}
-                                value={item?.value ? item?.value?.toString() : ''}
-                                // autoFocus={index == 0}
-                                //returnKeyType={inputState.isValid ? 'done' : 'next'}
-                                style={[styles.input, {
-                                    flex: item?.inputLength ? item?.inputLength : 1,
-                                    marginHorizontal: 3,
-                                    borderWidth: 1,
-                                    borderColor: inputState?.isValid ? 'skyblue' : 'red',
-                                    backgroundColor: '#FFF',
-                                    textAlign: 'center'
-                                }]}
-                                maxLength={item?.inputLength}
-                                contextMenuHidden={true}
-                                selectTextOnFocus={true}
-                                //  editable={!disabled}
-                                keyboardType={item?.keyboardType}
-                                testID={`OPTInput-${index}`}
-                                textAlignVertical={'top'}
-                                secureTextEntry={masking}
-                                onChangeText={(text) => {
-                                    handleChange(text, index, item?.inputLength)
-                                }}
-                                onKeyPress={event => {
-                                    handleBackspace(event, index, item?.inputLength, item?.value)
-                                }}
-                            />
-                        })
-                    }
-                </View>
-                <TouchableOpacity
-                  //  disabled={!inputState?.isValid}
-                    onPress={onVerify}
-                    style={{ marginHorizontal: 4 }}
-                >
-                    { 1==1? <View style={[{ backgroundColor: !inputState?.isValid ? 'grey' : 'blue', borderRadius: 4,padding :5 }]}>
-                        <Text style={[{ color: inputState?.isValid ? 'white' : 'gray' }]}>{'Verify'}</Text>
-                    </View> :
-                        <FontAwesome
-                            name={'shield-check-outline'}
-                            color={'green'}
-                            size={20}
-                        />}
-                </TouchableOpacity>
+        <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center' }}>
+            <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between', alignItems: 'center' }}>
+                {
+                    inputState?.inputs.length > 0 &&
+                    inputState?.inputs.map((item, index) => {
+                        return <TextInput
+                            autoCapitalize={'characters'}
+                            ref={ref => {
+                                if (ref && !inputRefs?.current?.includes(ref)) {
+                                    inputRefs.current = [...inputRefs.current, ref]
+                                }
+                            }}
+                            onFocus={() => dispatch({ type: 'ON_FOCUS_CHANGE', focused: true, focusedIndex: index })}
+                            onBlur={() => dispatch({ type: 'ON_FOCUS_CHANGE', focused: false, focusedIndex: null })}
+                            letterSpacing={5}
+                            key={index}
+                            value={item?.value ? item?.value?.toString() : ''}
+                            // autoFocus={index == 0}
+                            //returnKeyType={inputState.isValid ? 'done' : 'next'}
+                            style={[styles.input, {
+                                flex: item?.inputLength ? item?.inputLength : 1,
+                                marginHorizontal: 3,
+                                borderWidth: 1,
+                                borderColor: inputState?.isValid ? 'skyblue' : 'red',
+                                backgroundColor: '#FFF',
+                                textAlign: 'center'
+                            }]}
+                            maxLength={item?.inputLength}
+                            contextMenuHidden={true}
+                            selectTextOnFocus={true}
+                            //  editable={!disabled}
+                            keyboardType={item?.keyboardType}
+                            testID={`OPTInput-${index}`}
+                            textAlignVertical={'top'}
+                            secureTextEntry={masking}
+                            onChangeText={(text) => {
+                                handleChange(text, index, item?.inputLength)
+                            }}
+                            onKeyPress={event => {
+                                handleBackspace(event, index, item?.inputLength, item?.value)
+                            }}
+                        />
+                    })
+                }
             </View>
-            <FieldStateNotifier />
+
         </View>
     )
 }

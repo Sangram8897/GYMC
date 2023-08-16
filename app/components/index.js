@@ -1,5 +1,6 @@
 export { default as Button } from './button/button'
 export { default as VerifyInput } from './input/verify_input'
+export { default as DocumentInput } from './input/document_input'
 //export { default as Input } from './input/input'
 export { default as Dropdown } from './dropdown'
 export { default as Title } from './title'

@@ -4,7 +4,7 @@ import {
     Input, Dropdown, Title, Paragraph, CusDatePicker, RadioButtonRN,
     OTPComp, MultiInputField, FieldStateNotifier, Consent, OrderedList,
     Popup, StaticConsent, ApiFetchConsent, OtpPopup, Cus_Switch, RadioButton,
-    VerifyInput
+    VerifyInput,DocumentInput
 } from '../../../components/index';
 
 
@@ -55,7 +55,7 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
             </>
         case 'PAN_CARD':
             return <>
-                <MultiInputField
+                <DocumentInput
                     index_history={index_history}
                     onInputChange={inputChangeHandler}
 
