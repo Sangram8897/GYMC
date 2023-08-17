@@ -17,6 +17,11 @@ import KeyFactDetails from './containers/loan_journey/pages/key_fact_details';
 import LoanSummary from './containers/loan_journey/pages/loan_summery';
 import ESign from './containers/loan_journey/pages/esign';
 import EKycVerify from './containers/loan_journey/pages/ekyc_verify';
+import AadharVerify from './containers/loan_journey/pages/aadhar_verify';
+import AddressDetails from './containers/loan_journey/pages/address_details';
+import EmailVerify from './containers/loan_journey/pages/email_verify';
+import PanVerify from './containers/loan_journey/pages/pan_verify';
+import ProductSelection from './containers/loan_journey/pages/product_selection';
 
 const App = () => {
   const Stack = createNativeStackNavigator();
@@ -38,6 +43,12 @@ const App = () => {
           <Stack.Screen name="LoanSummary" component={LoanSummary} options={{ headerShown: false }} />
           <Stack.Screen name="ESign" component={ESign} options={{ headerShown: false }} />
           <Stack.Screen name="EKycVerify" component={EKycVerify} options={{ headerShown: false }} />
+
+          <Stack.Screen name="AadharVerify" component={AadharVerify} options={{ headerShown: false }} />
+          <Stack.Screen name="AddressDetails" component={AddressDetails} options={{ headerShown: false }} />
+          <Stack.Screen name="EmailVerify" component={EmailVerify} options={{ headerShown: false }} />
+          <Stack.Screen name="PanVerify" component={PanVerify} options={{ headerShown: false }} />
+          <Stack.Screen name="ProductSelection" component={ProductSelection} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </LoanJourneyDataProvider>

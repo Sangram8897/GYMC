@@ -113,7 +113,7 @@ const Dropdown = ({ data, title = 'My dropdown', closeOnItemSelection = false, s
     }
 
     return (
-        <View style={{ marginHorizontal: 8 }}>
+        <View style={{ marginVertical: 4 }}>
 
 
             <TouchableOpacity
@@ -122,14 +122,14 @@ const Dropdown = ({ data, title = 'My dropdown', closeOnItemSelection = false, s
                     setFieldTouched(true)
                 }}
             >
-                <View style={[AppStyles.componentContainer, {
+                <View style={[ {
                     borderColor: input_color_theme.primary,
                     borderWidth: 1,
                     borderRadius: 6,
-                    paddingTop: 4,
+                    paddingVertical: 8,
                     paddingHorizontal: 8,
                     flexDirection: 'row',
-                    alignItems: 'center'
+                   
                 }]}>
                     <View style={{ flex: 1 }}>
                         <Text style={AppStyles.fieldLabelText} >{title}</Text>

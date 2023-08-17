@@ -6,7 +6,7 @@ const StaticConsent = ({ data, children, onSelect = () => { } }) => {
     const [selected, setSelected] = useState(false)
 
     return (
-        <View style={{ flexDirection: 'row', flex: 1, alignItems: 'flex-start', marginVertical: 2 }}>
+        <View style={{ flexDirection: 'row', flex: 1, alignItems: 'flex-start', marginVertical: 8 }}>
             <TouchableOpacity style={{ marginRight: 4 }} onPress={() => {
                 setSelected(!selected)
                 onSelect(!selected)

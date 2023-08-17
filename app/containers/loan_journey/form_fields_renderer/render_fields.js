@@ -4,7 +4,7 @@ import {
     Input, Dropdown, Title, Paragraph, CusDatePicker, RadioButtonRN,
     OTPComp, MultiInputField, FieldStateNotifier, Consent, OrderedList,
     Popup, StaticConsent, ApiFetchConsent, OtpPopup, Cus_Switch, RadioButton,
-    VerifyInput,DocumentInput
+    VerifyInput, DocumentInput
 } from '../../../components/index';
 
 
@@ -37,62 +37,44 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
             </>
         case 'MOBILE_NO':
             return <>
-                <VerifyInput
-                    id='short_desc'
-                    data={field_item}
-                    labal={field_item?.fieldLabel}
+                <DocumentInput
+                    fieldLabel={field_item?.fieldLabel}
                     index_history={index_history}
-                    maxLength={10}
-                    keyboardType={'number-pad'}
-                    errorText='Wrong Password'
-                    placeHolder={field_item?.placeHolder}
-                    initialValue={field_item?.value ? field_item.value : ''}
-                    initialValid={true}
                     onInputChange={inputChangeHandler}
-                    onVerify={() => onVerifyHandler(field_item.verificationFieldName, 'fieldName')}
-                    required
+                    fieldDataType={'MOBILE_NO'}
+                    value={''}
+                    onPress={(code) => {
+                        // setModalVisible(onboardingVerificationType, code, fieldName)
+                    }}
+                    disabled={false}
                 />
             </>
         case 'PAN_CARD':
             return <>
                 <DocumentInput
+                    fieldLabel={field_item?.fieldLabel}
                     index_history={index_history}
                     onInputChange={inputChangeHandler}
-
                     fieldDataType={'PAN_CARD'}
                     value={'FYJPP4545D'}
-                    labal={field_item?.fieldLabel}
-                    // inputChangeHandler={inputChangeHandler}
                     onPress={(code) => {
                         // setModalVisible(onboardingVerificationType, code, fieldName)
                     }}
-                    isOnboardingVerificationType={false}
                     disabled={false}
-                    disabled_state={false}
-                    onVerify={() => { }}
                 />
-
             </>
         case 'AADHAR':
             return <>
-                <MultiInputField
+                <DocumentInput
+                    fieldLabel={field_item?.fieldLabel}
                     index_history={index_history}
                     onInputChange={inputChangeHandler}
-
                     fieldDataType={'AADHAR'}
-                    value={'989898989898'}
-                    labal={field_item?.fieldLabel}
-                    // inputChangeHandler={inputChangeHandler}
+                    value={''}
                     onPress={(code) => {
                         // setModalVisible(onboardingVerificationType, code, fieldName)
                     }}
-                    isOnboardingVerificationType={false}
                     disabled={false}
-                    disabled_state={false}
-                    onVerify={() => {
-                        console.log('calling', field_item.verificationFieldName)
-                        onVerifyHandler(field_item.verificationFieldName, 'fieldName', true)
-                    }}
                 />
             </>
 
@@ -232,19 +214,35 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
             </>
 
         case 'NUMBER':
-            return <MultiInputField
-                fieldDataType={"OTP"}
-                value={'123456'}
-                label={'Enter OTP'}
-                getCode={inputChangeHandler}
-                onPress={(code) => {
-                    console.log('ooop code', code);
+            return <>
+                <Input
+                    id='short_desc'
+                    data={field_item}
+                    label={field_item?.fieldLabel}
+                    index_history={index_history}
+                    //  regex={field_item?.regex}
+                    errorText='Wrong Password'
+                    placeHolder={field_item?.placeholderText || field_item?.labelInfo
+                    }
+                    initialValue={field_item?.value ? field_item.value : ''}
+                    initialValid={true}
+                    onInputChange={inputChangeHandler}
+                //required
+                />
+            </>
+        // <MultiInputField
+        //     fieldDataType={"OTP"}
+        //     value={'123456'}
+        //     label={'Enter OTP'}
+        //     getCode={inputChangeHandler}
+        //     onPress={(code) => {
+        //         console.log('ooop code', code);
 
-                }}
-                isOnboardingVerificationType={true}
-                disabled={false}
-                disabled_state={false}
-            />
+        //     }}
+        //     isOnboardingVerificationType={true}
+        //     disabled={false}
+        //     disabled_state={false}
+        // />
 
         case 'TEXT_AREA':
             return <>

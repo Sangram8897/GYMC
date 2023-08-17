@@ -95,7 +95,7 @@ const FormFieldsRendererView = () => {
     }
     console.log('FormFieldsRendererView page_fields', page_fields);
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1 ,width:'95%',alignSelf:'center'}}>
             {(page_fields && page_fields.length>0) && <AddSubModuleInfo data={page_fields} />}
         </View>
     )

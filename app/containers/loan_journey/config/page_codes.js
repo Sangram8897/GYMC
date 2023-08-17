@@ -13,6 +13,8 @@ export const PAGECODES = {
     EMAIL_VERIFY: 'EmailVerify',
     PAN_VERIFY: 'PanVerify',
     EKYC_VERIFY: 'EKycVerify',
+    PRODUCT_SELECTION: 'ProductSelection',
+    AADHAR_VERIFY: 'AadharVerify',
 
     CUSTOMER_TYPE: 'CustomerType',
    

@@ -5,32 +5,8 @@ import AppStyles from '../../style';
 import FieldStateNotifier from '../field_state_notifier';
 import { Colors } from '../../style/colors';
 import { FloatingTitleTextInputField } from './FloatingTitleTextInputField';
-
-const INPUT_BLUR = 'INPUT_BLUR';
-const INPUT_CHANGE = 'INPUT_CHANGE';
-
-const inputReducer = (state, action) => {
-    switch (action.type) {
-        case INPUT_CHANGE:
-            return {
-                ...state,
-                value: action.value,
-                isValid: action.isValid,
-            }
-        case INPUT_BLUR:
-            return {
-                ...state,
-                touched: true,
-            }
-        case 'INPUT_STATE_CHANGE':
-            return {
-                ...state,
-                status: action.status,
-            }
-        default:
-            return state;
-    }
-}
+import useFieldState from '../../containers/loan_journey/ hook/useFieldState';
+import AppButton from '../button';
 
 const inputStateColors = {
     DEFAULT: { primary: Colors.GRAY_G2, textTitle: Colors.BLUE_B2, textValue: Colors.BLUE_B5 },
@@ -46,29 +22,22 @@ const inputStateColors = {
 
 const AppInput = (props) => {
 
-    const [inputState, dispatch] = useReducer(inputReducer, {
-        value: props.initialValue ? props.initialValue : '',
-        isValid: props.initialValid,
-        touched: false,
-        status: 'DEFAULT'
-    });
+    const [fieldState, onFieldValueChange, setFieldValidity, onFieldStatusChange, setFieldVisibility, setFieldTouched, setFieldNotifierText] = useFieldState('', true, 'DEFAULT');
+
     const [errorText, set_errorText] = useState('Checking Inavalid Email Entered')
     //const [input_state, set_input_state] = useState('ERROR')
-    const [input_color_theme, set_input_color_theme] = useState(inputStateColors[inputState?.status ? inputState.status : 'FILLED'])
-
-    const primaryColorInput = props?.disabled ? Colors.GRAY_G2 : Colors.BLUE_INTERACTIVE
-    const secondaryColorInput = props?.disabled ? (props?.bordered ? Colors.WHITE : Colors.GRAY_G3) : Colors.WHITE
+    const [input_color_theme, set_input_color_theme] = useState(inputStateColors[fieldState?.status ? fieldState.status : 'FILLED'])
 
     const { onInputChange = () => { }, id, containerStyle = {}, labelStyle = {}, textInputStyle = {}, data } = props;
     useEffect(() => {
-        onInputChange('value', inputState.value, props.index_history, inputState.isValid);
-    }, [inputState, onInputChange])
+        onInputChange('value', fieldState.value, props.index_history, fieldState.isValid);
+    }, [fieldState, onInputChange])
 
     useEffect(() => {
-        if (inputState?.status) {
-            set_input_color_theme(inputStateColors[inputState?.status])
+        if (fieldState?.status) {
+            set_input_color_theme(inputStateColors[fieldState?.status])
         }
-    }, [inputState.status])
+    }, [fieldState.status])
 
     const textChangeHandler = text => {
         const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -97,17 +66,18 @@ const AppInput = (props) => {
             isValid = false;
         }
         if (!isValid) {
-            dispatch({ type: 'INPUT_STATE_CHANGE', status: 'ERROR' })
-        } else if (inputState.status == 'ERROR' && isValid) {
-            dispatch({ type: 'INPUT_STATE_CHANGE', status: 'FOCUSED' })
+            onFieldStatusChange('ERROR')
+        } else if (fieldState.status == 'ERROR' && isValid) {
+            onFieldStatusChange('FOCUSED')
         }
-        dispatch({ type: INPUT_CHANGE, value: text, isValid: isValid })
+
+        onFieldValueChange(text, isValid)
     }
 
     const lostFocusHandler = () => {
-        dispatch({ type: INPUT_BLUR })
-        if (inputState.status == 'FOCUSED') {
-            dispatch({ type: 'INPUT_STATE_CHANGE', status: 'FILLED' })
+        setFieldTouched(true)
+        if (fieldState.status == 'FOCUSED') {
+            onFieldStatusChange('FILLED')
         }
         if (props?.onBlur) {
             props.onBlur()
@@ -115,8 +85,8 @@ const AppInput = (props) => {
     }
 
     return (
-        <View style={{ marginHorizontal: 8 }}>
-            <View style={[AppStyles.componentContainer, {
+        <View style={{ marginVertical: 4 }}>
+            <View style={[{
                 borderColor: input_color_theme.primary,
                 borderWidth: 1,
                 borderRadius: 6,
@@ -124,27 +94,42 @@ const AppInput = (props) => {
                 paddingHorizontal: 8
             }]}>
                 {<Text style={[AppStyles.fieldLabelText, { color: input_color_theme.textTitle }]}>{props?.label}</Text>}
-                <TextInput
-                    {...props}
-                    onFocus={() => {
-                        if (inputState?.status != 'ERROR') {
-                            dispatch({ type: 'INPUT_STATE_CHANGE', status: 'FOCUSED' })
-                        }
-                    }}
-                    //  onFocus={() => set_start_editing(true)}
-                    placeholder={props?.placeHolder ? props?.placeHolder : ''}
-                    style={[AppStyles.fieldValueText, { height: 40, textAlignVertical: 'top', color: input_color_theme.textValue }]}
-                    value={inputState.value}
-                    onChangeText={(text) => textChangeHandler(text)}
-                    onBlur={() => lostFocusHandler()}
-                    inputAccessoryViewID={'uniqueID'}
-                    textAlignVertical="top"
-                />
+                <View style={{ flexDirection: 'row' }}>
+                    <View style={{ flex: 1, justifyContent: 'center' }}>
+                        <TextInput
+                            {...props}
+                            onFocus={() => {
+                                if (fieldState?.status != 'ERROR') {
+                                    onFieldStatusChange('FOCUSED')
+                                }
+                            }}
+                            //  onFocus={() => set_start_editing(true)}
+                            placeholder={props?.placeHolder ? props?.placeHolder : ''}
+                            style={[AppStyles.fieldValueText, { textAlignVertical: 'top', color: input_color_theme.textValue }]}
+                            value={fieldState.value}
+                            onChangeText={(text) => textChangeHandler(text)}
+                            onBlur={() => lostFocusHandler()}
+                            inputAccessoryViewID={'uniqueID'}
+                            textAlignVertical="top"
+                        />
+
+                    </View>
+                    {(props?.data?.fieldName && props?.data?.fieldName == 'alternativeUsername') && <View style={{ flexDirection: 'row' }}>
+                        <View style={{ width: 8 }}></View>
+                        <AppButton size='TINY' label={'Verify'} onPress={() => {
+                            onFieldStatusChange('SUCCESS')
+                            setFieldNotifierText('Pan number successfully Verified')
+                            setFieldValidity(true)
+                        }} />
+                    </View>}
+
+                </View>
+
             </View>
-            <View style={{ marginHorizontal: 8 }}>
+            <View>
                 {
-                    ((inputState?.status == 'SUCCESS' || inputState?.status == 'ERROR') && !inputState.isValid && inputState.touched && errorText) &&
-                    <FieldStateNotifier text={errorText} color={input_color_theme.primary}></FieldStateNotifier>
+                    ((fieldState?.status == 'SUCCESS' || fieldState?.status == 'ERROR') && !fieldState.isValid && fieldState.touched && fieldState.notifierText) &&
+                    <FieldStateNotifier text={fieldState.notifierText} color={input_color_theme.primary}></FieldStateNotifier>
                 }
             </View>
 

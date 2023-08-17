@@ -28,7 +28,7 @@ export const Colors = {
     BLACK: '#OEOE1D',
     SCRIM: '#0E0E1D',
 
-    GRAY_G1: '#5350EC',
+    GRAY_G1: '#F3F3F3',
     GRAY_G2: '#D9D9D9',
     GRAY_G3: '#8E8E94',
     GRAY_G4: '#0E0C7A',

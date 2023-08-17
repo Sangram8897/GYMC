@@ -11,7 +11,7 @@ const AppButton = ({
     bordered = false
 }) => {
     const primaryColorButton = disabled ? Colors.GRAY_G2 :
-        (buttonBackgroundColor ? buttonBackgroundColor : Colors.RED_INTERACTIVE)
+        (buttonBackgroundColor ? buttonBackgroundColor : Colors.BLUE_B1)
     const secondaryColorButton = disabled ? (bordered ? Colors.WHITE : Colors.GRAY_G3) : Colors.WHITE
 
     return (

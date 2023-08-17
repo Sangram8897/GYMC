@@ -80,7 +80,7 @@ const CusDatePicker = ({ data, label = 'select Date', onDateChange = () => { } }
     }
 
     return (
-        <View style={{ marginHorizontal: 8 }}>
+        <View style={{ marginVertical: 8 }}>
 
 
             <TouchableOpacity
@@ -89,11 +89,11 @@ const CusDatePicker = ({ data, label = 'select Date', onDateChange = () => { } }
                     setFieldTouched(true)
                 }}
             >
-                <View style={[AppStyles.componentContainer, {
+                <View style={[ {
                     borderColor: input_color_theme.primary,
                     borderWidth: 1,
                     borderRadius: 6,
-                    paddingTop: 4,
+                    paddingVertical: 8,
                     paddingHorizontal: 8,
                     flexDirection: 'row',
                     alignItems: 'center'

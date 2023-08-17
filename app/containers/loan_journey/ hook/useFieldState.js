@@ -7,6 +7,7 @@ const FIELD_STATE_CHANGE = 'FIELD_STATE_CHANGE';
 const SET_FIELD_VISIBLE = 'SET_FIELD_VISIBLE';
 const SET_FIELD_TOUCHED = 'SET_FIELD_TOUCHED';
 const SET_FIELD_VALIDITY = 'SET_FIELD_VALIDITY';
+const SET_FIELD_NOTIFIER_TEXT = 'SET_FIELD_NOTIFIER_TEXT';
 
 const fieldReducer = (state, action) => {
     switch (action.type) {
@@ -37,6 +38,12 @@ const fieldReducer = (state, action) => {
                 touched: action.touched
             }
 
+        case SET_FIELD_NOTIFIER_TEXT:
+            return {
+                ...state,
+                notifierText: action.notifierText
+            }
+
         default:
             return state;
     }
@@ -49,15 +56,15 @@ const useFieldState = (initialValue = '', initialValidity = true, initialStatus 
         status: initialStatus,
         visible: false,//for popup states e.g dropdown,datepicker modals
         touched: false,//for detecting initial touch of field
-        errorText: null
+        notifierText: null
     });
 
-    const onFieldValueChange = (value, validity = true, errorText = null) => {
+    const onFieldValueChange = (value, validity = true, text = null) => {
         dispatch({
             type: FIELD_VALUE_CHANGE,
             value: value,
             isValid: validity,
-            errorText: errorText
+            notifierText: text
         })
     }
 
@@ -87,8 +94,14 @@ const useFieldState = (initialValue = '', initialValidity = true, initialStatus 
             touched: touched
         })
     }
+    const setFieldNotifierText = (text) => {
+        dispatch({
+            type: SET_FIELD_NOTIFIER_TEXT,
+            notifierText: text
+        })
+    }
 
-    return [fieldState, onFieldValueChange, setFieldValidity, onFieldStatusChange, setFieldVisibility, setFieldTouched]
+    return [fieldState, onFieldValueChange, setFieldValidity, onFieldStatusChange, setFieldVisibility, setFieldTouched, setFieldNotifierText]
 }
 
 export default useFieldState

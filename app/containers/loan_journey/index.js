@@ -45,6 +45,7 @@ const LoanJourney = ({ route, navigation }) => {
             current_active_page: page_sequence[0],
             stepper_data: new_ref_stepperData
         }
+        console.log('loan_product_config_data',loan_product_config_data);
         dispatchContextState({ type: 'SET_LOAN_JOURNEY_INITIAL_STATE', data: loan_product_config_data })
     }
 

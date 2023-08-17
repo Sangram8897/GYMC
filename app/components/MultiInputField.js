@@ -1,9 +1,10 @@
 
 import { StyleSheet, TouchableOpacity, Text, View, NativeSyntheticEvent, TextInput, TextInputKeyPressEventData, } from 'react-native'
-import React, { useRef, useState, useEffect, useReducer } from 'react'
+import React, { useRef, useState, useEffect, useReducer, useCallback } from 'react'
 import FontAwesome from 'react-native-vector-icons/MaterialCommunityIcons'
 import _ from 'lodash'
 import FieldStateNotifier from './field_state_notifier';
+import { Colors } from '../style/colors';
 
 const INPUT_CHANGE = 'INPUT_CHANGE';
 const STATE_UPDATE_ON_INITIALIZATION = 'STATE_UPDATE_ON_INITIALIZATION'
@@ -53,6 +54,7 @@ const inputReducer = (state, action) => {
                 ...state,
                 focused: action.focused,
                 focusedIndex: action.focusedIndex,
+                managable: action.managable
             }
 
         default:
@@ -73,6 +75,11 @@ const checkRegexForDocument = (document, fieldDataType) => {
 }
 
 const MultiInputField = ({
+
+    fieldBorderColor,
+    fieldTextColor,
+    multiInputFieldChange = () => { },
+    textAlign='center',
     value,
     isMasking,
     disabled,
@@ -88,12 +95,20 @@ const MultiInputField = ({
         focused: false,
         focusedIndex: null,
         inputs_string: '',
+        managable: true
     });
+
+    const [blurTime, set_blurTime] = useState(null)
+
+    // var focusedTime = new Date().getTime();
+    // var onBlurTime = new Date().getTime();
+    // const cureentInputState = useCallback((inputState) => multiInputFieldChange(inputState), [inputState])
 
     useEffect(() => {
         setInitialData(value, inputState)
     }, [])
 
+    useEffect(() => multiInputFieldChange(inputState), [inputState])
     // useEffect(() => {
     //     onInputChange('123', inputState?.inputs_string, index_history)
     // }, [inputState?.inputs_string])
@@ -150,8 +165,19 @@ const MultiInputField = ({
                                     inputRefs.current = [...inputRefs.current, ref]
                                 }
                             }}
-                            onFocus={() => dispatch({ type: 'ON_FOCUS_CHANGE', focused: true, focusedIndex: index })}
-                            onBlur={() => dispatch({ type: 'ON_FOCUS_CHANGE', focused: false, focusedIndex: null })}
+                            onFocus={() => {
+                                let managable = false
+                                const focusTime = new Date().getTime()
+                                if ((blurTime + 50) > focusTime) {
+                                    managable = true
+                                }
+                                console.log('managable', blurTime,focusTime,managable);
+                                dispatch({ type: 'ON_FOCUS_CHANGE', focused: true, focusedIndex: index, managable: managable })
+                            }}
+                            onBlur={() => {
+                                set_blurTime(new Date().getTime())
+                                dispatch({ type: 'ON_FOCUS_CHANGE', focused: false, focusedIndex: null, managable: false })
+                            }}
                             letterSpacing={5}
                             key={index}
                             value={item?.value ? item?.value?.toString() : ''}
@@ -159,11 +185,12 @@ const MultiInputField = ({
                             //returnKeyType={inputState.isValid ? 'done' : 'next'}
                             style={[styles.input, {
                                 flex: item?.inputLength ? item?.inputLength : 1,
-                                marginHorizontal: 3,
-                                borderWidth: 1,
-                                borderColor: inputState?.isValid ? 'skyblue' : 'red',
-                                backgroundColor: '#FFF',
-                                textAlign: 'center'
+                                 marginHorizontal: 3,
+                                //borderWidth: 1,
+                                //borderColor: fieldBorderColor,
+                                backgroundColor: Colors.GRAY_G1,
+                                textAlign: textAlign,
+                                color: fieldTextColor
                             }]}
                             maxLength={item?.inputLength}
                             contextMenuHidden={true}
@@ -317,6 +344,23 @@ const verificationCompConfig = {
                 keyboardType: 'ascii-capable',
                 string_pos: [9, 10],
             },
+        ]
+    },
+    'MOBILE_NO': {
+        fieldDataType: 'MOBILE_NO',
+        inputValuePattern: /^[0-9]*$/,
+        catchValidValue: true,
+        fieldLength: 10,
+        inputs: [
+            {
+                id: '1',
+                inputLength: 10,
+                regex: '',
+                value: '',
+                keyboardType: 'number-pad',
+                string_pos: [0, 10],
+            },
+        
         ]
     },
 }

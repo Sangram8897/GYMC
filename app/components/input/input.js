@@ -87,7 +87,7 @@ const Input = (props) => {
     }
 
     return (
-        <View style={AppStyles.componentContainer}>
+        <View style={{ marginVertical: 4 }}>
             {!IsEmpty(props.labal) && <Text style={[AppStyles.fieldLabelText, { color: 'gray' }]}>{props.labal}</Text>}
             <View
             // style={AppStyles.componentInnerContainer}
@@ -97,7 +97,7 @@ const Input = (props) => {
                     {...props}
                     //  onFocus={() => set_start_editing(true)}
                     style={[AppStyles.textInput]}
-                    placeholder={props?.placeholder?props?.placeholder:''}
+                    placeholder={props?.placeholder ? props?.placeholder : ''}
                     value={inputState.value}
                     onChangeText={(text) => textChangeHandler(text)}
                     onBlur={lostFocusHandler}

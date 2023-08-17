@@ -2,8 +2,8 @@ import React, {  useContext } from 'react'
 import { LoanJourneyDataContext } from '../../context'
 import PatternI from '../../page_patterns/patternI'
 
-const MobileVerify = ({ route, navigation }) => {
-    const page_code = 'MOBILE_VERIFY'
+const ProductSelection = ({ route, navigation }) => {
+    const page_code = 'PRODUCT_SELECTION'
     const { state } = useContext(LoanJourneyDataContext);
 
     return (
@@ -13,4 +13,4 @@ const MobileVerify = ({ route, navigation }) => {
     )
 }
 
-export default MobileVerify
+export default ProductSelection

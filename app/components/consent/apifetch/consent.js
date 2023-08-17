@@ -29,7 +29,7 @@ const ApiFetchConsent = ({ data }) => {
     }
 
     return (
-        <View style={{ flexDirection: 'row', flex: 1, alignItems: 'flex-start', marginVertical: 2 }}>
+        <View style={{ flexDirection: 'row', flex: 1, alignItems: 'flex-start', marginVertical: 8 }}>
             <TouchableOpacity style={{ marginRight: 4 }} onPress={() => setSelected(!selected)}>
                 <FontAwesome name={selected ? 'check-square' : 'square'} color={'blue'} size={18} />
             </TouchableOpacity>
