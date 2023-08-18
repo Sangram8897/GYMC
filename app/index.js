@@ -22,6 +22,13 @@ import AddressDetails from './containers/loan_journey/pages/address_details';
 import EmailVerify from './containers/loan_journey/pages/email_verify';
 import PanVerify from './containers/loan_journey/pages/pan_verify';
 import ProductSelection from './containers/loan_journey/pages/product_selection';
+import AccountVerify from './containers/loan_journey/pages/account_verify';
+import CustomerType from './containers/loan_journey/pages/customer_type';
+import JourneyPreview from './containers/loan_journey/pages/journey_preview';
+import UdyamVerify from './containers/loan_journey/pages/udyam_verify';
+import Declaration from './containers/loan_journey/pages/declaration';
+import DocumentList from './containers/loan_journey/pages/document_list';
+import ProductError from './containers/loan_journey/pages/product_error';
 
 const App = () => {
   const Stack = createNativeStackNavigator();
@@ -49,6 +56,15 @@ const App = () => {
           <Stack.Screen name="EmailVerify" component={EmailVerify} options={{ headerShown: false }} />
           <Stack.Screen name="PanVerify" component={PanVerify} options={{ headerShown: false }} />
           <Stack.Screen name="ProductSelection" component={ProductSelection} options={{ headerShown: false }} />
+
+          <Stack.Screen name="AccountVerify" component={AccountVerify} options={{ headerShown: false }} />
+          <Stack.Screen name="CustomerType" component={CustomerType} options={{ headerShown: false }} />
+          <Stack.Screen name="JourneyPreview" component={JourneyPreview} options={{ headerShown: false }} />
+          <Stack.Screen name="UdyamVerify" component={UdyamVerify} options={{ headerShown: false }} />
+          <Stack.Screen name="Declaration" component={Declaration} options={{ headerShown: false }} />
+          <Stack.Screen name="DocumentList" component={DocumentList} options={{ headerShown: false }} />
+          <Stack.Screen name="ProductError" component={ProductError} options={{ headerShown: false }} />
+        
         </Stack.Navigator>
       </NavigationContainer>
     </LoanJourneyDataProvider>

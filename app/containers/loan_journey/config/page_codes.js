@@ -15,18 +15,18 @@ export const PAGECODES = {
     EKYC_VERIFY: 'EKycVerify',
     PRODUCT_SELECTION: 'ProductSelection',
     AADHAR_VERIFY: 'AadharVerify',
-
+    PRODUCT_ERROR: 'ProductError',
     CUSTOMER_TYPE: 'CustomerType',
-   
+
     ADDRESS_DETAILS: 'AddressDetails',
-    
+
     PREVIEW_PAGE: 'PreviewPage',
     CONTRACTS: 'Contracts',
     UDYAM_VERIFY: 'UdyamVerify',
     ACCOUNT_VERIFY: 'AccountVerify',
     KCC_LAND: 'KCCLand',
     KCC_CROP: 'KCCCrop',
-    DOCUMENT_LIST: 'DocumentUpload',
+    DOCUMENT_LIST: 'DocumentList',
     DECLARATION: 'Declaration',
     DOCUMENTATION_COMPLETE: 'DocumentComplete',
     VEHICLE_DETAILS: 'VehicleDetails',

@@ -21,7 +21,7 @@ const ConsentPopup = ({ label = '', title = 'My dropdown' }) => {
 
     return (
         <View>
-            <Text style={[{ color: 'blue' }]} onPress={() => {
+            <Text style={[{ color: 'blue',fontSize:16 }]} onPress={() => {
                 console.log('welcome to consent popup');
                 set_show_dropdown_modal(true)
             }}>

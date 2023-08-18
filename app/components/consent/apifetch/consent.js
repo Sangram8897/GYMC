@@ -36,6 +36,10 @@ const ApiFetchConsent = ({ data }) => {
             <View style={{ flex: 1 }}>
                 {consent_data && <HTMLView
                     value={consent_data}
+                    stylesheet={{
+                        p: { fontSize:16 },
+                        a: { color: 'blue', textDecorationLine: 'underline' },
+                      }}
                     renderNode={renderNode}
                 />}
             </View>
