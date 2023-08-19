@@ -23,7 +23,7 @@ const Stepper = ({ data, substeps = false, hideFirstBar = false, hideLastBar = f
         leftStrapColor: index == 0 ? null : (element?.isCompleted || element?.isActive) ? Colors.success : Colors.thinLightGrey,
         rightStrapColor: index == data.length - 1 ? null : element?.isCompleted ? Colors.success : Colors.thinLightGrey,
       }
-      return <View key={`${element?.pageCode}}`} style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+      return <View key={`stepper${index.toString()}`} style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
         <Strap color={config.leftStrapColor} />
         <Step config={config} count={element?.step_id} />
         <Strap color={config.rightStrapColor} />

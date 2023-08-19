@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, FlatList } from 'react-native'
-import React, { useState, useEffect, useCallback, useReducer, useContext, useMemo } from 'react'
+import React, { useState,useId, useEffect, useReducer, useContext, useMemo } from 'react'
 import AddSubModuleInfo from './AddSubModuleInfo';
 import { LoanJourneyDataContext } from '../context';
 import IsEmpty from '../../../utils/IsEmpty';
@@ -197,8 +197,13 @@ function formatDataBasedOnGroup(data) {
         });
     }
     function modifyInSectionListFormat(array) {
-        return array.map((i) => {
-            let new_item = { group_name: i[0]?.groupName ? i[0]?.groupName : 'page', data: [...i] }
+        return array.map((i,index) => {
+            let new_item = {
+                container_id: `${index+1}`,
+                group_name: i[0]?.groupName ? i[0]?.groupName : 'page',
+                fieldDataType: 'CONTAINER',
+                data: [...i]
+            }
             return new_item
         });
     }

@@ -29,6 +29,7 @@ import UdyamVerify from './containers/loan_journey/pages/udyam_verify';
 import Declaration from './containers/loan_journey/pages/declaration';
 import DocumentList from './containers/loan_journey/pages/document_list';
 import ProductError from './containers/loan_journey/pages/product_error';
+import PreviewPage from './containers/loan_journey/pages/preview_page';
 
 const App = () => {
   const Stack = createNativeStackNavigator();
@@ -64,6 +65,7 @@ const App = () => {
           <Stack.Screen name="Declaration" component={Declaration} options={{ headerShown: false }} />
           <Stack.Screen name="DocumentList" component={DocumentList} options={{ headerShown: false }} />
           <Stack.Screen name="ProductError" component={ProductError} options={{ headerShown: false }} />
+          <Stack.Screen name="PreviewPage" component={PreviewPage} options={{ headerShown: false }} />
         
         </Stack.Navigator>
       </NavigationContainer>

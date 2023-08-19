@@ -29,11 +29,11 @@ const StepperWithSubSteps = ({ data, active_step,sub_steps }) => {
         <>
             {(data && sub_steps && sub_steps.length > 0) &&
                 <View style={{ flexDirection: 'row' }}>
-                    <BoxStepper data={split1} />
+                    <BoxStepper data={split1} id={'I'}/>
                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
                         <SubStepper data={sub_steps} parent_data={data} active_step={active_step} />
                     </View>
-                    <BoxStepper data={split2} />
+                    <BoxStepper data={split2} id={'II'}/>
                 </View>
             }
         </>
@@ -42,7 +42,7 @@ const StepperWithSubSteps = ({ data, active_step,sub_steps }) => {
 
 export default React.memo(StepperWithSubSteps)
 
-const BoxStepper = ({ data, substeps = false }) => {
+const BoxStepper = ({ data, substeps = false ,id}) => {
 
     return data.map((element, index) => {
         const config = {
@@ -55,7 +55,7 @@ const BoxStepper = ({ data, substeps = false }) => {
             textColor: Colors.white,
             showCount: true
         }
-        return <Step key={index.toString()} substeps={true} config={config} count={element?.step_id} />
+        return <Step key={`box_stepper${id}${index.toString()}`} substeps={true} config={config} count={element?.step_id} />
     })
 }
 
@@ -75,7 +75,7 @@ const SubStepper = ({ parent_data, active_step, data, substeps = false }) => {
             rightStrapColor: (active_step == parent_data.length - 1 && index == data.length - 1) ? null : element?.isCompleted ? Colors.success : Colors.thinLightGrey,
         }
 
-        return <View key={`${element.pageCode}}`} style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+        return <View key={`sub_stepper${index.toString()}}`} style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
             <Strap
                 color={config?.leftStrapColor}
                 hideLeftStrap={config.hideLeftStrap}

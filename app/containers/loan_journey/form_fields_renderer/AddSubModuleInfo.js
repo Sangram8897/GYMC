@@ -147,7 +147,7 @@ const AddSubModuleInfo = ({ data }) => {
                 <FlatList
                     data={formState?.data}
                     renderItem={({ item, index }) => renderFields(item, index, [item.id], [index], inputChangeHandler, onVerifyHandler)}
-                    keyExtractor={(item, index) => index.toString()}
+                    keyExtractor={(item, index) => `parent_data${index.toString()}`}
                 />
             </View>
         </StateContext.Provider>
