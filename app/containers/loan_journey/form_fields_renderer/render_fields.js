@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList } from 'react-native'
+import { StyleSheet, Text, View, FlatList, SectionList } from 'react-native'
 import React, { useState, useEffect, useContext, useReducer } from 'react'
 import {
     Input, Dropdown, Title, Paragraph, CusDatePicker, RadioButtonRN,
@@ -171,13 +171,13 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
             // if()
             field_item = field_item?.sectionContent?.fields ? field_item?.sectionContent?.fields : field_item
             return <>
-                <OtpPopup
+                {/* <OtpPopup
                     popup_state={field_item?.showField ? field_item?.showField : false}
                     index_history={index_history}
                     data={field_item}
                     onCancel={() => onVerifyHandler(field_item.fieldName, 'fieldName', false)}
                 // onValidate={}
-                />
+                /> */}
             </>
 
         case 'BOOLEAN':
@@ -276,20 +276,27 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
                             /> : <></>
                     }
                 </View>)
-        case 'FORM' || 'ADDRESS':
+        case 'FORM':
             return (
                 <View>
                     {
-                        field_item?.fields ? <FlatList
-                            data={field_item?.fields}
-                            renderItem={({ item, index }) => renderFields(item, index, [...hierarchy, item.id], [...index_history, index], inputChangeHandler, onVerifyHandler)}
+
+                        field_item?.sectionContent?.fields ? <FlatList
+                            data={field_item?.sectionContent?.fields}
+                            renderItem={({ item, index }) => <>
+                                <FlatList
+                                    style={{ marginVertical: 10, backgroundColor: '#FFF', borderRadius: 8, padding: 10 }}
+                                    data={item?.data}
+                                    ListHeaderComponent={(item?.group_name && item?.group_name != 'page') ? <Text
+                                        style={{ fontSize: 18, fontWeight: 'bold', marginVertical: 8 }}
+                                    >{item?.group_name}</Text> : <></>}
+
+                                    renderItem={({ item, index }) => renderFields(item, index, [...hierarchy, item.id], [...index_history, index], inputChangeHandler, onVerifyHandler)}
+                                    keyExtractor={(item, index) => index.toString()}
+                                />
+                            </>}
                             keyExtractor={(item, index) => index.toString()}
-                        /> :
-                            field_item?.sectionContent?.fields ? <FlatList
-                                data={field_item?.sectionContent?.fields}
-                                renderItem={({ item, index }) => renderFields(item, index, [...hierarchy, item.id], [...index_history, index], inputChangeHandler, onVerifyHandler)}
-                                keyExtractor={(item, index) => index.toString()}
-                            /> : <></>
+                        /> : <></>
                     }
                 </View>)
 

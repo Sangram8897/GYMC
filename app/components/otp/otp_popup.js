@@ -9,10 +9,10 @@ const OtpPopup = ({ popup_state, data, label = 'PopupOTP', title = 'My dropdown'
    // const { state } = useContext(LoanJourneyDataContext);
     const [show_dropdown_modal, set_show_dropdown_modal] = useState(false)
 
-    useEffect(() => {
+    // useEffect(() => {
       
-        set_show_dropdown_modal(popup_state)
-    }, [popup_state])
+    //     set_show_dropdown_modal(popup_state)
+    // }, [popup_state])
 
    
     return (

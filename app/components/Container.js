@@ -3,7 +3,7 @@ import { View, SafeAreaView, StyleSheet, ActivityIndicator, StatusBar } from 're
 
 const Container = props => {
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: 'white' }]}>
+    <SafeAreaView style={[styles.container]}>
       <StatusBar
         style={{ zIndex: 1000 }}
         animated={true}
