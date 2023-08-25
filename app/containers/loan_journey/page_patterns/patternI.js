@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, KeyboardAvoidingView, Platform } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { LoanJourneyDataContext } from '../context';
 import Container from '../../../components/Container';
@@ -8,23 +8,27 @@ import NextPreviosButton from '../../../components/next_previos_button';
 import { PAGECODES } from '../config/page_codes';
 import LoanProducts from '../../../config/LoanProducts';
 import FormFieldsRendererView from '../form_fields_renderer';
+import { PageFormContext } from '../context/page_form';
 //import { NavigationActions } from 'react-navigation';
 
+const onSubmitVerifyPageCodes = ['MOBILE_VERIFY']
 const PatternI = ({ navigation, page_code, children }) => {
-    const { state, dispatchContextState, loanJourneyNavigation, updateActiveStepInStepper } = useContext(LoanJourneyDataContext);
+    const { loan_journey_state, dispatchContextState, moveFromPage } = useContext(LoanJourneyDataContext);
+    const { onVerify, onSubmit } = useContext(PageFormContext);
     const [stepperData, setstepperData] = useState([]);
 
-    const onNextButtonPress = () => {
-        let action_page_code = loanJourneyNavigation(page_code, 'NEXT')
-        if (action_page_code.pageCode != 'STATUS_CHECK') {
-            updateActiveStepInStepper(action_page_code)
+    const onNextButtonPress = async () => {
+        const isVerificationRequired = onSubmitVerifyPageCodes.some(page => page == page_code)
+        if (isVerificationRequired == true) {
+            onVerify()
+        } else {
+            moveFromPage()
         }
-        navigation.navigate(PAGECODES[action_page_code.pageCode])
     }
 
     return (
         <Container isLoading={false}>
-            <Header headerTitle={state?.current_active_page?.pageName}
+            <Header headerTitle={loan_journey_state?.current_active_page?.pageName}
                 activeColor={'red'}
                 inActiveColor={'blue'}
                 hasBackButton={true}
@@ -38,12 +42,19 @@ const PatternI = ({ navigation, page_code, children }) => {
                 }}
             />
             <View style={{ flex: 1 }}>
-                {state?.stepper_data && <StepIndicator data={state.stepper_data} />}
+
+                {loan_journey_state?.stepper_data && <StepIndicator data={loan_journey_state.stepper_data} />}
                 <NextPreviosButton onNext={onNextButtonPress} />
-                {/* {children} */}
-                <FormFieldsRendererView />
+
+                <KeyboardAvoidingView
+                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                    style={{ flex: 1 }}
+                >
+                    <FormFieldsRendererView />
+                </KeyboardAvoidingView>
+
             </View>
-           
+
         </Container>
     )
 }

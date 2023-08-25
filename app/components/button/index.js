@@ -17,7 +17,7 @@ const AppButton = ({
     return (
         <TouchableOpacity
             onPress={disabled ? () => { } : onPress}
-            style={[ContainerStyles.center, ContainerStyles[size], { backgroundColor: bordered ? secondaryColorButton : primaryColorButton, borderColor: primaryColorButton, borderWidth: 2 }]}>
+            style={[ContainerStyles.center, ContainerStyles[size], {maxWidth:120, backgroundColor: bordered ? secondaryColorButton : primaryColorButton, borderColor: primaryColorButton, borderWidth: 2 }]}>
             <Text style={[textStyles[size], { color: bordered ? primaryColorButton : secondaryColorButton }]}>{label}</Text>
         </TouchableOpacity>
     )

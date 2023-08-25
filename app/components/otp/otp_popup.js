@@ -3,22 +3,63 @@ import React, { useState, useEffect, useContext } from 'react'
 
 import Icon from 'react-native-vector-icons/AntDesign'
 import MultiInputField from '../MultiInputField'
+import { Colors } from '../../style/colors'
+import useFieldState from '../../containers/loan_journey/hook/useFieldState'
+import AppButton from '../button'
 
+const inputStateColors = {
+    DEFAULT: { primary: Colors.BLUE_B4, textTitle: Colors.BLUE_B2, textValue: Colors.BLUE_B5 },
+    FOCUSED: { primary: Colors.BLUE_B2, textTitle: Colors.BLUE_B5, textValue: Colors.BLUE_B2 },
+    DISABLED: { primary: Colors.GRAY_G2, textTitle: Colors.GRAY_G3, textValue: Colors.GRAY_G3 },
 
-const OtpPopup = ({ popup_state, data, label = 'PopupOTP', title = 'My dropdown', index_history,onCancel }) => {
-   // const { state } = useContext(LoanJourneyDataContext);
+    FILLED: { primary: Colors.BLUE_B5, textTitle: Colors.BLUE_B5, textValue: Colors.BLUE_B5 },
+    PREFILLED: { primary: Colors.GRAY_G1, textTitle: Colors.BLUE_B5, textValue: Colors.BLUE_B5 },
+
+    SUCCESS: { primary: Colors.ACCENTS_LIME, textTitle: Colors.BLUE_B2, textValue: Colors.BLUE_B5 },
+    ERROR: { primary: Colors.ACCENTS_SCARLET, textTitle: Colors.BLUE_B2, textValue: Colors.BLUE_B5 },
+}
+
+const OtpPopup = ({ popup_state, data, label = 'PopupOTP', title = 'My dropdown', index_history, onCancel, onVerify=()=>{}  }) => {
+    const [fieldState, onFieldValueChange, setFieldValidity, onFieldStatusChange, setFieldVisibility, setFieldTouched, setFieldNotifierText] = useFieldState('', true, 'DEFAULT');
+    const [input_color_theme, set_input_color_theme] = useState(inputStateColors[fieldState.status])
+
     const [show_dropdown_modal, set_show_dropdown_modal] = useState(false)
 
-    // useEffect(() => {
-      
-    //     set_show_dropdown_modal(popup_state)
-    // }, [popup_state])
+    useEffect(() => {
+        set_show_dropdown_modal(popup_state)
+    }, [popup_state])
 
-   
+    const multiInputFieldChange = (multi_input_state) => {
+
+    }
+    console.log('input_color_theme', input_color_theme);
+
     return (
         <View>
-            <Text style={[{ color: 'blue' }]} onPress={() => set_show_dropdown_modal(true)}>{label}</Text>
 
+            {show_dropdown_modal == true && <View style={{ width: '100%', height: 200, justifyContent: 'space-evenly', backgroundColor: 'pink' }}>
+
+                <Text style={{ fontSize: 18, fontWeight: 'bold', padding: 12 }}> {data?.fieldLabel}</Text>
+
+                <View style={{ flex: 1, justifyContent: 'center' }}>
+                    <MultiInputField
+                        fieldBorderColor={input_color_theme.primary}
+                        fieldTextColor={input_color_theme.textValue}
+                        multiInputFieldChange={multiInputFieldChange}
+                        textAlign={'center'}
+                        fieldDataType={'OTP'}
+                        value={''}
+                    />
+                </View>
+                <View style={{ alignSelf: 'flex-end', }}>
+                    <AppButton label={'Verify'} size={'TINY'} onPress={()=>onVerify(fieldState)} />
+                    <AppButton label={'Resend OTP'} size={'TINY'} bordered={true} />
+                </View>
+
+            </View>
+            }
+
+            {/* 
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -26,7 +67,7 @@ const OtpPopup = ({ popup_state, data, label = 'PopupOTP', title = 'My dropdown'
                 onRequestClose={() => {
                     // Alert.alert('Modal has been closed.');
                     onCancel()
-                    set_show_dropdown_modal(!show_dropdown_modal);
+                    // set_show_dropdown_modal(!show_dropdown_modal);
                 }}>
                 <View style={{ flex: 1, width: '100%', justifyContent: 'center', backgroundColor: 'rgba(52, 52, 52, 0.8)' }}>
                     <View style={{ height: 300, width: "95%", alignSelf: 'center', backgroundColor: '#FFF', borderRadius: 8, justifyContent: 'center', alignItems: 'center', padding: 12 }}>
@@ -34,37 +75,29 @@ const OtpPopup = ({ popup_state, data, label = 'PopupOTP', title = 'My dropdown'
                         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                             <View style={{ height: 20, width: 20 }} />
                             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
-                                <Text style={{ fontSize: 18, fontWeight: 'bold', padding: 12 }}> {label}</Text>
+                                <Text style={{ fontSize: 18, fontWeight: 'bold', padding: 12 }}> {data?.fieldLabel}</Text>
                             </View>
                             <Icon
-                                onPress={() =>{
+                                onPress={() => {
                                     onCancel()
-                                    set_show_dropdown_modal(false)}}
+                                    set_show_dropdown_modal(false)
+                                }}
                                 name='closecircleo' size={20} color={'red'} />
                         </View>
-                        <View style={{ flex: 1, width: '100%', backgroundColor: '#F1F1F1' }}>
+                        <View style={{ flex: 1, width: '100%', backgroundColor: 'red' }}>
                             <MultiInputField
-                                index_history={index_history}
-                                onInputChange={() => {
-
-                                }}
-
+                                fieldBorderColor={input_color_theme.primary}
+                                fieldTextColor={input_color_theme.textValue}
+                                multiInputFieldChange={multiInputFieldChange}
+                                textAlign={'center'}
                                 fieldDataType={'OTP'}
-                                value={'989898989898'}
-                                labal={data?.fieldLabel}
-                                // inputChangeHandler={inputChangeHandler}
-                                onPress={(code) => {
-                                    // setModalVisible(onboardingVerificationType, code, fieldName)
-                                }}
-                                isOnboardingVerificationType={false}
-                                disabled={false}
-                                disabled_state={false}
+                                value={''}
                             />
                         </View>
 
                     </View>
                 </View>
-            </Modal>
+            </Modal> */}
         </View>
     )
 }

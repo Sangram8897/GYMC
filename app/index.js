@@ -30,46 +30,54 @@ import Declaration from './containers/loan_journey/pages/declaration';
 import DocumentList from './containers/loan_journey/pages/document_list';
 import ProductError from './containers/loan_journey/pages/product_error';
 import PreviewPage from './containers/loan_journey/pages/preview_page';
+import { Provider } from 'react-redux';
+import store from './store/confugure_store';
+import PageFormContextProvider from './containers/loan_journey/context/page_form';
+import { navigationRef } from './RootNavigation';
 
 const App = () => {
   const Stack = createNativeStackNavigator();
   return (
-    <LoanJourneyDataProvider>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="Dashboard" component={Dashboard} options={{ headerShown: true }} />
-          <Stack.Screen name="Account" component={Account} />
-          <Stack.Screen name="LoanJourney" component={LoanJourney} options={{ headerShown: false }} />
-          <Stack.Screen name="MobileVerify" component={MobileVerify} options={{ headerShown: false }} />
-          <Stack.Screen name="PersonalDetails" component={PersonalDetails} options={{ headerShown: false }} />
-          <Stack.Screen name="MoreInfo" component={MoreInfo} options={{ headerShown: false }} />
-          <Stack.Screen name="StatusCheck" component={StatusCheck} options={{ headerShown: false }} />
-          <Stack.Screen name="EmploymentDetails" component={EmploymentDetails} options={{ headerShown: false }} />
-          <Stack.Screen name="DocumentUpload" component={DocumentUpload} options={{ headerShown: false }} />
-          <Stack.Screen name="SanctionDetails" component={SanctionDetails} options={{ headerShown: false }} />
-          <Stack.Screen name="KeyFactDetails" component={KeyFactDetails} options={{ headerShown: false }} />
-          <Stack.Screen name="LoanSummary" component={LoanSummary} options={{ headerShown: false }} />
-          <Stack.Screen name="ESign" component={ESign} options={{ headerShown: false }} />
-          <Stack.Screen name="EKycVerify" component={EKycVerify} options={{ headerShown: false }} />
+    <Provider store={store}>
+      <LoanJourneyDataProvider>
+        <PageFormContextProvider>
+          <NavigationContainer ref={navigationRef}>
+            <Stack.Navigator>
+              <Stack.Screen name="Dashboard" component={Dashboard} options={{ headerShown: true }} />
+              <Stack.Screen name="Account" component={Account} />
+              <Stack.Screen name="LoanJourney" component={LoanJourney} options={{ headerShown: false }} />
+              <Stack.Screen name="MobileVerify" component={MobileVerify} options={{ headerShown: false }} />
+              <Stack.Screen name="PersonalDetails" component={PersonalDetails} options={{ headerShown: false }} />
+              <Stack.Screen name="MoreInfo" component={MoreInfo} options={{ headerShown: false }} />
+              <Stack.Screen name="StatusCheck" component={StatusCheck} options={{ headerShown: false }} />
+              <Stack.Screen name="EmploymentDetails" component={EmploymentDetails} options={{ headerShown: false }} />
+              <Stack.Screen name="DocumentUpload" component={DocumentUpload} options={{ headerShown: false }} />
+              <Stack.Screen name="SanctionDetails" component={SanctionDetails} options={{ headerShown: false }} />
+              <Stack.Screen name="KeyFactDetails" component={KeyFactDetails} options={{ headerShown: false }} />
+              <Stack.Screen name="LoanSummary" component={LoanSummary} options={{ headerShown: false }} />
+              <Stack.Screen name="ESign" component={ESign} options={{ headerShown: false }} />
+              <Stack.Screen name="EKycVerify" component={EKycVerify} options={{ headerShown: false }} />
 
-          <Stack.Screen name="AadharVerify" component={AadharVerify} options={{ headerShown: false }} />
-          <Stack.Screen name="AddressDetails" component={AddressDetails} options={{ headerShown: false }} />
-          <Stack.Screen name="EmailVerify" component={EmailVerify} options={{ headerShown: false }} />
-          <Stack.Screen name="PanVerify" component={PanVerify} options={{ headerShown: false }} />
-          <Stack.Screen name="ProductSelection" component={ProductSelection} options={{ headerShown: false }} />
+              <Stack.Screen name="AadharVerify" component={AadharVerify} options={{ headerShown: false }} />
+              <Stack.Screen name="AddressDetails" component={AddressDetails} options={{ headerShown: false }} />
+              <Stack.Screen name="EmailVerify" component={EmailVerify} options={{ headerShown: false }} />
+              <Stack.Screen name="PanVerify" component={PanVerify} options={{ headerShown: false }} />
+              <Stack.Screen name="ProductSelection" component={ProductSelection} options={{ headerShown: false }} />
 
-          <Stack.Screen name="AccountVerify" component={AccountVerify} options={{ headerShown: false }} />
-          <Stack.Screen name="CustomerType" component={CustomerType} options={{ headerShown: false }} />
-          <Stack.Screen name="JourneyPreview" component={JourneyPreview} options={{ headerShown: false }} />
-          <Stack.Screen name="UdyamVerify" component={UdyamVerify} options={{ headerShown: false }} />
-          <Stack.Screen name="Declaration" component={Declaration} options={{ headerShown: false }} />
-          <Stack.Screen name="DocumentList" component={DocumentList} options={{ headerShown: false }} />
-          <Stack.Screen name="ProductError" component={ProductError} options={{ headerShown: false }} />
-          <Stack.Screen name="PreviewPage" component={PreviewPage} options={{ headerShown: false }} />
-        
-        </Stack.Navigator>
-      </NavigationContainer>
-    </LoanJourneyDataProvider>
+              <Stack.Screen name="AccountVerify" component={AccountVerify} options={{ headerShown: false }} />
+              <Stack.Screen name="CustomerType" component={CustomerType} options={{ headerShown: false }} />
+              <Stack.Screen name="JourneyPreview" component={JourneyPreview} options={{ headerShown: false }} />
+              <Stack.Screen name="UdyamVerify" component={UdyamVerify} options={{ headerShown: false }} />
+              <Stack.Screen name="Declaration" component={Declaration} options={{ headerShown: false }} />
+              <Stack.Screen name="DocumentList" component={DocumentList} options={{ headerShown: false }} />
+              <Stack.Screen name="ProductError" component={ProductError} options={{ headerShown: false }} />
+              <Stack.Screen name="PreviewPage" component={PreviewPage} options={{ headerShown: false }} />
+
+            </Stack.Navigator>
+          </NavigationContainer>
+        </PageFormContextProvider>
+      </LoanJourneyDataProvider>
+    </Provider>
   )
 }
 
@@ -94,6 +102,7 @@ const LoanJourneyStack = () => {
       <Stack.Screen name="ESign" component={ESign} options={{ headerShown: false }} />
       <Stack.Screen name="EKycVerify" component={EKycVerify} options={{ headerShown: false }} />
     </Stack.Navigator>
+
   )
 }
 

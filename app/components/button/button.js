@@ -27,7 +27,7 @@ export default function Button({
         // width: '100%',
         alignSelf: 'center',
         paddingVertical: 15,
-        marginVertical:8,
+        marginVertical:4,
         borderWidth: borderWidth,
         borderColor: borderColor,
         overflow: 'hidden',

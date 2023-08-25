@@ -5,24 +5,28 @@ import StepIndicator from '../../components/step_indicator';
 import { LoanJourneyDataContext } from './context';
 import LoanProducts from '../../config/LoanProducts';
 import { PAGECODES } from './config/page_codes';
+import { useDispatch, useSelector } from 'react-redux';
+import ACTIONS from '../../store/actions';
 
 const LoanJourney = ({ route, navigation }) => {
+    const dispatch = useDispatch()
     const { loan_product } = route.params;
-    const { state, dispatchContextState } = useContext(LoanJourneyDataContext);
+    const { loan_journey_state, dispatchContextState } = useContext(LoanJourneyDataContext);
+    const loan_journey_data = useSelector(state => state.LoanJourneyReducer.data);
 
     useEffect(() => {
         handleInitialSetup()
     }, [])
 
     useEffect(() => {
-        if (state && state?.current_active_page?.pageCode) {
-            if (state?.current_active_page?.pageCode && PAGECODES[state?.current_active_page?.pageCode]) {
-                navigation.replace(PAGECODES[state?.current_active_page?.pageCode])
+        if (loan_journey_state && loan_journey_state?.current_active_page?.pageCode) {
+            if (loan_journey_state?.current_active_page?.pageCode && PAGECODES[loan_journey_state?.current_active_page?.pageCode]) {
+                navigation.replace(PAGECODES[loan_journey_state?.current_active_page?.pageCode])
             } else {
                 console.error('LoanJourney : selected page is not configured currently');
             }
         }
-    }, [state])
+    }, [loan_journey_state])
 
 
     function createnewArrayReference(data) {
@@ -45,10 +49,12 @@ const LoanJourney = ({ route, navigation }) => {
             current_active_page: page_sequence[0],
             stepper_data: new_ref_stepperData
         }
-        console.log('loan_product_config_data',loan_product_config_data);
+        console.log('loan_product_config_data', loan_product_config_data);
+
+        dispatch({ type: 'SET_LOAN_JOURNEY_DATA', payload: loan_product_config_data });
         dispatchContextState({ type: 'SET_LOAN_JOURNEY_INITIAL_STATE', data: loan_product_config_data })
     }
-
+    console.log('loan_journey_data', loan_journey_data);
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <Header

@@ -5,7 +5,7 @@ import AppStyles from '../../style';
 import FieldStateNotifier from '../field_state_notifier';
 import { Colors } from '../../style/colors';
 import { FloatingTitleTextInputField } from './FloatingTitleTextInputField';
-import useFieldState from '../../containers/loan_journey/ hook/useFieldState';
+import useFieldState from '../../containers/loan_journey/hook/useFieldState';
 import AppButton from '../button';
 
 const inputStateColors = {
@@ -30,6 +30,7 @@ const AppInput = (props) => {
 
     const { onInputChange = () => { }, id, containerStyle = {}, labelStyle = {}, textInputStyle = {}, data } = props;
     useEffect(() => {
+        //  console.log('formState','calling',fieldState);
         onInputChange('value', fieldState.value, props.index_history, fieldState.isValid);
     }, [fieldState, onInputChange])
 
@@ -44,10 +45,10 @@ const AppInput = (props) => {
         let isValid = true;
 
         console.log('props.regex', props?.regex);
-        if (props?.data?.regex && !props.data.regex.test(text.toLowerCase())) {
-            isValid = false;
-            set_errorText('Inavalid Email Entered')
-        }
+        // if (props?.data?.regex && !props.data.regex.test(text.toLowerCase())) {
+        //     isValid = false;
+        //     set_errorText('Inavalid Email Entered')
+        // }
 
         if (props.required && text.trim().length === 0) {
             isValid = false;
@@ -93,7 +94,8 @@ const AppInput = (props) => {
                 paddingTop: 4,
                 paddingHorizontal: 8
             }]}>
-                {<Text style={[AppStyles.fieldLabelText, { color: input_color_theme.textTitle }]}>{props?.label}</Text>}
+                {
+                <Text style={[AppStyles.fieldLabelText, { color: input_color_theme.textTitle }]}>{props?.label}</Text>}
                 <View style={{ flexDirection: 'row' }}>
                     <View style={{ flex: 1, justifyContent: 'center' }}>
                         <TextInput
@@ -114,17 +116,20 @@ const AppInput = (props) => {
                         />
 
                     </View>
-                    {(props?.data?.fieldName && props?.data?.fieldName == 'alternativeUsername') && <View style={{ flexDirection: 'row' }}>
+                    {
+                    ((props?.data?.fieldName && props?.data?.fieldName == 'alternativeUsername') || props?.data?.isVarify) &&
+                    
+                    <View style={{ flexDirection: 'row' }}>
                         <View style={{ width: 8 }}></View>
                         <AppButton size='TINY' label={'Verify'} onPress={() => {
+                            props.onVerify()
                             onFieldStatusChange('SUCCESS')
                             setFieldNotifierText('Pan number successfully Verified')
                             setFieldValidity(true)
                         }} />
-                    </View>}
-
+                    </View>
+                    }
                 </View>
-
             </View>
             <View>
                 {

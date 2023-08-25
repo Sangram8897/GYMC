@@ -44,7 +44,7 @@ import LineOfBusiness from './../../config/json/LineOfBusiness.json'
 import { LoanJourneyDataContext } from '../loan_journey/context';
 
 const Dashboard = ({ navigation }) => {
-  const { state, dispatchContextState } = useContext(LoanJourneyDataContext);
+  const { dispatchContextState } = useContext(LoanJourneyDataContext);
 
   const LoanProduct = ({ item, index }) => {
     return (

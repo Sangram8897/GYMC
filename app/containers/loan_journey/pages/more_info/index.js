@@ -5,7 +5,7 @@ import { LoanJourneyDataContext } from '../../context'
 
 const MoreInfo = ({ route, navigation }) => {
     const page_code = 'MORE_INFO'
-    const {  state } = useContext(LoanJourneyDataContext);
+    const {  loan_journey_state } = useContext(LoanJourneyDataContext);
  
     return (
         <PatternI navigation={navigation} page_code={page_code}>

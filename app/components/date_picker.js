@@ -7,7 +7,7 @@ import AppStyles from '../style';
 import { Colors } from '../style/colors';
 import FontAwesome from 'react-native-vector-icons/FontAwesome5'
 import FieldStateNotifier from './field_state_notifier';
-import useFieldState from '../containers/loan_journey/ hook/useFieldState';
+import useFieldState from '../containers/loan_journey/hook/useFieldState';
 
 const inputStateColors = {
     DEFAULT: { primary: Colors.GRAY_G2, textTitle: Colors.BLUE_B2, textValue: Colors.BLUE_B5 },

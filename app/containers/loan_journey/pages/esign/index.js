@@ -5,7 +5,7 @@ import PatternI from '../../page_patterns/patternI'
 
 const ESign = ({ route, navigation }) => {
     const page_code = 'ESIGN'
-    const { data } = useContext(LoanJourneyDataContext);
+    const { loan_journey_state } = useContext(LoanJourneyDataContext);
 
     return (
         <PatternI navigation={navigation} page_code={page_code}>

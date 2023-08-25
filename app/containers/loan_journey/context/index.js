@@ -1,4 +1,6 @@
 import React, { createContext, useState, useMemo, useReducer } from "react";
+import * as RootNavigation from './../../../RootNavigation';
+import { PAGECODES } from "../config/page_codes";
 
 export const LoanJourneyDataContext = createContext();
 
@@ -72,8 +74,9 @@ function LoanJourneyDataProvider({ children }) {
     const value = useMemo(
         () => ({
             data,
-            state,
+            loan_journey_state: state,
             setData,
+            moveFromPage,
             loanJourneyNavigation,
             dispatchContextState,
             updateActiveStepInStepper,
@@ -83,6 +86,7 @@ function LoanJourneyDataProvider({ children }) {
             data,
             state,
             setData,
+            moveFromPage,
             loanJourneyNavigation,
             dispatchContextState,
             updateActiveStepInStepper,
@@ -91,12 +95,14 @@ function LoanJourneyDataProvider({ children }) {
     );
 
     function updateActiveStepInStepper(pagedata) {
-        const updated_stepper_data = setActiveStepInData(state.stepper_data, pagedata.pageCode)
-        dispatchContextState({ type: 'UPDATE_STEPPER_DATA', data: updated_stepper_data, page_data: pagedata })
+        if(pagedata && pagedata?.pageCode){
+            const updated_stepper_data = setActiveStepInData(state.stepper_data, pagedata.pageCode)
+            dispatchContextState({ type: 'UPDATE_STEPPER_DATA', data: updated_stepper_data, page_data: pagedata })
+        }
     }
 
     function loanJourneyNavigation(current_page, action) {
-        if (state?.loan_product_config) {
+        if (state?.loan_product_config?.pageSequenceData) {
             const { journeyPages, otherPages } = state?.loan_product_config?.pageSequenceData
 
             const pageSequence = journeyPages['individual']
@@ -129,6 +135,15 @@ function LoanJourneyDataProvider({ children }) {
             console.error('Unable to attach/find selected loan configuration');
         }
         // productConfig.pageSequenceData['journeyPages'][journey.productUserType]
+    }
+
+    function moveFromPage(action = 'NEXT') {
+        const current_active_page_code = state?.current_active_page?.pageCode
+        let action_page_code = loanJourneyNavigation(current_active_page_code, 'NEXT')
+        // if (action_page_code.pageCode != 'STATUS_CHECK') {
+            updateActiveStepInStepper(action_page_code)
+        // }
+        RootNavigation.navigate(PAGECODES[action_page_code.pageCode]);
     }
 
     return (

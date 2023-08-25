@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import MultiInputField from '../MultiInputField'
 import { Colors } from '../../style/colors'
-import useFieldState from '../../containers/loan_journey/ hook/useFieldState'
+import useFieldState from '../../containers/loan_journey/hook/useFieldState'
 import FieldStateNotifier from '../field_state_notifier'
 import AppButton from '../button/index'
 import AppStyles from '../../style'
@@ -68,17 +68,9 @@ const DocumentInput = ({ fieldLabel, index_history, fieldDataType }) => {
                             fieldBorderColor={input_color_theme.primary}
                             fieldTextColor={input_color_theme.textValue}
                             multiInputFieldChange={multiInputFieldChange}
-                            // onInputChange={inputChangeHandler}
-                            textAlign={fieldDataType == 'MOBILE_NO' ? 'left' : 'left'}
+                            textAlign={ 'center'}
                             fieldDataType={fieldDataType}
                             value={''}
-                            onPress={(code) => {
-                                // setModalVisible(onboardingVerificationType, code, fieldName)
-                            }}
-                            isOnboardingVerificationType={false}
-                            disabled={false}
-                            disabled_state={false}
-                            onVerify={() => { }}
                         />
                     </View>
                     <View style={{ width: 8 }}></View>

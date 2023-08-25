@@ -8,8 +8,7 @@ import {
 } from '../../../components/index';
 
 
-const renderFields = (field_item, field_index, hierarchy, index_history, inputChangeHandler, onVerifyHandler) => {
-
+const renderFields = (field_item, field_index, hierarchy, index_history, inputChangeHandler, onVerifyHandler, show_consent) => {
     switch (field_item?.fieldDataType || field_item?.componentType || field_item?.linkType || field_item?.consentType) {
         case 'TITLE':
             return <>
@@ -37,16 +36,21 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
             </>
         case 'MOBILE_NO':
             return <>
-                <DocumentInput
-                    fieldLabel={field_item?.fieldLabel}
+                <Input
+                    id='short_desc'
+                    data={field_item}
+                    label={field_item?.fieldLabel}
                     index_history={index_history}
+                    maxLength={10}
+                    keyboardType={'number-pad'}
+                    errorText='Wrong Password'
+                    placeHolder={field_item?.placeHolder}
+                    initialValue={field_item?.value ? field_item.value : ''}
+                    initialValid={true}
                     onInputChange={inputChangeHandler}
-                    fieldDataType={'MOBILE_NO'}
-                    value={''}
-                    onPress={(code) => {
-                        // setModalVisible(onboardingVerificationType, code, fieldName)
-                    }}
-                    disabled={false}
+                    onVerify={() => onVerifyHandler(field_item.verificationFieldName, 'fieldName')}
+                    required
+
                 />
             </>
         case 'PAN_CARD':
@@ -65,7 +69,7 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
             </>
         case 'AADHAR':
             return <>
-                <DocumentInput
+                <Input
                     fieldLabel={field_item?.fieldLabel}
                     index_history={index_history}
                     onInputChange={inputChangeHandler}
@@ -74,6 +78,7 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
                     onPress={(code) => {
                         // setModalVisible(onboardingVerificationType, code, fieldName)
                     }}
+                    onVerify={() => onVerifyHandler(field_item.verificationFieldName, 'fieldName')}
                     disabled={false}
                 />
             </>
@@ -94,7 +99,7 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
         case 'CONSENT':
             return <>
                 {
-                    field_item?.sectionContent?.config?.options && <FlatList
+                    (show_consent && field_item?.sectionContent?.config?.options) && <FlatList
                         style={{ flex: 1, width: '100%' }}
                         data={field_item?.sectionContent?.config?.options}
                         renderItem={({ item, index }) => renderFields(item, index, [...hierarchy, item.id], [...index_history, index], inputChangeHandler)}
@@ -171,13 +176,14 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
             // if()
             field_item = field_item?.sectionContent?.fields ? field_item?.sectionContent?.fields : field_item
             return <>
-                {/* <OtpPopup
+                <OtpPopup
                     popup_state={field_item?.showField ? field_item?.showField : false}
                     index_history={index_history}
                     data={field_item}
-                    onCancel={() => onVerifyHandler(field_item.fieldName, 'fieldName', false)}
+                    onCancel={() => { }}
+                    onVerify={(value) => onVerifyHandler(field_item.fieldName, 'value', value,index_history, field_item?.submitPageOnVerify)}
                 // onValidate={}
-                /> */}
+                />
             </>
 
         case 'BOOLEAN':
@@ -262,43 +268,38 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
 
         case 'CONTAINER':
             return (
-                <View style={{ borderWidth: 1, borderColor: 'skyblue' }}>
+                <View>
+
                     {
-                        field_item?.fields ? <FlatList
+                        field_item?.fields && <FlatList
+                            style={{
+                                marginVertical: 10,
+                                backgroundColor: '#FFF',
+                                borderRadius: 8,
+                                padding: 10
+                            }}
+                            ListHeaderComponent={(field_item?.group_name && field_item?.group_name != 'page') ? <Text
+                                style={{ fontSize: 18, fontWeight: 'bold', marginVertical: 10 }}
+                            >{field_item?.group_name}</Text> : <></>}
                             data={field_item?.fields}
-                            renderItem={({ item, index }) => renderFields(item, index, [...hierarchy, item.id], [...index_history, index])}
-                            keyExtractor={(item, index) => index.toString()}
-                        /> :
-                            field_item?.sectionContent?.fields ? <FlatList
-                                data={field_item?.sectionContent?.fields}
-                                renderItem={({ item, index }) => renderFields(item, index, [...hierarchy, item.id], [...index_history, index],)}
-                                keyExtractor={(item, index) => index.toString()}
-                            /> : <></>
+                            renderItem={({ item, index }) => renderFields(item, index, [...hierarchy, item?.id], [...index_history, index], inputChangeHandler, onVerifyHandler)}
+                            keyExtractor={(item, index) => `${item?.container_id}container${index.toString()}`}
+                        />
                     }
                 </View>)
+
         case 'FORM':
             return (
-                <View>
+                <>
                     {
-
                         field_item?.sectionContent?.fields ? <FlatList
-                            data={field_item?.sectionContent?.fields}
-                            renderItem={({ item, index }) => <>
-                                <FlatList
-                                    style={{ marginVertical: 10, backgroundColor: '#FFF', borderRadius: 8, padding: 10 }}
-                                    data={item?.data}
-                                    ListHeaderComponent={(item?.group_name && item?.group_name != 'page') ? <Text
-                                        style={{ fontSize: 18, fontWeight: 'bold', marginVertical: 8 }}
-                                    >{item?.group_name}</Text> : <></>}
 
-                                    renderItem={({ item, index }) => renderFields(item, index, [...hierarchy, item.id], [...index_history, index], inputChangeHandler, onVerifyHandler)}
-                                    keyExtractor={(item, index) => index.toString()}
-                                />
-                            </>}
-                            keyExtractor={(item, index) => index.toString()}
+                            data={field_item?.sectionContent?.fields}
+                            renderItem={({ item, index }) => renderFields(item, index, [...hierarchy, item.id], [...index_history, index], inputChangeHandler, onVerifyHandler)}
+                            keyExtractor={(item, index) => `${item?.container_id}form${index.toString()}`}
                         /> : <></>
                     }
-                </View>)
+                </>)
 
         case 'ADDRESS':
             return (
@@ -307,12 +308,12 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
                         field_item?.addressFields ? <FlatList
                             data={field_item?.addressFields}
                             renderItem={({ item, index }) => renderFields(item, index, [...hierarchy, item.id], [...index_history, index], inputChangeHandler)}
-                            keyExtractor={(item, index) => index.toString()}
+                            keyExtractor={(item, index) => `address${index.toString()}`}
                         /> :
                             field_item?.sectionContent?.addressFields ? <FlatList
                                 data={field_item?.sectionContent?.addressFields}
                                 renderItem={({ item, index }) => renderFields(item, index, [...hierarchy, item.id], [...index_history, index], inputChangeHandler)}
-                                keyExtractor={(item, index) => index.toString()}
+                                keyExtractor={(item, index) => `section_address${index.toString()}`}
                             /> : <></>
                     }
                 </View>)

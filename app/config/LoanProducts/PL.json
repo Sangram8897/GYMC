@@ -596,6 +596,49 @@
             "isShow": true,
             "showField": true
           }
+        },
+        {
+          "componentType": "OTP",
+          "sectionContent": {
+            "fields": {
+              "fieldDataType": "OTP",
+              "otpType": "MOBILE",
+              "isMandatory": true,
+              "fieldLabel": "Enter Mobile OTP",
+              "fieldAccessModifier": "EDITABLE",
+              "minLength": 6,
+              "maxLength": 15,
+              "length": 6,
+              "error": null,
+              "value": null,
+              "validationJson": null,
+              "rulesFor": null,
+              "regex": null,
+              "regexErrorMessage": null,
+              "rowNo": null,
+              "columnNo": null,
+              "groupName": null,
+              "groupIndex": null,
+              "placeholderText": "xx x  xxxxx",
+              "fieldName": "accountNo",
+              "labelInfo": "loakjsdnakjd akjdnakdnakjd askdjnadkjnad",
+              "showLabel": true,
+              "showField": true,
+              "OtpMasking": true,
+              "otpDataType": "NUMBER",
+              "otpAttempts": 3,
+              "waitTimeInSeconds": 120,
+              "infoText": "A 6 digit OTP has been sent to the above number"
+            },
+            "options": {
+              "value": null,
+              "notificationType": "COMMON_OTP_TWO",
+              "loanProduct": null,
+              "createBorrower": true,
+              "generateOtp": true
+            },
+            "isShow": false
+          }
         }
       ],
       "MORE_INFO": [
@@ -676,6 +719,7 @@
                 "labelInfo": null,
                 "showLabel": true,
                 "Masking": true,
+                "maskingFormat": "[0000] [0000] [0000]",
                 "groupName": null,
                 "groupIndex": 1,
                 "showField": true,
@@ -1260,7 +1304,9 @@
                     "maxLength": 999999,
                     "error": null,
                     "value": null,
-                    "validationJson": {"fetchPinCodeDetails":"/api/v2/businessPatner/fetchConcessionRateAndCRP"},
+                    "validationJson": {
+                      "fetchPinCodeDetails": "/api/v2/businessPatner/fetchConcessionRateAndCRP"
+                    },
                     "rulesFor": [
                       "state",
                       "city"
@@ -1297,9 +1343,7 @@
                     "rulesFor": null,
                     "showField": true,
                     "sortIndex": 5,
-                    "validationJson": {
-                      "copy_Value" : {"var" :"rawActiveFieldList.zipCode.selectedDetails.city"}
-                    },
+                    "validationJson": null,
                     "value": null,
                     "placeholderText": "Select City",
                     "visibleInAdminSection": true,
@@ -1327,9 +1371,10 @@
                     "rulesFor": null,
                     "showField": true,
                     "sortIndex": 6,
-                    "validationJson": {
-                      "copy_Value" : {"var" :"rawActiveFieldList.zipCode.selectedDetails.state"}
-                    },
+                    "validationJson": null,
+                    //{
+                    //  "copy_Value" : {"var" :"scope.zipCode.selectedDetails.city"}
+                    // }
                     "value": null,
                     "placeholderText": "Select State",
                     "visibleInAdminSection": true,
@@ -1409,7 +1454,9 @@
                     "regexForJS": null,
                     "regexErrorMessage": null,
                     "rowNo": 4,
-                    "rulesFor": null,
+                    "rulesFor": [
+                      "addressTwoDocumentAliasType"
+                    ],
                     "showField": true,
                     "sortIndex": 5,
                     "validationJson": null,
@@ -1440,7 +1487,9 @@
                     "regexForJS": null,
                     "regexErrorMessage": null,
                     "rowNo": 4,
-                    "rulesFor": null,
+                    "rulesFor": [
+                      "addressTwoDocument"
+                    ],
                     "showField": true,
                     "sortIndex": 5,
                     "validationJson": {
@@ -1484,7 +1533,7 @@
                     "showField": true,
                     "sortIndex": 5,
                     "fileDependentField": "addressTwoDocumentType",
-                    "fileDependentFieldAliasType" : "addressTwoDocumentAliasType",
+                    "fileDependentFieldAliasType": "addressTwoDocumentAliasType",
                     "documentData": {
                       "documentCategoryCode": "IND_PAP"
                     },
@@ -2066,7 +2115,9 @@
                     "regexForJS": null,
                     "regexErrorMessage": null,
                     "rowNo": 4,
-                    "rulesFor": null,
+                    "rulesFor": [
+                      "addressTwoDocumentAliasType"
+                    ],
                     "showField": true,
                     "sortIndex": 5,
                     "validationJson": null,
@@ -2141,7 +2192,7 @@
                     "showField": true,
                     "sortIndex": 5,
                     "fileDependentField": "addressTwoDocumentType",
-                    "fileDependentFieldAliasType" : "addressTwoDocumentAliasType",
+                    "fileDependentFieldAliasType": "addressTwoDocumentAliasType",
                     "documentData": {
                       "documentCategoryCode": "IND_PAP"
                     },
@@ -2680,7 +2731,7 @@
                 "labelInfo": null,
                 "groupName": "Choose your branch",
                 "groupIndex": 2,
-                "showField" : true,
+                "showField": true,
                 "showLabel": true,
                 "rows": 3
               }
@@ -4953,193 +5004,8 @@
           ],
           "communicationAddress": "[APPEND]borrowerDetails.borrowerDetail.personalAddress?.line1+[STATIC],+borrowerDetails.borrowerDetail?.personalAddress.line2+[STATIC],+borrowerDetails.borrowerDetail?.personalAddress.line3+[STATIC],+borrowerDetails.borrowerDetail.personalAddress.state+[STATIC],+borrowerDetails.borrowerDetail?.personalAddress?.district+[STATIC],+borrowerDetails.borrowerDetail?.personalAddress.country+[STATIC],+borrowerDetails?.borrowerDetail?.personalAddress?.zipCode"
         },
-        "formSubmitFlow": [
-          {
-            "submitflow": "assignParkingBranch",
-            "dataFeedCloud": [
-              "product",
-              "formValue",
-              "capturedData"
-            ],
-            "params": [
-              "access_token",
-              "loanUuid",
-              [
-                "userHierarchyUnitCode",
-                "branchCode"
-              ]
-            ],
-            "validationJson": {
-              "if": [
-                {
-                  "==": [
-                    {
-                      "var": "differencebranch"
-                    },
-                    true
-                  ]
-                },
-                "EXECUTE",
-                "NEXT"
-              ]
-            },
-            "validateResponse": "PROCEED",
-            "apiError": "PRODUCT_ERROR"
-          },
-          {
-            "submitflow": "personalProfileUpdate",
-            "dataFeedCloud": [
-              "product",
-              "formValue",
-              "capturedData"
-            ],
-            "params": [
-              "access_token",
-              "loanUuid",
-              "alternativeUsername",
-              "alternativeUsernameVerified",
-              "educationType",
-              "maritalStatus",
-              "addressOneDistrict",
-              "addressOneLine1",
-              "addressOneLine3",
-              "addressOneLine2",
-              "addressOneLivingSince",
-              "addressOneOwnershipType",
-              "addressOneState",
-              "addressOneSubDistrict",
-              "addressOneZipCode",
-              [
-                "borrowerDetailTextVariable60",
-                "differenceCommunicationAddress"
-              ],
-              [
-                "borrowerDetailTextVariable28",
-                "STATIC",
-                "Individual"
-              ],
-              [
-                "firstName",
-                "borrowerDetails.borrowerDetail.firstName"
-              ],
-              [
-                "middleName",
-                "borrowerDetails.borrowerDetail.middleName"
-              ],
-              [
-                "lastName",
-                "borrowerDetails.borrowerDetail.lastName"
-              ],
-              [
-                "dateOfBirth",
-                "borrowerDetails.borrowerDetail.dateOfBirth"
-              ],
-              [
-                "gender",
-                "borrowerDetails.borrowerDetail.gender"
-              ],
-              [
-                "residentStatus",
-                "STATIC",
-                "Resident"
-              ],
-              [
-                "citizenship",
-                "STATIC",
-                "INDIAN"
-              ],
-              [
-                "personalAddressCountry",
-                "borrowerDetails.borrowerDetail.personalAddress.personalAddressCountry"
-              ],
-              [
-                "personalAddressDistrict",
-                "borrowerDetails.borrowerDetail.personalAddress.personalAddressDistrict"
-              ],
-              [
-                "personalAddressLine1",
-                "borrowerDetails.borrowerDetail.personalAddress.personalAddressLine1"
-              ],
-              [
-                "personalAddressLine2",
-                "borrowerDetails.borrowerDetail.personalAddress.personalAddressLine2"
-              ],
-              [
-                "personalAddressLine3",
-                "borrowerDetails.borrowerDetail.personalAddress.personalAddressLine3"
-              ],
-              [
-                "personalAddressState",
-                "borrowerDetails.borrowerDetail.personalAddress.personalAddressState"
-              ],
-              [
-                "personalAddressZipCode",
-                "borrowerDetails.borrowerDetail.personalAddress.personalAddressZipCode"
-              ]
-            ],
-            "validationJson": {
-              "if": [
-                {
-                  "==": [
-                    {
-                      "var": "differenceCommunicationAddress"
-                    },
-                    true
-                  ]
-                },
-                "EXECUTE",
-                "NEXT"
-              ]
-            },
-            "validateResponse": "PROCEED",
-            "journeyEventCodeAfterResponseSucess": [
-              "ADDRESS_DETAILS",
-              "BUREAU_CALL"
-            ],
-            "apiError": "PRODUCT_ERROR"
-          },
-          {
-            "submitflow": "bureauCall",
-            "dataFeedCloud": [
-              "product",
-              "formValue",
-              "capturedData"
-            ],
-            "params": [
-              "access_token",
-              [
-                "applicationId",
-                "loanUuid"
-              ],
-              [
-                "applicationSource",
-                "STATIC",
-                "WEB_JOURNEY"
-              ],
-              [
-                "microservicetoken",
-                "oauthAccessToken"
-              ]
-            ],
-            "saveResponseToCapturedData": true,
-            "validateResponse": {
-              "if": [
-                {
-                  "==": [
-                    {
-                      "var": "cibilCheckStatus"
-                    },
-                    "Qualified"
-                  ]
-                },
-                "PROCEED",
-                "PROCEED"
-              ]
-            },
-            "apiError": "PRODUCT_ERROR"
-          }
-        ],
-      "dataScopeFetchFlow": [
+        "formSubmitFlow": [],
+        "dataScopeFetchFlow": [
           {
             "fetchflow": "loanDetails",
             "dataFeedCloud": [

@@ -5,7 +5,7 @@ import PatternI from '../../page_patterns/patternI'
 
 const PersonalDetails = ({ route, navigation }) => {
     const page_code = 'PERSONAL_DETAILS'
-    const { data } = useContext(LoanJourneyDataContext);
+    const { loan_journey_state } = useContext(LoanJourneyDataContext);
 
     return (
         <PatternI navigation={navigation} page_code={page_code}>

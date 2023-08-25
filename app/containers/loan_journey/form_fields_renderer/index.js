@@ -1,15 +1,17 @@
 import { StyleSheet, Text, View, FlatList } from 'react-native'
-import React, { useState,useId, useEffect, useReducer, useContext, useMemo } from 'react'
+import React, { useState, useId, useEffect, useReducer, useContext, useMemo } from 'react'
 import AddSubModuleInfo from './AddSubModuleInfo';
 import { LoanJourneyDataContext } from '../context';
 import IsEmpty from '../../../utils/IsEmpty';
+import { useSelector } from 'react-redux';
 
 const MannualModifications = {
     MOBILE_VERIFY: [{
         key: 'fieldName',
         value: 'mobileNumber',
         additionalProperties: {
-            verificationFieldName: 'accountNo'
+           // isVarify: true,
+            verificationFieldName: 'accountNo',
             //regex: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         }
     },
@@ -17,7 +19,8 @@ const MannualModifications = {
         key: 'fieldName',
         value: 'accountNo',
         additionalProperties: {
-            showField: false
+            showField: false,
+            submitPageOnVerify:true,
             //regex: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         }
     },],
@@ -30,13 +33,14 @@ const MannualModifications = {
             }
         }
     ],
-
 }
 
 const FormFieldsRendererView = () => {
-    const { state } = useContext(LoanJourneyDataContext);
+    const { loan_journey_state } = useContext(LoanJourneyDataContext);
+   
+    
     const [page_fields, set_page_fields] = useState([])
-
+    const loan_journey_data = useSelector(state => state.LoanJourneyReducer.data);
     // const getPageConfig = () => {
     //     if (state?.current_active_page?.pageCode) {
     //         const current_page_config = state?.loan_product_config?.pageSectionConfig?.individual[state?.current_active_page?.pageCode]
@@ -61,40 +65,43 @@ const FormFieldsRendererView = () => {
     //     }
     // }
 
-    console.log('state', state?.loan_product_config?.pageSectionConfig?.individual);
-    console.log('pagecode', state?.current_active_page?.pageCode);
+    console.log('state', loan_journey_state?.loan_product_config?.pageSectionConfig?.individual);
+    console.log('pagecode', loan_journey_state?.current_active_page?.pageCode);
 
     // useEffect(() => {
 
     // }, [state?.current_active_page?.pageCode])
 
     const getPageConfig = () => {
-        if (state?.current_active_page?.pageCode) {
-            const current_page_config = state?.loan_product_config?.pageSectionConfig?.individual[state?.current_active_page?.pageCode]
+        if (loan_journey_state?.current_active_page?.pageCode) {
+            const current_page_config = loan_journey_state?.loan_product_config?.pageSectionConfig?.individual[loan_journey_data?.current_active_page?.pageCode]
             console.log('current_page_config', current_page_config);
             return current_page_config
         }
         return []
     }
 
-    const calculation = useMemo(() => getPageConfig(), [state?.current_active_page?.pageCode]);
+    const calculation = useMemo(() => getPageConfig(), [loan_journey_state?.current_active_page?.pageCode]);
 
 
     useEffect(() => {
-        initialDataSetUp(calculation ? calculation : [])
+        //initialDataSetUp(getPageConfig(), [])
+        initialDataSetUp(calculation?calculation:[])
     }, [])
+
 
     const initialDataSetUp = async (data) => {
         const array = await [...data]
-        console.log('grouped_data initialDataSetUp calling', state?.current_active_page?.pageCode, data);
+        console.log('grouped_data initialDataSetUp calling', loan_journey_state?.current_active_page?.pageCode, data);
         try {
-            if (MannualModifications[state?.current_active_page?.pageCode]) {
-                let page_code_data = await [...MannualModifications[state?.current_active_page?.pageCode]]
+            if (MannualModifications[loan_journey_state?.current_active_page?.pageCode]) {
+                let page_code_data = await [...MannualModifications[loan_journey_state?.current_active_page?.pageCode]]
 
                 let mannual_modified_data = await page_code_data.reduce((curr, item) => {
                     return setDataBasedOnKeyValues(array, item.key, item.value, item.additionalProperties)
                 }, array)
-                const grouped_data = await formatDataBasedOnGroup(mannual_modified_data)
+                let new_data = await [...mannual_modified_data]
+                const grouped_data = await formatDataBasedOnGroup(new_data)
                 set_page_fields(grouped_data)
             } else {
                 const grouped_data = await formatDataBasedOnGroup(array)
@@ -197,12 +204,12 @@ function formatDataBasedOnGroup(data) {
         });
     }
     function modifyInSectionListFormat(array) {
-        return array.map((i,index) => {
+        return array.map((i, index) => {
             let new_item = {
-                container_id: `${index+1}`,
+                container_id: `${index + 1}`,
                 group_name: i[0]?.groupName ? i[0]?.groupName : 'page',
                 fieldDataType: 'CONTAINER',
-                data: [...i]
+                fields: [...i]
             }
             return new_item
         });
