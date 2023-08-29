@@ -99,7 +99,7 @@ const formReducer = (state, action) => {
     }
 }
 
-const onSubmitVerifyPageCodes = ['MOBILE_VERIFY']
+const onSubmitVerifyPageCodes = []//'MOBILE_VERIFY'
 
 const PageFormContextProvider = ({ data, children }) => {
     const [formState, dispatchFormState] = useReducer(formReducer, {
@@ -114,6 +114,10 @@ const PageFormContextProvider = ({ data, children }) => {
         dispatchFormState({ type: 'SET_FORM_RENDERED' })
     }, [])
 
+    const setInitialData = (data) => {
+        dispatchFormState({ type: 'SET_FORM_FIELDS', data: data })
+    }
+    
     const inputChangeHandler = useCallback(
         (inputKey, inputValue, index_array) => {
 
@@ -140,9 +144,7 @@ const PageFormContextProvider = ({ data, children }) => {
             }
         }
 
-    const setInitialData = (data) => {
-        dispatchFormState({ type: 'SET_FORM_FIELDS', data: data })
-    }
+
     const onSubmit = () => {
         return true
     }

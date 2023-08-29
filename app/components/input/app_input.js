@@ -95,7 +95,7 @@ const AppInput = (props) => {
                 paddingHorizontal: 8
             }]}>
                 {
-                <Text style={[AppStyles.fieldLabelText, { color: input_color_theme.textTitle }]}>{props?.label}</Text>}
+                    <Text style={[AppStyles.fieldLabelText, { color: input_color_theme.textTitle }]}>{props?.label}</Text>}
                 <View style={{ flexDirection: 'row' }}>
                     <View style={{ flex: 1, justifyContent: 'center' }}>
                         <TextInput
@@ -117,17 +117,17 @@ const AppInput = (props) => {
 
                     </View>
                     {
-                    ((props?.data?.fieldName && props?.data?.fieldName == 'alternativeUsername') || props?.data?.isVarify) &&
-                    
-                    <View style={{ flexDirection: 'row' }}>
-                        <View style={{ width: 8 }}></View>
-                        <AppButton size='TINY' label={'Verify'} onPress={() => {
-                            props.onVerify()
-                            onFieldStatusChange('SUCCESS')
-                            setFieldNotifierText('Pan number successfully Verified')
-                            setFieldValidity(true)
-                        }} />
-                    </View>
+                        ((props?.data?.verificationFieldName) && !props?.data?.submitPageOnVerify) &&
+
+                        <View style={{ flexDirection: 'row' }}>
+                            <View style={{ width: 8 }}></View>
+                            <AppButton size='TINY' label={'Verify'} onPress={() => {
+                                props.onVerify()
+                                onFieldStatusChange('SUCCESS')
+                                setFieldNotifierText('Pan number successfully Verified')
+                                setFieldValidity(true)
+                            }} />
+                        </View>
                     }
                 </View>
             </View>

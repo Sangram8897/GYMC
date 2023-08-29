@@ -10,6 +10,7 @@ const AddSubModuleInfo = ({ data }) => {
     const { page_form_state, setInitialData, inputChangeHandler, onVerifyHandler, onSubmit } = useContext(PageFormContext);
    
     useEffect(() => {
+        console.log('setInitialData',data);
         setInitialData(data)
     }, [data])
 

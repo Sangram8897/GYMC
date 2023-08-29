@@ -18,7 +18,7 @@ const inputStateColors = {
     SUCCESS: { primary: Colors.ACCENTS_LIME, textTitle: Colors.BLUE_B2, textValue: Colors.BLUE_B5 },
     ERROR: { primary: Colors.ACCENTS_SCARLET, textTitle: Colors.BLUE_B2, textValue: Colors.BLUE_B5 },
 }
-const DocumentInput = ({ fieldLabel, index_history, fieldDataType }) => {
+const DocumentInput = ({data, fieldLabel, index_history, fieldDataType }) => {
 
     const [fieldState, onFieldValueChange, setFieldValidity, onFieldStatusChange, setFieldVisibility, setFieldTouched, setFieldNotifierText] = useFieldState('', true, 'DEFAULT');
     const [input_color_theme, set_input_color_theme] = useState(inputStateColors[fieldState.status])
@@ -68,17 +68,22 @@ const DocumentInput = ({ fieldLabel, index_history, fieldDataType }) => {
                             fieldBorderColor={input_color_theme.primary}
                             fieldTextColor={input_color_theme.textValue}
                             multiInputFieldChange={multiInputFieldChange}
-                            textAlign={ 'center'}
+                            textAlign={'center'}
                             fieldDataType={fieldDataType}
                             value={''}
                         />
                     </View>
-                    <View style={{ width: 8 }}></View>
-                    <AppButton size='TINY' label={'Verify'} onPress={() => {
-                        onFieldStatusChange('SUCCESS')
-                        setFieldNotifierText('Pan number successfully Verified')
-                        setFieldValidity(true)
-                    }} />
+                    {
+                        data?.verificationFieldName &&
+                        <View style={{ flexDirection: 'row' }}>
+                            <View style={{ width: 8 }}></View>
+                            <AppButton size='TINY' label={'Verify'} onPress={() => {
+                                onFieldStatusChange('SUCCESS')
+                                setFieldNotifierText('Pan number successfully Verified')
+                                setFieldValidity(true)
+                            }} />
+                        </View>
+                    }
                 </View>
             </View>
             {

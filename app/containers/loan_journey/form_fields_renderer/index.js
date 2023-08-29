@@ -10,7 +10,7 @@ const MannualModifications = {
         key: 'fieldName',
         value: 'mobileNumber',
         additionalProperties: {
-           // isVarify: true,
+            submitPageOnVerify: true,
             verificationFieldName: 'accountNo',
             //regex: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         }
@@ -20,7 +20,7 @@ const MannualModifications = {
         value: 'accountNo',
         additionalProperties: {
             showField: false,
-            submitPageOnVerify:true,
+            submitPageOnVerify: true,
             //regex: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         }
     },],
@@ -37,8 +37,8 @@ const MannualModifications = {
 
 const FormFieldsRendererView = () => {
     const { loan_journey_state } = useContext(LoanJourneyDataContext);
-   
-    
+
+
     const [page_fields, set_page_fields] = useState([])
     const loan_journey_data = useSelector(state => state.LoanJourneyReducer.data);
     // const getPageConfig = () => {
@@ -73,9 +73,11 @@ const FormFieldsRendererView = () => {
     // }, [state?.current_active_page?.pageCode])
 
     const getPageConfig = () => {
+        // console.log('calculation',loan_journey_state?.current_active_page?.pageCode);
         if (loan_journey_state?.current_active_page?.pageCode) {
-            const current_page_config = loan_journey_state?.loan_product_config?.pageSectionConfig?.individual[loan_journey_data?.current_active_page?.pageCode]
-            console.log('current_page_config', current_page_config);
+            const active_pagecode = loan_journey_state?.current_active_page?.pageCode
+            let loan_journeyData = loan_journey_state?.loan_product_config?.pageSectionConfig?.individual
+            let current_page_config = loan_journeyData[active_pagecode]
             return current_page_config
         }
         return []
@@ -85,33 +87,32 @@ const FormFieldsRendererView = () => {
 
 
     useEffect(() => {
-        //initialDataSetUp(getPageConfig(), [])
-        initialDataSetUp(calculation?calculation:[])
+        let page_fields_ = initialDataSetUp(calculation ? calculation : [])
+        console.log('====================================');
+        console.log('page_fields99', page_fields_);
+        set_page_fields(page_fields_)
+        console.log('====================================');
     }, [])
 
 
-    const initialDataSetUp = async (data) => {
-        const array = await [...data]
-        console.log('grouped_data initialDataSetUp calling', loan_journey_state?.current_active_page?.pageCode, data);
+    const initialDataSetUp = (data) => {
+        const array = [...data]
         try {
             if (MannualModifications[loan_journey_state?.current_active_page?.pageCode]) {
-                let page_code_data = await [...MannualModifications[loan_journey_state?.current_active_page?.pageCode]]
-
-                let mannual_modified_data = await page_code_data.reduce((curr, item) => {
+                const page_code_data = [...MannualModifications[loan_journey_state?.current_active_page?.pageCode]]
+                const mannual_modified_data = page_code_data.reduce((curr, item) => {
                     return setDataBasedOnKeyValues(array, item.key, item.value, item.additionalProperties)
                 }, array)
-                let new_data = await [...mannual_modified_data]
-                const grouped_data = await formatDataBasedOnGroup(new_data)
-                set_page_fields(grouped_data)
+
+                const grouped_data = formatDataBasedOnGroup(mannual_modified_data)
+                return grouped_data
             } else {
-                const grouped_data = await formatDataBasedOnGroup(array)
-                set_page_fields(grouped_data)
+                const grouped_data = formatDataBasedOnGroup(array)
+                return grouped_data
             }
-            // console.log('grouped_data input data', array);
-            // const grouped_data = await formatDataBasedOnGroup(array)
-            // console.log('grouped_data90', grouped_data);
         } catch (err) {
             console.log('grouped_data error', err);
+            return []
         }
     }
 
@@ -148,6 +149,7 @@ function modifyDataByIndex(array, text, index_history) {
     }
     return data
 }
+
 function setDataBasedOnKeyValues(data, key, value, additionalProperties) {
     for (let i = 0; i < data.length; i++) {
         if (data[i][key] && data[i][key] == value) {

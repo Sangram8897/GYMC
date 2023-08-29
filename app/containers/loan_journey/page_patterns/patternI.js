@@ -11,7 +11,7 @@ import FormFieldsRendererView from '../form_fields_renderer';
 import { PageFormContext } from '../context/page_form';
 //import { NavigationActions } from 'react-navigation';
 
-const onSubmitVerifyPageCodes = ['MOBILE_VERIFY']
+const onSubmitVerifyPageCodes = []//MOBILE_VERIFY
 const PatternI = ({ navigation, page_code, children }) => {
     const { loan_journey_state, dispatchContextState, moveFromPage } = useContext(LoanJourneyDataContext);
     const { onVerify, onSubmit } = useContext(PageFormContext);

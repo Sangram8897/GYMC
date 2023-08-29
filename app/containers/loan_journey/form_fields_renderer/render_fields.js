@@ -8,7 +8,7 @@ import {
 } from '../../../components/index';
 
 
-const renderFields = (field_item, field_index, hierarchy, index_history, inputChangeHandler, onVerifyHandler, show_consent) => {
+const renderFields = (field_item, field_index, hierarchy, index_history, inputChangeHandler = () => { }, onVerifyHandler, show_consent) => {
     switch (field_item?.fieldDataType || field_item?.componentType || field_item?.linkType || field_item?.consentType) {
         case 'TITLE':
             return <>
@@ -56,6 +56,7 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
         case 'PAN_CARD':
             return <>
                 <DocumentInput
+                    data={field_item}
                     fieldLabel={field_item?.fieldLabel}
                     index_history={index_history}
                     onInputChange={inputChangeHandler}
@@ -69,7 +70,8 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
             </>
         case 'AADHAR':
             return <>
-                <Input
+                <DocumentInput
+                    data={field_item}
                     fieldLabel={field_item?.fieldLabel}
                     index_history={index_history}
                     onInputChange={inputChangeHandler}
@@ -78,7 +80,6 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
                     onPress={(code) => {
                         // setModalVisible(onboardingVerificationType, code, fieldName)
                     }}
-                    onVerify={() => onVerifyHandler(field_item.verificationFieldName, 'fieldName')}
                     disabled={false}
                 />
             </>
@@ -102,7 +103,7 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
                     (show_consent && field_item?.sectionContent?.config?.options) && <FlatList
                         style={{ flex: 1, width: '100%' }}
                         data={field_item?.sectionContent?.config?.options}
-                        renderItem={({ item, index }) => renderFields(item, index, [...hierarchy, item.id], [...index_history, index], inputChangeHandler)}
+                        renderItem={({ item, index }) => renderFields(item, index, [...hierarchy, item.id], [...index_history, index], inputChangeHandler, onVerifyHandler, show_consent)}
                         keyExtractor={(item, index) => index.toString()}
                     />
                 }
@@ -181,7 +182,7 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
                     index_history={index_history}
                     data={field_item}
                     onCancel={() => { }}
-                    onVerify={(value) => onVerifyHandler(field_item.fieldName, 'value', value,index_history, field_item?.submitPageOnVerify)}
+                    onVerify={(value) => onVerifyHandler(field_item.fieldName, 'value', value, index_history, field_item?.submitPageOnVerify)}
                 // onValidate={}
                 />
             </>
