@@ -1,86 +1,71 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
-const PROP = [
-	{
-		optionKey: 'samsung',
-		optionName: 'Samsung',
-	},
-	{
-		optionKey: 'apple',
-		optionName: 'Apple',
-	},
-	{
-		optionKey: 'motorola',
-		optionName: 'Motorola',
-	},
-	{
-		optionKey: 'lenovo',
-		optionName: 'Lenovo',
-  },
-];
+import AppStyles from '../style';
 
-export default class RadioButton extends Component {
-	state = {
-		value: null,
-	};
-	render() {
-		const { options } = this.props;
-		const { value } = this.state;
-		return (
-			<View>
+
+
+export default function RadioButton({ options, label, onChange }) {
+	const [value, setValue] = useState(null)
+	return (
+		<View>
+			{label && <Text style={AppStyles.fieldValueText} >{label ? label : 'select option'}</Text>}
+			<View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap', marginTop: 12 }}>
+
 				{options && options.map(res => {
 					return (
 						<View key={res.optionKey} style={styles.container}>
-							<Text style={styles.radioText}>{res.optionName}</Text>
+
 							<TouchableOpacity
 								style={styles.radioCircle}
 								onPress={() => {
-									this.setState({
-										value: res.optionKey,
-									});
+									setValue(res.optionKey)
+									onChange(res.optionKey)
 								}}>
-                                  {value === res.optionKey && <View style={styles.selectedRb} />}
+								{value === res.optionKey && <View style={styles.selectedRb} />}
 							</TouchableOpacity>
+							<Text style={styles.radioText}>{res.optionName}</Text>
 						</View>
 					);
 				})}
-                <Text> Selected: {this.state.value} </Text>
 			</View>
-		);
-	}
+		</View>
+	)
 }
+
+
+
 const styles = StyleSheet.create({
 	container: {
-        marginBottom: 35,
-        alignItems: 'center',
-        flexDirection: 'row',
-		justifyContent: 'space-between',
+		marginBottom: 35,
+		alignItems: 'center',
+		flexDirection: 'row',
+		//justifyContent: 'space-between',
 	},
-    radioText: {
-        marginRight: 35,
-        fontSize: 20,
-        color: '#000',
-        fontWeight: '700'
-    },
+	radioText: {
+		marginHorizontal: 16,
+		fontSize: 16,
+		color: '#000',
+		fontWeight: '500'
+	},
 	radioCircle: {
-		height: 30,
-		width: 30,
-		borderRadius: 100,
+		height: 20,
+		width: 20,
+		borderRadius: 20,
 		borderWidth: 2,
 		borderColor: '#3740ff',
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
 	selectedRb: {
-		width: 15,
-		height: 15,
-		borderRadius: 50,
+		width: 12,
+		height: 12,
+		borderRadius: 20,
 		backgroundColor: '#3740ff',
-    },
-    result: {
-        marginTop: 20,
-        color: 'white',
-        fontWeight: '600',
-        backgroundColor: '#F3FBFE',
-    },
+	},
+	result: {
+		marginTop: 20,
+		color: 'white',
+		fontWeight: '600',
+		backgroundColor: '#F3FBFE',
+	},
 });

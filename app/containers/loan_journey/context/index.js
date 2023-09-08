@@ -48,6 +48,7 @@ const inintialState = {
     loan_product_config: {},
     current_active_page: null,
     stepper_data: [],
+    profile_data: null
 }
 
 const contextReducer = (state, action) => {
@@ -61,6 +62,11 @@ const contextReducer = (state, action) => {
                 ...state,
                 stepper_data: action.data,
                 current_active_page: action.page_data
+            }
+        case 'SET_PROFILE_DATA':
+            return {
+                ...state,
+                profile_data: action.payload,
             }
         default:
             return state;
@@ -80,7 +86,7 @@ function LoanJourneyDataProvider({ children }) {
             loanJourneyNavigation,
             dispatchContextState,
             updateActiveStepInStepper,
-
+            setPrpfileData,
         }),
         [
             data,
@@ -90,12 +96,18 @@ function LoanJourneyDataProvider({ children }) {
             loanJourneyNavigation,
             dispatchContextState,
             updateActiveStepInStepper,
-
+            setPrpfileData,
         ]
     );
 
+    function setPrpfileData(data) {
+        if (data) {
+            dispatchContextState({ type: 'SET_PROFILE_DATA', payload: data })
+        }
+    }
+
     function updateActiveStepInStepper(pagedata) {
-        if(pagedata && pagedata?.pageCode){
+        if (pagedata && pagedata?.pageCode) {
             const updated_stepper_data = setActiveStepInData(state.stepper_data, pagedata.pageCode)
             dispatchContextState({ type: 'UPDATE_STEPPER_DATA', data: updated_stepper_data, page_data: pagedata })
         }
@@ -141,7 +153,7 @@ function LoanJourneyDataProvider({ children }) {
         const current_active_page_code = state?.current_active_page?.pageCode
         let action_page_code = loanJourneyNavigation(current_active_page_code, 'NEXT')
         // if (action_page_code.pageCode != 'STATUS_CHECK') {
-            updateActiveStepInStepper(action_page_code)
+        updateActiveStepInStepper(action_page_code)
         // }
         RootNavigation.navigate(PAGECODES[action_page_code.pageCode]);
     }

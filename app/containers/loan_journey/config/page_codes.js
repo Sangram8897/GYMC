@@ -1,4 +1,13 @@
 export const PAGECODES = {
+    LANDING:'MobileVerify',
+    ADDITIONAL_INFORMATION:'AdditionalInformation',
+    PRODUCT_DESCRIPTION:'MobileVerify',
+    MORE_INFO:'MobileVerify',
+    LOAN_SUMMARY:'MobileVerify',
+    PREVIEW_PAGE:'MobileVerify',
+
+
+
     MOBILE_VERIFY: "MobileVerify",
     MORE_INFO: "MoreInfo",
     STATUS_CHECK: "StatusCheck",
@@ -31,7 +40,7 @@ export const PAGECODES = {
     DOCUMENTATION_COMPLETE: 'DocumentComplete',
     VEHICLE_DETAILS: 'VehicleDetails',
     BRANCH_DETAILS: 'BranchDetails',
-    ADDITIONAL_INFORMATION: 'AdditionalInformation',
+   // ADDITIONAL_INFORMATION: 'AdditionalInformation',
     JOURNEY_PREVIEW: 'JourneyPreview',
     TRACK_APPLICATION: 'TrackApplication',
     VKYC: 'VideoKYC',

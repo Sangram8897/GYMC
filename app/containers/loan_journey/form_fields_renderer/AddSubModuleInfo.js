@@ -7,10 +7,10 @@ import { PageFormContext } from '../context/page_form';
 
 
 const AddSubModuleInfo = ({ data }) => {
-    const { page_form_state, setInitialData, inputChangeHandler, onVerifyHandler, onSubmit } = useContext(PageFormContext);
-   
+    const { page_form_state, setInitialData, inputChangeHandler, onVerifyHandler, setActiveOTP } = useContext(PageFormContext);
+
     useEffect(() => {
-        console.log('setInitialData',data);
+        console.log('setInitialData', data);
         setInitialData(data)
     }, [data])
 
@@ -18,7 +18,7 @@ const AddSubModuleInfo = ({ data }) => {
         <View style={{ flex: 1 }}>
             <FlatList
                 data={page_form_state?.data}
-                renderItem={({ item, index }) => renderFields(item, index, [item.id], [index], inputChangeHandler, onVerifyHandler, page_form_state?.show_consent)}
+                renderItem={({ item, index }) => renderFields(item, index, [item.id], [index], inputChangeHandler, onVerifyHandler, page_form_state?.show_consent, page_form_state?.active_otp,setActiveOTP)}
                 keyExtractor={(item, index) => `parent_data${index.toString()}`}
             />
         </View>

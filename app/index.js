@@ -34,6 +34,8 @@ import { Provider } from 'react-redux';
 import store from './store/confugure_store';
 import PageFormContextProvider from './containers/loan_journey/context/page_form';
 import { navigationRef } from './RootNavigation';
+import ProductDescription from './containers/loan_journey/pages/product_description';
+import AdditionalInformation from './containers/loan_journey/pages/additional_information';
 
 const App = () => {
   const Stack = createNativeStackNavigator();
@@ -72,6 +74,9 @@ const App = () => {
               <Stack.Screen name="DocumentList" component={DocumentList} options={{ headerShown: false }} />
               <Stack.Screen name="ProductError" component={ProductError} options={{ headerShown: false }} />
               <Stack.Screen name="PreviewPage" component={PreviewPage} options={{ headerShown: false }} />
+              <Stack.Screen name="ProductDescription" component={ProductDescription} options={{ headerShown: false }} />
+              <Stack.Screen name="AdditionalInformation" component={AdditionalInformation} options={{ headerShown: false }} />
+
 
             </Stack.Navigator>
           </NavigationContainer>

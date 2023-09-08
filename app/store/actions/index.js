@@ -4,8 +4,10 @@
 // import * as SubMolulesActions from '../../containers/home/notes/subject_list/module_list/sub_module_list/store/action';
 // import * as SubjectActions from '../../containers/home_/subject_list/store/action';
 import * as LoanJourneyActions from './loan_journey_actions';
+import * as LoanJourneyPageActions from './../../containers/loan_journey/store/actions/index';
 const ACTIONS = {
-    LoanJourneyActions,
+    ...LoanJourneyActions,
+    ...LoanJourneyPageActions,
 };
 
 export default ACTIONS;

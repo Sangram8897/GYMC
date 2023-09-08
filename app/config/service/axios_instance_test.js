@@ -2,19 +2,21 @@ import axios from "axios";
 import { ToastAndroid } from "react-native";
 import { ActiveEnv, Envs } from "../env";
 import store from "../../store/confugure_store";
+import { useContext } from "react";
+import { LoanJourneyDataContext } from "../../containers/loan_journey/context";
 
-export const axiosInstance = axios.create({
-    baseURL: Envs[ActiveEnv].host,
+export const axiosInstanceTest = axios.create({
+    baseURL: Envs[ActiveEnv].hostTest,
     // headers: {
     //     'Clientapikey': 'defaultKey',
     //     'Content-Type': 'application/x-www-form-urlencoded'
     // },
 });
 
-axiosInstance.interceptors.request.use(
+axiosInstanceTest.interceptors.request.use(
     function (config) {
-
         const access_token = store.getState()?.LoanJourneyReducer?.profile?.access_token;
+
         console.log('otp_res axios access_token', access_token);
         // console.log('config', config);
         if (access_token) {
@@ -31,7 +33,7 @@ axiosInstance.interceptors.request.use(
     }
 );
 
-axiosInstance.interceptors.response.use(
+axiosInstanceTest.interceptors.response.use(
     function (response) {
         return response;
     },

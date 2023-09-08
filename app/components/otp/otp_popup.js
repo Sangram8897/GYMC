@@ -19,25 +19,31 @@ const inputStateColors = {
     ERROR: { primary: Colors.ACCENTS_SCARLET, textTitle: Colors.BLUE_B2, textValue: Colors.BLUE_B5 },
 }
 
-const OtpPopup = ({ popup_state, data, label = 'PopupOTP', title = 'My dropdown', index_history, onCancel, onVerify=()=>{}  }) => {
+const OtpPopup = ({ popup_state, data, label = 'PopupOTP', title = 'My dropdown', index_history, onCancel, onVerify = () => { } }) => {
     const [fieldState, onFieldValueChange, setFieldValidity, onFieldStatusChange, setFieldVisibility, setFieldTouched, setFieldNotifierText] = useFieldState('', true, 'DEFAULT');
     const [input_color_theme, set_input_color_theme] = useState(inputStateColors[fieldState.status])
 
     const [show_dropdown_modal, set_show_dropdown_modal] = useState(false)
 
     useEffect(() => {
-        set_show_dropdown_modal(popup_state)
+        if (show_dropdown_modal !== popup_state) {
+            if (popup_state == true) {
+
+            }
+            set_show_dropdown_modal(popup_state)
+        }
+
     }, [popup_state])
 
     const multiInputFieldChange = (multi_input_state) => {
 
     }
-    console.log('input_color_theme', input_color_theme);
+    console.log('input_color_theme', data);
 
     return (
         <View>
 
-            {show_dropdown_modal == true && <View style={{ width: '100%', height: 200, justifyContent: 'space-evenly', backgroundColor: 'pink' }}>
+            {/* {show_dropdown_modal == true && <View style={{ width: '100%', height: 200, justifyContent: 'space-evenly', backgroundColor: 'pink' }}>
 
                 <Text style={{ fontSize: 18, fontWeight: 'bold', padding: 12 }}> {data?.fieldLabel}</Text>
 
@@ -57,9 +63,9 @@ const OtpPopup = ({ popup_state, data, label = 'PopupOTP', title = 'My dropdown'
                 </View>
 
             </View>
-            }
+            } */}
 
-            {/* 
+
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -70,7 +76,7 @@ const OtpPopup = ({ popup_state, data, label = 'PopupOTP', title = 'My dropdown'
                     // set_show_dropdown_modal(!show_dropdown_modal);
                 }}>
                 <View style={{ flex: 1, width: '100%', justifyContent: 'center', backgroundColor: 'rgba(52, 52, 52, 0.8)' }}>
-                    <View style={{ height: 300, width: "95%", alignSelf: 'center', backgroundColor: '#FFF', borderRadius: 8, justifyContent: 'center', alignItems: 'center', padding: 12 }}>
+                    <View style={{ height: 200, width: "90%", alignSelf: 'center', backgroundColor: '#FFF', borderRadius: 8, justifyContent: 'center', alignItems: 'center', padding: 12 }}>
 
                         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                             <View style={{ height: 20, width: 20 }} />
@@ -84,7 +90,9 @@ const OtpPopup = ({ popup_state, data, label = 'PopupOTP', title = 'My dropdown'
                                 }}
                                 name='closecircleo' size={20} color={'red'} />
                         </View>
-                        <View style={{ flex: 1, width: '100%', backgroundColor: 'red' }}>
+                        <Text>{data?.infoText}</Text>
+
+                        <View style={{ flex: 1, justifyContent: 'center' }}>
                             <MultiInputField
                                 fieldBorderColor={input_color_theme.primary}
                                 fieldTextColor={input_color_theme.textValue}
@@ -94,15 +102,20 @@ const OtpPopup = ({ popup_state, data, label = 'PopupOTP', title = 'My dropdown'
                                 value={''}
                             />
                         </View>
+                        <View style={{ alignSelf: 'flex-end', }}>
+                            <AppButton label={'Verify'} size={'TINY'} onPress={() => onVerify(fieldState)} />
+                            {/* <AppButton label={'Resend OTP'} size={'TINY'} bordered={true} /> */}
+                        </View>
+
 
                     </View>
                 </View>
-            </Modal> */}
+            </Modal>
         </View>
     )
 }
 
-export default OtpPopup
+export default React.memo(OtpPopup)
 
 const styles = StyleSheet.create({
     a: {

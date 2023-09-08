@@ -8,7 +8,7 @@ import {
 } from '../../../components/index';
 
 
-const renderFields = (field_item, field_index, hierarchy, index_history, inputChangeHandler = () => { }, onVerifyHandler, show_consent) => {
+const renderFields = (field_item, field_index, hierarchy, index_history, inputChangeHandler = () => { }, onVerifyHandler, show_consent, active_otp, setActiveOTP) => {
     switch (field_item?.fieldDataType || field_item?.componentType || field_item?.linkType || field_item?.consentType) {
         case 'TITLE':
             return <>
@@ -31,6 +31,11 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
                     initialValue={field_item?.value ? field_item.value : ''}
                     initialValid={true}
                     onInputChange={inputChangeHandler}
+                    onVerify={() => {
+                        if (field_item?.verificationFieldName)
+                            setActiveOTP(field_item?.verificationFieldName)
+                    }}
+                    setActiveOTP={setActiveOTP}
                 //required
                 />
             </>
@@ -48,7 +53,10 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
                     initialValue={field_item?.value ? field_item.value : ''}
                     initialValid={true}
                     onInputChange={inputChangeHandler}
-                    onVerify={() => onVerifyHandler(field_item.verificationFieldName, 'fieldName')}
+                    onVerify={() => {
+                        if (field_item?.verificationFieldName)
+                            setActiveOTP(field_item?.verificationFieldName)
+                    }}
                     required
 
                 />
@@ -81,6 +89,11 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
                         // setModalVisible(onboardingVerificationType, code, fieldName)
                     }}
                     disabled={false}
+                    onVerify={() => {
+                        if (field_item?.verificationFieldName)
+                            setActiveOTP(field_item?.verificationFieldName)
+                    }}
+                    setActiveOTP={setActiveOTP}
                 />
             </>
 
@@ -173,18 +186,24 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
                 />
             </>
         case 'OTP':
-            //console.log('popup_state field_item?.showField', field_item);
-            // if()
+
+
             field_item = field_item?.sectionContent?.fields ? field_item?.sectionContent?.fields : field_item
+            console.log('popup_state active_otp', active_otp);
+            console.log('popup_state main', (active_otp && active_otp?.field_name && active_otp?.field_name == field_item?.fieldName));
             return <>
-                <OtpPopup
-                    popup_state={field_item?.showField ? field_item?.showField : false}
-                    index_history={index_history}
-                    data={field_item}
-                    onCancel={() => { }}
-                    onVerify={(value) => onVerifyHandler(field_item.fieldName, 'value', value, index_history, field_item?.submitPageOnVerify)}
-                // onValidate={}
-                />
+                {(active_otp && active_otp == field_item?.fieldName) &&
+                    <OtpPopup
+                        popup_state={(active_otp && active_otp == field_item?.fieldName) ? true : false}
+                        index_history={index_history}
+                        data={field_item}
+                        onCancel={() => { setActiveOTP(null) }}
+                        setActiveOTP={setActiveOTP}
+                        onVerify={(value) => onVerifyHandler(field_item.fieldName, 'value', value, index_history, field_item?.submitPageOnVerify)}
+                    // onValidate={}
+                    />
+                }
+
             </>
 
         case 'BOOLEAN':
@@ -201,7 +220,7 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
                     options={field_item?.options}
                     label={field_item?.fieldLabel}
                     value={field_item?.value}
-                    onSwitch={(value) => inputChangeHandler('dropdown', value, index_history)}
+                    onChange={(value) => inputChangeHandler('dropdown', value, index_history)}
                 />
             </>
 
@@ -234,6 +253,10 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
                     initialValue={field_item?.value ? field_item.value : ''}
                     initialValid={true}
                     onInputChange={inputChangeHandler}
+                    onVerify={() => {
+                        if (field_item?.verificationFieldName)
+                            setActiveOTP(field_item?.verificationFieldName)
+                    }}
                 //required
                 />
             </>
@@ -283,7 +306,7 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
                                 style={{ fontSize: 18, fontWeight: 'bold', marginVertical: 10 }}
                             >{field_item?.group_name}</Text> : <></>}
                             data={field_item?.fields}
-                            renderItem={({ item, index }) => renderFields(item, index, [...hierarchy, item?.id], [...index_history, index], inputChangeHandler, onVerifyHandler)}
+                            renderItem={({ item, index }) => renderFields(item, index, [...hierarchy, item?.id], [...index_history, index], inputChangeHandler, onVerifyHandler, show_consent, active_otp, setActiveOTP)}
                             keyExtractor={(item, index) => `${item?.container_id}container${index.toString()}`}
                         />
                     }
@@ -296,7 +319,7 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
                         field_item?.sectionContent?.fields ? <FlatList
 
                             data={field_item?.sectionContent?.fields}
-                            renderItem={({ item, index }) => renderFields(item, index, [...hierarchy, item.id], [...index_history, index], inputChangeHandler, onVerifyHandler)}
+                            renderItem={({ item, index }) => renderFields(item, index, [...hierarchy, item.id], [...index_history, index], inputChangeHandler, onVerifyHandler, show_consent, active_otp, setActiveOTP)}
                             keyExtractor={(item, index) => `${item?.container_id}form${index.toString()}`}
                         /> : <></>
                     }
@@ -308,12 +331,12 @@ const renderFields = (field_item, field_index, hierarchy, index_history, inputCh
                     {
                         field_item?.addressFields ? <FlatList
                             data={field_item?.addressFields}
-                            renderItem={({ item, index }) => renderFields(item, index, [...hierarchy, item.id], [...index_history, index], inputChangeHandler)}
+                            renderItem={({ item, index }) => renderFields(item, index, [...hierarchy, item.id], [...index_history, index], inputChangeHandler, onVerifyHandler, show_consent, active_otp, setActiveOTP)}
                             keyExtractor={(item, index) => `address${index.toString()}`}
                         /> :
                             field_item?.sectionContent?.addressFields ? <FlatList
                                 data={field_item?.sectionContent?.addressFields}
-                                renderItem={({ item, index }) => renderFields(item, index, [...hierarchy, item.id], [...index_history, index], inputChangeHandler)}
+                                renderItem={({ item, index }) => renderFields(item, index, [...hierarchy, item.id], [...index_history, index], inputChangeHandler, onVerifyHandler, show_consent, active_otp, setActiveOTP)}
                                 keyExtractor={(item, index) => `section_address${index.toString()}`}
                             /> : <></>
                     }
