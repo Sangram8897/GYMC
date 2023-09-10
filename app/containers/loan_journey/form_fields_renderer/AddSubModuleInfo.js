@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer, useCallback, useMemo, useContext } from 'react'
 import { StyleSheet, FlatList, Text, View, Keyboard } from 'react-native'
 
-import renderFields from './render_fields';
+import renderFields from './render_fields2';
 import MY_DATA from './configs/loan_config_dt_page_test';
 import { PageFormContext } from '../context/page_form';
 

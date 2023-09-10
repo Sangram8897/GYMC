@@ -4,6 +4,7 @@ import AddSubModuleInfo from './AddSubModuleInfo';
 import { LoanJourneyDataContext } from '../context';
 import IsEmpty from '../../../utils/IsEmpty';
 import { useSelector } from 'react-redux';
+import PageSections from './page_sections';
 
 const MannualModifications = {
     MOBILE_VERIFY: [{
@@ -80,11 +81,10 @@ const FormFieldsRendererView = () => {
                     return setDataBasedOnKeyValues(array, item.key, item.value, item.additionalProperties)
                 }, array)
 
-                const grouped_data = formatDataBasedOnGroup(mannual_modified_data)
-                return grouped_data
+              
+                return mannual_modified_data
             } else {
-                const grouped_data = formatDataBasedOnGroup(array)
-                return grouped_data
+                return array
             }
         } catch (err) {
             console.log('grouped_data error', err);
@@ -95,7 +95,7 @@ const FormFieldsRendererView = () => {
     console.log('FormFieldsRendererView page_fields', page_fields);
     return (
         <View style={{ flex: 1, width: '95%', alignSelf: 'center' }}>
-            {(page_fields && page_fields.length > 0) && <AddSubModuleInfo data={page_fields} />}
+            {(page_fields && page_fields.length > 0) && <PageSections data={page_fields} />}
         </View>
     )
 }
