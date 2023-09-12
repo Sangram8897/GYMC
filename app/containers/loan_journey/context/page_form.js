@@ -86,6 +86,13 @@ const formReducer = (state, action) => {
                 ...state,
                 data: action.data
             }
+
+        case 'SET_CONSENTS':
+            return {
+                ...state,
+                consents: action.data
+            }
+
         case 'SET_ACTIVE_OTP':
             return {
                 ...state,
@@ -115,6 +122,7 @@ const PageFormContextProvider = ({ data, children }) => {
         data: [],
         index_array: null,
         form_rendered: false,
+        consents: [],
         show_consent: true,
         active_otp: null,
     });
@@ -129,9 +137,13 @@ const PageFormContextProvider = ({ data, children }) => {
         dispatchFormState({ type: 'SET_FORM_FIELDS', data: data })
     }
 
+    const setConsentData = (data) => {
+        dispatchFormState({ type: 'SET_CONSENTS', data: data })
+    }
+
     const inputChangeHandler = useCallback(
         (inputKey, inputValue, index_array) => {
-
+            console.log('page_form_state3 input execute');
             dispatchFormState({
                 type: FORM_INPUT_UPDATE,
                 key: inputKey,
@@ -230,7 +242,8 @@ const PageFormContextProvider = ({ data, children }) => {
         () => ({
             page_form_state: formState,
             setInitialData: setInitialData,
-            dispatch: inputChangeHandler,
+            inputChangeHandler: inputChangeHandler,
+            setConsentData,
             onVerifyHandler: onVerifyHandler,
             onVerify: onVerify,
             onSubmit: onSubmit,
@@ -240,6 +253,7 @@ const PageFormContextProvider = ({ data, children }) => {
             formState,
             setInitialData,
             inputChangeHandler,
+            setConsentData,
             onVerifyHandler,
             onVerify,
             onSubmit,

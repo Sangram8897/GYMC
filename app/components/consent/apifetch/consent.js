@@ -13,7 +13,7 @@ const ApiFetchConsent = ({ data }) => {
     useEffect(() => {
         setTimeout(() => { set_consent_data(consent_response['DND_CONSENT_PL'].loanPurposeTemplateList[0].description) }, 500)
     }, [])
-    console.log('ApiFetchConsent', data);
+    console.log('page_form_state390 ApiFetchConsent', data);
 
     function renderNode(node, index, siblings, parent, defaultRenderer) {
         if (node.name == 'a') {

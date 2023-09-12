@@ -4,6 +4,7 @@ import { LoanJourneyDataContext } from '../context';
 import IsEmpty from '../../../utils/IsEmpty';
 import { useSelector } from 'react-redux';
 import PageSections from './page_sections';
+// import PageSections from './page_sections';
 
 const MannualModifications = {
     MOBILE_VERIFY: [{
@@ -35,27 +36,28 @@ const MannualModifications = {
     ],
 }
 
-const FormFieldsRendererView = () => {
-    const { loan_journey_state } = useContext(LoanJourneyDataContext);
+const PageRendererView = () => {
+
 
 
     const [page_fields, set_page_fields] = useState([])
     const loan_journey_data = useSelector(state => state.LoanJourneyReducer.data);
 
     const getPageConfig = () => {
-        // console.log('calculation',loan_journey_state?.current_active_page?.pageCode);
-        if (loan_journey_state?.current_active_page?.pageCode) {
-            const active_pagecode = loan_journey_state?.current_active_page?.pageCode
-            let loan_journeyData = loan_journey_state?.loan_product_config?.pageSectionConfig?.individual
+       // console.log('PageRendererView', loan_journey_data?.current_active_page?.pageCode);
+        if (loan_journey_data?.current_active_page?.pageCode) {
+            const active_pagecode = loan_journey_data?.current_active_page?.pageCode
+            let loan_journeyData = loan_journey_data?.loan_product_config?.pageSectionConfig?.individual
             let current_page_config = loan_journeyData[active_pagecode]
             return current_page_config
         }
         return []
     }
 
-    const calculation = useMemo(() => getPageConfig(), [loan_journey_state?.current_active_page?.pageCode]);
+    const calculation = useMemo(() => getPageConfig(), [loan_journey_data?.current_active_page?.pageCode]);
 
     useEffect(() => {
+        console.log('PageRendererView', loan_journey_data);
         let page_fields_ = initialDataSetUp(calculation ? calculation : [])
         set_page_fields(page_fields_)
     }, [])
@@ -64,8 +66,8 @@ const FormFieldsRendererView = () => {
     const initialDataSetUp = (data) => {
         const array = [...data]
         try {
-            if (MannualModifications[loan_journey_state?.current_active_page?.pageCode]) {
-                const page_code_data = [...MannualModifications[loan_journey_state?.current_active_page?.pageCode]]
+            if (MannualModifications[loan_journey_data?.current_active_page?.pageCode]) {
+                const page_code_data = [...MannualModifications[loan_journey_data?.current_active_page?.pageCode]]
                 const mannual_modified_data = page_code_data.reduce((curr, item) => {
                     return setDataBasedOnKeyValues(array, item.key, item.value, item.additionalProperties)
                 }, array)
@@ -81,15 +83,16 @@ const FormFieldsRendererView = () => {
         }
     }
 
-    console.log('FormFieldsRendererView page_fields', page_fields);
+    console.log('PageRendererView page_fields', page_fields);
     return (
         <View style={{ flex: 1, width: '95%', alignSelf: 'center' }}>
+            <Text>welcome to jumanji</Text>
             {(page_fields && page_fields.length > 0) && <PageSections data={page_fields} />}
         </View>
     )
 }
 
-export default FormFieldsRendererView
+export default PageRendererView
 
 
 

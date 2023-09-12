@@ -9,6 +9,7 @@ import { PAGECODES } from '../config/page_codes';
 import LoanProducts from '../../../config/LoanProducts';
 import FormFieldsRendererView from '../form_fields_renderer';
 import { PageFormContext } from '../context/page_form';
+import PageRendererView from '../page_renderer';
 //import { NavigationActions } from 'react-navigation';
 
 const onSubmitVerifyPageCodes = []//MOBILE_VERIFY
@@ -50,7 +51,7 @@ const PatternI = ({ navigation, page_code, children }) => {
                     behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                     style={{ flex: 1 }}
                 >
-                    <FormFieldsRendererView />
+                    <PageRendererView />
                 </KeyboardAvoidingView>
 
             </View>

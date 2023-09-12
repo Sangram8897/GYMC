@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, FlatList } from 'react-native'
 import React, { useContext, useEffect } from 'react'
 import RenderFormComponents from './render_form_components';
 import { Title, Paragraph, } from '../../../components/index';
-import RenderConsents from './render_consents';
+ import RenderConsents from './render_consents';
 
 const PageSections = ({ data }) => {
 
@@ -31,7 +31,7 @@ const PageSections = ({ data }) => {
 
             case 'FORM':
                 return <>
-                    <RenderFormComponents field_item={item} />
+                    <RenderFormComponents data={item} />
                 </>
 
             case 'CONSENT':
