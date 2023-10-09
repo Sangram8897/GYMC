@@ -10,23 +10,31 @@ import LoanProducts from '../../../config/LoanProducts';
 import FormFieldsRendererView from '../form_fields_renderer';
 import { PageFormContext } from '../context/page_form';
 import PageRendererView from '../page_renderer';
+import ACTIONS from '../../../store/actions';
+import { useDispatch, useSelector } from 'react-redux';
 //import { NavigationActions } from 'react-navigation';
 
 const onSubmitVerifyPageCodes = []//MOBILE_VERIFY
 const PatternI = ({ navigation, page_code, children }) => {
+    const dispatch = useDispatch()
+    const loan_journey_data = useSelector(state => state.LoanJourney);
+
     const { loan_journey_state, dispatchContextState, moveFromPage } = useContext(LoanJourneyDataContext);
-    const { onVerify, onSubmit } = useContext(PageFormContext);
+    const { onVerify, clearForm } = useContext(PageFormContext);
     const [stepperData, setstepperData] = useState([]);
 
     const onNextButtonPress = async () => {
-        const isVerificationRequired = onSubmitVerifyPageCodes.some(page => page == page_code)
-        if (isVerificationRequired == true) {
-            onVerify()
-        } else {
-            moveFromPage()
-        }
+        moveFromPage()
+        // const isVerificationRequired = onSubmitVerifyPageCodes.some(page => page == page_code)
+        // if (isVerificationRequired == true) {
+        //     onVerify()
+        // } else {
+        //     clearForm()
+        //     dispatch(ACTIONS.moveToNextPage())
+        //     moveFromPage()
+        // }
     }
-
+console.log('loan_journey_data?.current_active_page',loan_journey_state,loan_journey_data?.current_active_page);
     return (
         <Container isLoading={false}>
             <Header headerTitle={loan_journey_state?.current_active_page?.pageName}
@@ -38,7 +46,8 @@ const PatternI = ({ navigation, page_code, children }) => {
                 onPlusButtonPress={() => { }}
                 showRightIcon={true}
                 onRightIconPress={async () => {
-                    await dispatchContextState({ type: 'CLEAR_CONTEXT' })
+                    await dispatch({ type: 'CLEAR_LOAN_JOURNEY_DATA' })
+                    await dispatch({ type: "CLEAR_ACTIVE_PAGE" })
                     navigation.popToTop('Dashboard')
                 }}
             />

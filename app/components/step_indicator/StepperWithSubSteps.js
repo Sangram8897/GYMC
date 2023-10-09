@@ -6,7 +6,7 @@ import Step from './Step';
 import Strap from './Strap';
 import { Colors } from './indicator';
 
-const StepperWithSubSteps = ({ data, active_step,sub_steps }) => {
+const StepperWithSubSteps = ({ data, active_step, active_sub_step, sub_steps, StepSize }) => {
     const [split1, set_split1] = useState([])
     const [split2, set_split2] = useState([])
 
@@ -23,17 +23,18 @@ const StepperWithSubSteps = ({ data, active_step,sub_steps }) => {
             set_split1(_split1)
             set_split2(_split2)
         }
-    }
 
+    }
+    console.log('active_sub_step', active_sub_step);
     return (
         <>
             {(data && sub_steps && sub_steps.length > 0) &&
                 <View style={{ flexDirection: 'row' }}>
-                    <BoxStepper data={split1} id={'I'}/>
+                    <BoxStepper data={split1} id={'I'} StepSize={StepSize} active_sub_step={active_sub_step} />
                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
-                        <SubStepper data={sub_steps} parent_data={data} active_step={active_step} />
+                        <SubStepper data={sub_steps} parent_data={data} active_step={active_step} StepSize={StepSize} />
                     </View>
-                    <BoxStepper data={split2} id={'II'}/>
+                    <BoxStepper data={split2} id={'II'} StepSize={StepSize} />
                 </View>
             }
         </>
@@ -42,7 +43,7 @@ const StepperWithSubSteps = ({ data, active_step,sub_steps }) => {
 
 export default React.memo(StepperWithSubSteps)
 
-const BoxStepper = ({ data, substeps = false ,id}) => {
+const BoxStepper = ({ data, substeps = false, id, StepSize, active_sub_step }) => {
 
     return data.map((element, index) => {
         const config = {
@@ -55,11 +56,34 @@ const BoxStepper = ({ data, substeps = false ,id}) => {
             textColor: Colors.white,
             showCount: true
         }
-        return <Step key={`box_stepper${id}${index.toString()}`} substeps={true} config={config} count={element?.step_id} />
+        return <View key={`box_stepper${id}${index.toString()}`} >
+            <View style={{ height: StepSize.step + StepSize.cofact }}>
+                <Step substeps={true} config={config} count={element?.step_id} Colors={Colors} StepSize={StepSize} />
+            </View>
+            {(element?.isActive && active_sub_step?.name) &&
+                <AbsoluteText
+                    name={active_sub_step?.name}
+                    Colors
+                    StepSize
+                />
+            }
+        </View >
     })
 }
 
-const SubStepper = ({ parent_data, active_step, data, substeps = false }) => {
+
+
+const AbsoluteText = React.memo(({ name, Colors, StepSize }) => {
+    return (
+        <View style={{ position: 'absolute', top: 30, zIndex: 999, minWidth: 300 }}>
+            {
+                <Text style={[{ color: Colors.white, marginVertical: StepSize.cofact }]}>{name}</Text>
+            }
+        </View>
+    )
+})
+
+const SubStepper = ({ parent_data, active_step, data, substeps = false, StepSize }) => {
     console.log('SubStepper', data);
     return data.map((element, index) => {
         const config = {
@@ -80,7 +104,7 @@ const SubStepper = ({ parent_data, active_step, data, substeps = false }) => {
                 color={config?.leftStrapColor}
                 hideLeftStrap={config.hideLeftStrap}
             />
-            <SubPoint config={config} count={element?.step_id} />
+            <SubPoint config={config} count={element?.step_id} StepSize={StepSize} />
             <Strap
                 color={config?.rightStrapColor}
                 hideRightStrap={config.hideRightStrap}
@@ -89,7 +113,7 @@ const SubStepper = ({ parent_data, active_step, data, substeps = false }) => {
     })
 }
 
-const SubPoint = ({ count, substeps = false, config }) => {
+const SubPoint = ({ count, substeps = false, config, StepSize }) => {
     const { isCompleted, isActive, borderColor, fillColor, iconColor, textColor } = config;
 
     const box_size = 15;
@@ -97,15 +121,15 @@ const SubPoint = ({ count, substeps = false, config }) => {
     const index = 2
     if (config?.isActive) {
         return (
-            <View style={{ height: box_size + cofact, width: box_size + cofact, justifyContent: 'center', alignItems: 'center', borderRadius: (box_size + cofact) / 2, borderColor: borderColor, borderWidth: 1, backgroundColor: isCompleted ? fillColor : Colors.white }}>
-                <View style={{ height: box_size, width: box_size, borderRadius: box_size / 2, backgroundColor: fillColor, justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ height: StepSize.subStep + StepSize.cofact, width: StepSize.subStep + StepSize.cofact, justifyContent: 'center', alignItems: 'center', borderRadius: (StepSize.subStep + StepSize.cofact) / 2, borderColor: borderColor, borderWidth: 1, backgroundColor: isCompleted ? fillColor : Colors.white }}>
+                <View style={{ height: StepSize.subStep, width: StepSize.subStep, borderRadius: StepSize.subStep / 2, backgroundColor: fillColor, justifyContent: 'center', alignItems: 'center' }}>
                     <Icon name='check' size={12} color={iconColor} />
                 </View>
             </View>
         )
     }
     return (
-        <View style={{ height: box_size, width: box_size, borderRadius: box_size / 2, backgroundColor: fillColor, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ height: StepSize.subStep, width: StepSize.subStep, borderRadius: StepSize.subStep / 2, backgroundColor: fillColor, justifyContent: 'center', alignItems: 'center' }}>
             <Icon name='check' size={12} color={iconColor} />
         </View>
     );

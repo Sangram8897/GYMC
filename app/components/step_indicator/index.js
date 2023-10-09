@@ -6,7 +6,14 @@ import { useSelector } from 'react-redux';
 import MyData from './testdata';
 import { Colors } from '../../style/colors';
 
-const StepIndicator = ({data, showPersentage = false }) => {
+export const StepSize = {
+	step: 24,
+	subStep: 15,
+	cofact: 8,
+	titleHeight: 40
+}
+
+const StepIndicator = ({ data, showPersentage = false }) => {
 	const [active_step, set_active_step] = useState(null)
 	const [pagedata, set_pagedata] = useState([])
 	const [my_progress, set_my_progress] = useState(0)
@@ -34,14 +41,15 @@ const StepIndicator = ({data, showPersentage = false }) => {
 				} else {
 					set_active_step(active_step_index)
 					let data = await data_update_with_id?.[active_step_index]?.subStep
-
+					console.log('active_sub_steps data', data);
 					if (data && data.length > 0) {
 						set_sub_steps(data)
 						let active_sub_step_index = await data.findIndex((item, index) => item.isActive == true)
+						console.log('active_sub_steps active_sub_step_index', active_sub_step_index);
 						if (active_sub_step_index == -1) {
 							await set_active_sub_step(0)
 						} else {
-							await set_active_sub_step(active_sub_step_index)
+							await set_active_sub_step(data[active_sub_step_index])
 						}
 					}
 				}
@@ -64,16 +72,20 @@ const StepIndicator = ({data, showPersentage = false }) => {
 			}
 		}
 	}
+
+
 	return (
-		<View style={{ width: '100%', backgroundColor: Colors.primary,paddingBottom:8 }}>
+		<View style={{ width: '100%', backgroundColor: Colors.primary, height: StepSize.step + StepSize.cofact + StepSize.titleHeight }}>
 			<View style={[{ width: '95%', alignSelf: 'center', justifyContent: 'center' }]}>
 				<Indicator
 					data={pagedata}
 					active_step={active_step}
+					active_sub_step={active_sub_step}
 					sub_steps={sub_steps}
+					StepSize={StepSize}
 				/>
 			</View>
-			{showPersentage && <Text style={[ { color: 'skyblue',alignSelf:'flex-end',marginRight:8 }]}>{`${my_progress} % Completed`}</Text>}
+			{showPersentage && <Text style={[{ color: 'skyblue', alignSelf: 'flex-end', marginRight: 8 }]}>{`${my_progress} % Completed`}</Text>}
 		</View>
 	)
 }

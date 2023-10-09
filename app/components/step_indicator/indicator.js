@@ -14,18 +14,28 @@ export const Colors = {
   white: 'white'
 }
 
-const Indicator = ({ data, active_step, sub_steps }) => {
 
+const Indicator = ({ data, active_step,active_sub_step, sub_steps, StepSize}) => {
+
+console.log('active_step',active_step);
   if (data && sub_steps && sub_steps.length > 0) {
-    return <StepperWithSubSteps data={data} active_step={active_step} sub_steps={sub_steps} />
+    return <StepperWithSubSteps data={data} active_step={active_step} active_sub_step={active_sub_step} sub_steps={sub_steps} StepSize={StepSize}/>
   }
 
   return <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center' }}>
-    {(data && data.length > 0) && <Stepper data={data} hideFirstBar={true} />}
+    {(data && data.length > 0) && <Stepper data={data} hideFirstBar={true} StepSize={StepSize}/>}
   </View>
 }
 
 export default Indicator;
+
+
+
+
+
+
+
+
 
 
 
